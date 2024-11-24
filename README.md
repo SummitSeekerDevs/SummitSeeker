@@ -5,7 +5,7 @@
 
 # Project Setup
 - Unity Hub: Version 3.10.0 ++
-- Unity Editor: Version Unity6 (6000.0.28f1 ++); __Modules:__ Windows Build Support (IL2CPP), Documentation
+- Unity Editor: Version Unity6 (6000.0.28f1 ++) inkl. __Modules:__ Windows Build Support (IL2CPP), Documentation
 - VSCode
 - Blender: Version 4.3 ++
 - Gimp
