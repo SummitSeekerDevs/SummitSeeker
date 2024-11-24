@@ -1,7 +1,7 @@
 # SummitSeeker
 
 # Links
- - [Notion](https://www.notion.so/SummitSeeker-1485d39d480880f3af4ee779fb67a50e)
+ - [Notion](https://www.notion.so/Startseite-148bd82e1ce981cda604d8646e280fa9?pvs=13)
 
 # Project Setup
 - Unity Hub
