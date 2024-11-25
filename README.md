@@ -8,5 +8,5 @@
 - Unity Editor: Version Unity6 (6000.0.28f1 ++) inkl. __Modules:__ Windows Build Support (IL2CPP), Documentation
 - VSCode
 - Blender: Version 4.3 ++
-- Gimp
+- Gimp / Paint.net
 - GitHub Desktop
