@@ -1,21 +1,22 @@
 name: GameCI Template to Test, Build and Deploy 🎮
 
-on: push
-  branches: 
-    - main
-  paths:
-      - 'Assets/**'
-      - 'Packages/**'
-      - 'ProjectSettings/**'
-  pull_request:
-    types:
-        - opened
-      branches:
-        - main
-      paths:
+on: 
+  push:
+    branches: 
+      - main
+    paths:
         - 'Assets/**'
         - 'Packages/**'
         - 'ProjectSettings/**'
+  pull_request:
+    types:
+        - opened
+    branches:
+      - main
+    paths:
+      - 'Assets/**'
+      - 'Packages/**'
+      - 'ProjectSettings/**'
   release:  #release in github ui
     types:
       - published
