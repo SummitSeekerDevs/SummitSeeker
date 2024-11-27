@@ -11,6 +11,7 @@ public class PlayerSavePoint : MonoBehaviour
         activeSavePoint = savePoint;
     }
 
+// add comment to test workflow run
     private void FixedUpdate() {
         if (activeSavePoint != null && Input.GetKey(resetToActiveSavePoint)) {
             GetComponent<Rigidbody>().position = activeSavePoint.position;
