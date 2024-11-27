@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInput_Actions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "184ec929-7e22-494c-b3ca-7c83a8748080",
+            "actions": [
+                {
+                    "name": "ResetToSavePoint",
+                    "type": "Button",
+                    "id": "55034195-5083-4124-bb8c-9da5ea7b1c6c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e6683626-4911-46b4-8380-5cb643f716be",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ResetToSavePoint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
