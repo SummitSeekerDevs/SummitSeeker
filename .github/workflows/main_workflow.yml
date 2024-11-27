@@ -1,16 +1,16 @@
 name: GameCI Template to Test, Build and Deploy 🎮
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - main
     paths:
-        - 'Assets/**'
-        - 'Packages/**'
-        - 'ProjectSettings/**'
+      - 'Assets/**'
+      - 'Packages/**'
+      - 'ProjectSettings/**'
   pull_request:
     types:
-        - opened
+      - opened
     branches:
       - main
     paths:
@@ -26,7 +26,7 @@ on:
         description: '[release] [Android, iOS, StandaloneLinux64, WebGL, StandaloneWindows, StandaloneWindows64, WSAPlayer, StandaloneOSX, Steam]'
         required: false
         default: ''
-    
+
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
@@ -40,6 +40,7 @@ jobs:
 #        testMode:
 #          - EditMode
 #          - PlayMode
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -59,14 +60,14 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
-
+          
       - name: Restore Library cache
         uses: actions/cache@v4
         with:
           path: Library
           key: Library-test-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: Library-test-
-
+      
 #      - name: Run unit tests
 #        uses: game-ci/unity-test-runner@v4
 #        id: testRunner
@@ -82,17 +83,17 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '5.0.x'
-          
+
       - name: Set up JDK 11 for SonarQube
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 11
-          
+
       - name: Setup Unity for SonarQube
         id: setup-unity
         uses: kuler90/setup-unity@v1
-        
+      
 #      - name: Activate Unity for SonarQube
 #        uses: kuler90/activate-unity@v1
 #        with:
@@ -128,14 +129,14 @@ jobs:
           dotnet build Card-Game-Simulator.sln
           dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
           cd Card-Game-Simulator
-          
+
       - name: SonarQube Quality Gate Check
         uses: SonarSource/sonarqube-quality-gate-action@v1.0.0
         with:
           scanMetadataReportFile: ../.sonarqube/out/.sonar/report-task.txt
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
+
       - uses: actions/upload-artifact@v4
         with:
           name: Test results (${{ matrix.testMode }})
@@ -148,14 +149,14 @@ jobs:
         run: |
           echo "$RELEASE_NOTES" > fastlane/metadata/android/en-US/changelogs/default.txt
           echo "$RELEASE_NOTES" > fastlane/metadata/en-US/release_notes.txt
-
-
+          
   buildWebGL:
     needs: testRunner
     name: Build for WebGL 🖥️
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -175,7 +176,7 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
-
+          
       - name: Restore Library cache
         uses: actions/cache@v4
         with:
@@ -184,7 +185,7 @@ jobs:
           restore-keys: |
             Library-build-
             Library-
-
+            
       - uses: game-ci/unity-builder@v4
         with:
           targetPlatform: WebGL
@@ -194,7 +195,7 @@ jobs:
           name: build-WebGL
           path: build/WebGL
 
-buildWindows:
+  buildWindows:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: windows-2019
     needs: buildMac
@@ -211,23 +212,23 @@ buildWindows:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+  
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-        
+  
       - name: Restore LFS cache
         uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-          
+  
       - name: Git LFS Pull
         run: |
           git lfs pull
           git add .
           git reset --hard
-          
+  
       - uses: actions/cache@v3
         with:
           path: Library
@@ -235,32 +236,32 @@ buildWindows:
           restore-keys: |
             Library-buildWindows-${{ matrix.targetPlatform }}-
             Library-buildWindows-
-            
-#      - name: Build Unity Project
-#        id: buildStep
-#        uses: game-ci/unity-builder@v2
-#        env:
-#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-#          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-#        with:
-#          targetPlatform: ${{ matrix.targetPlatform }}
-#          buildMethod: Cgs.Editor.BuildCgs.BuildOptions
-
+      
+      #      - name: Build Unity Project
+      #        id: buildStep
+      #        uses: game-ci/unity-builder@v2
+      #        env:
+      #          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      #          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      #          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+      #        with:
+      #          targetPlatform: ${{ matrix.targetPlatform }}
+      #          buildMethod: Cgs.Editor.BuildCgs.BuildOptions
+  
       - name: Upload Build
         uses: actions/upload-artifact@v3
         if: github.event.action == 'published' || contains(github.event.inputs.workflow_mode, matrix.targetPlatform) || (contains(github.event.inputs.workflow_mode, 'Steam') && contains(matrix.targetPlatform, 'StandaloneWindows'))
         with:
           name: cgs-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-          
+  
       - name: Zip Build
         uses: vimtor/action-zip@v1
         if: github.event.action == 'published' && matrix.targetPlatform != 'WSAPlayer'
         with:
           files: build/${{ matrix.targetPlatform }}/
           dest: build/cgs-${{ matrix.targetPlatform }}.zip
-          
+  
       - name: Upload Zip to GitHub Release
         uses: svenstaro/upload-release-action@v2
         if: github.event.action == 'published' && matrix.targetPlatform != 'WSAPlayer'
@@ -271,52 +272,53 @@ buildWindows:
           tag: ${{ github.ref }}
           overwrite: true
           body: ${{ github.event.release.body }}
-
+  
   buildMacOs:
     name: Build for StandaloneOSX
     runs-on: macos-latest
     needs: testRunner
     outputs:
       buildVersion: ${{ steps.buildStep.outputs.buildVersion }}
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+  
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-        
+  
       - name: Restore LFS cache
         uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-          
+  
       - name: Git LFS Pull
         run: |
           git lfs pull
           git add .
           git reset --hard
-          
+  
       - uses: actions/cache@v3
         with:
           path: Library
           key: Library-buildMac-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: Library-buildMac-
-          
-#      - name: Build Unity Project
-#        id: buildStep
-#        uses: game-ci/unity-builder@v2
-#        env:
-#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-#          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-#        with:
-#          targetPlatform: StandaloneOSX
-#          buildMethod: Cgs.Editor.BuildCgs.BuildOptions
-          
+      
+      #      - name: Build Unity Project
+      #        id: buildStep
+      #        uses: game-ci/unity-builder@v2
+      #        env:
+      #          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      #          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      #          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+      #        with:
+      #          targetPlatform: StandaloneOSX
+      #          buildMethod: Cgs.Editor.BuildCgs.BuildOptions
+  
       - name: Fix File Permissions and Code-Sign
         env:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
@@ -334,28 +336,28 @@ buildWindows:
           find $MAC_BUILD_PATH -type f -name "**.sh" -exec chmod +x {} \;
           chmod +x fastlane/sign-mac-build.sh
           ./fastlane/sign-mac-build.sh
-          
+  
       - name: Upload Build
         if: github.event.action == 'published' || contains(github.event.inputs.workflow_mode, 'StandaloneOSX') || contains(github.event.inputs.workflow_mode, 'Steam')
         uses: actions/upload-artifact@v3
         with:
           name: cgs-StandaloneOSX
           path: build/StandaloneOSX
-          
+  
       - name: Upload App
         uses: actions/upload-artifact@v3
         if: github.event.action == 'published' || contains(github.event.inputs.workflow_mode, 'StandaloneOSX') || contains(github.event.inputs.workflow_mode, 'Steam')
         with:
           name: Card Game Simulator.app
           path: build/StandaloneOSX/Card Game Simulator.app
-          
+  
       - name: Zip App
         uses: vimtor/action-zip@v1
         if: github.event.action == 'published'
         with:
           files: build/StandaloneOSX/
           dest: build/cgs-StandaloneOSX.zip
-          
+  
       - name: Upload Zip to GitHub Release
         uses: svenstaro/upload-release-action@v2
         if: github.event.action == 'published'
@@ -373,26 +375,26 @@ buildWindows:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+  
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
+  
       - name: Restore LFS cache
         uses: actions/cache@v4
         id: lfs-cache
         with:
           path: .git/lfs
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
+  
       - name: Git LFS Pull
         run: |
           git lfs pull
           git add .
           git reset --hard
-
       - name: Restore Library cache
         uses: actions/cache@v4
         with:
@@ -401,21 +403,20 @@ buildWindows:
           restore-keys: |
             Library-build-
             Library-
-
       - uses: game-ci/unity-builder@v4
         with:
           targetPlatform: Android
-
+  
       - uses: actions/upload-artifact@v4
         with:
           name: build-Android
           path: build/Android
-
-
+  
   deployPages:
     needs: buildWebGL
     name: Deploy to Github Pages 🚀
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
