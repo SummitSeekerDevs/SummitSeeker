@@ -16,6 +16,7 @@ public class ThrowingKnife : MonoBehaviour
 
     bool readyToThrow;
 
+    // diese Start() methode und die readytothrow() methode haben den gleichen inhalt
     private void Start() {
         readyToThrow = true;
     }
@@ -35,6 +36,7 @@ public class ThrowingKnife : MonoBehaviour
         // get rigidbody component
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
+        // neuer kommentar ohne aussage 
         projectileRb.angularDamping = 0f;
 
         // calculate direction
