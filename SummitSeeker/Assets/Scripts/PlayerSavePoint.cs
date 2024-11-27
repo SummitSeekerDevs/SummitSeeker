@@ -15,6 +15,7 @@ public class PlayerSavePoint : MonoBehaviour
         if (activeSavePoint != null && Input.GetKey(resetToActiveSavePoint)) {
             GetComponent<Rigidbody>().position = activeSavePoint.position;
             activeSavePoint = null;
+            print("test");
         }
     }
 }
