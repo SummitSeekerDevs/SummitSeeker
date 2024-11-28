@@ -11,6 +11,7 @@ public class PlayerMovementVid : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
+    bool _sprintingIsPressed;
 
     public float groundDrag;
 
@@ -19,7 +20,7 @@ public class PlayerMovementVid : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
-    bool _jumpIsPressed;
+    bool _jumpingIsPressed;
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -76,6 +77,10 @@ public class PlayerMovementVid : MonoBehaviour
         // Crouching
         _playerInputActions.Player.Crouch.started += OnCrouch;
         _playerInputActions.Player.Crouch.canceled += OnCrouchCanceled;
+
+        // Sprinting
+        _playerInputActions.Player.Sprint.started += OnSprint;
+        _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
     }
 
     private void OnDisable() {
@@ -90,6 +95,10 @@ public class PlayerMovementVid : MonoBehaviour
         // Crouching
         _playerInputActions.Player.Crouch.started -= OnCrouch;
         _playerInputActions.Player.Crouch.canceled -= OnCrouchCanceled;
+
+        // Sprinting
+        _playerInputActions.Player.Sprint.started -= OnSprint;
+        _playerInputActions.Player.Sprint.canceled -= OnSprintCanceled;
     }
 
     
@@ -130,11 +139,11 @@ public class PlayerMovementVid : MonoBehaviour
     }
 
     private void OnJump(InputAction.CallbackContext context) {
-        _jumpIsPressed = true;
+        _jumpingIsPressed = true;
     }
 
     private void OnJumpCanceled(InputAction.CallbackContext context) {
-        _jumpIsPressed = false;
+        _jumpingIsPressed = false;
     }
 
     private void OnCrouch(InputAction.CallbackContext context) {
@@ -150,10 +159,18 @@ public class PlayerMovementVid : MonoBehaviour
         _crouchingIsPressed = false;
     }
 
+    private void OnSprint(InputAction.CallbackContext context) {
+        _sprintingIsPressed = true;
+    }
+
+    private void OnSprintCanceled(InputAction.CallbackContext context) {
+        _sprintingIsPressed = false;
+    }
+
     private void MyInput()
     {
         // when to jump
-        if(_jumpIsPressed && readyToJump && grounded)
+        if(_jumpingIsPressed && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -174,7 +191,7 @@ public class PlayerMovementVid : MonoBehaviour
         }
 
         // Mode - Sprinting
-        else if(grounded && Input.GetKey(sprintKey))
+        else if(grounded && _sprintingIsPressed)
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
