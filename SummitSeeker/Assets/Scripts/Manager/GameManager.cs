@@ -4,7 +4,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public GameState State;
+    private GameState _currentState;
+    public GameState CurrentState => _currentState;
     public event Action<GameState> OnGameStateChanged;
 
     // Input
@@ -39,18 +40,30 @@ public class GameManager : MonoBehaviour
     }
 
     public void ButtonUpdateGameState(int newStateInt) {
-        UpdateGameState((GameState)newStateInt);
+        if (Enum.IsDefined(typeof(GameState), newStateInt)) {
+            UpdateGameState((GameState) newStateInt);
+        } else {
+            Debug.LogError($"Invalid game state value: {newStateInt}");
+        }
     }
 
     public void UpdateGameState(GameState newState) {
-        State = newState;
+        if (!IsValidStateTransition(_currentState, newState)) {
+            Debug.LogWarning($"Invalid state transition from {_currentState} to {newState}");
+            return;
+        }
+
+        _currentState = newState;
 
         switch (newState) {
             case GameState.MainMenu:
+                HandleMainMenuState();
                 break;
             case GameState.InGame:
+                HandleInGameState();
                 break;
             case GameState.Pause:
+                HandlePauseState();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -59,8 +72,25 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
     }
 
+    private bool IsValidStateTransition(GameState from, GameState to) {
+        // Add state transition validation logic here
+        return true;
+    }
+
+    private void HandleMainMenuState() {
+        // Add main menu state logic
+    }
+
+    private void HandleInGameState() {
+        // Add In game state logic
+    }
+
+    private void HandlePauseState() {
+        // Add pause state logic
+    }
+
     public void TogglePause() {
-        if (State != GameState.Pause) {
+        if (_currentState != GameState.Pause) {
             Time.timeScale = 0;
             UpdateGameState(GameState.Pause);
         }
