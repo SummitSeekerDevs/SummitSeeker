@@ -1631,7 +1631,6 @@ MonoBehaviour:
   objectToThrow: {fileID: 7001848271421976872, guid: cfeba98e75fbba241b46207da4f95de1, type: 3}
   totalThrows: 100
   throwCooldown: 0.1
-  throwKey: 323
   throwForce: 4
   throwUpwardForce: 0
 --- !u!114 &603089417
