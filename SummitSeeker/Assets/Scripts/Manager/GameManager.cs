@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    private static GameManager _instance;
     private GameState _currentState;
     public GameState CurrentState => _currentState;
     public event Action<GameState> OnGameStateChanged;
@@ -12,15 +12,28 @@ public class GameManager : MonoBehaviour
     private PlayerInput_Actions _playerInputActions;
     public PlayerInput_Actions InputActions => _playerInputActions;
 
+    public static GameManager Instance {
+        get {
+            if (_instance == null) 
+                Debug.LogError("GameManager is null!");
+            return _instance;
+        }
+    }
+
     void Awake() {
-        if (Instance != null && Instance != this) {
+        if (_instance != null && _instance != this) {
             Destroy(this);
             return;
         }
-        else {
-            Instance = this;
-        }
+        
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
 
+        setPlayerInputActions();
+        
+    }
+
+    private void setPlayerInputActions() {
         // Set PlayerInput Actions
         try {
             _playerInputActions = new PlayerInput_Actions();
@@ -28,7 +41,6 @@ public class GameManager : MonoBehaviour
         catch (System.Exception e) {
             Debug.LogError($"Failed to initialize input actions: {e.Message}");
         }
-        
     }
 
     private void OnEnable() {

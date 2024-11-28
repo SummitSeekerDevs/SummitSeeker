@@ -14,7 +14,6 @@ public class ThrowingKnife : MonoBehaviour
     public float throwCooldown;
 
     [Header("Throwing")]
-    public KeyCode throwKey = KeyCode.Mouse0;
     public float throwForce, throwUpwardForce;
 
     bool readyToThrow;
