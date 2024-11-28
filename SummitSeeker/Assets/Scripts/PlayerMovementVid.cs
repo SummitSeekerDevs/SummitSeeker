@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class PlayerMovementVid : MonoBehaviour
 {
+    private PlayerInput_Actions _playerInputActions;
+
     public Transform spawnPoint;
     
     [Header("Movement")]
@@ -18,6 +19,7 @@ public class PlayerMovementVid : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
+    bool _jumpIsPressed;
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -42,8 +44,7 @@ public class PlayerMovementVid : MonoBehaviour
 
     public Transform orientation;
 
-    float horizontalInput;
-    float verticalInput;
+    private Vector2 moveInput;
 
     Vector3 moveDirection;
 
@@ -57,6 +58,32 @@ public class PlayerMovementVid : MonoBehaviour
         crouching,
         air
     }
+
+    private void Awake() {
+        _playerInputActions = GameManager.Instance._playerInputActions;
+    }
+
+    private void OnEnable() {
+        // Moving
+        _playerInputActions.Player.Move.performed += OnMove;
+        _playerInputActions.Player.Move.canceled += OnMove;
+
+        // Jumping
+        _playerInputActions.Player.Jump.started += OnJump;
+        _playerInputActions.Player.Jump.canceled += OnJumpCanceled;
+    }
+
+    private void OnDisable() {
+        // Moving
+        _playerInputActions.Player.Move.performed -= OnMove;
+        _playerInputActions.Player.Move.canceled -= OnMove;
+
+        // Jumping
+        _playerInputActions.Player.Jump.started -= OnJump;
+        _playerInputActions.Player.Jump.canceled -= OnJumpCanceled;
+    }
+
+    
 
     private void Start()
     {
@@ -89,13 +116,22 @@ public class PlayerMovementVid : MonoBehaviour
         MovePlayer();
     }
 
+    private void OnMove(InputAction.CallbackContext context) {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    private void OnJump(InputAction.CallbackContext context) {
+        _jumpIsPressed = true;
+    }
+
+    private void OnJumpCanceled(InputAction.CallbackContext context) {
+        _jumpIsPressed = false;
+    }
+
     private void MyInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-
         // when to jump
-        if(Input.GetKey(jumpKey) && readyToJump && grounded)
+        if(_jumpIsPressed && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -150,6 +186,9 @@ public class PlayerMovementVid : MonoBehaviour
 
     private void MovePlayer()
     {
+        float horizontalInput = moveInput.x;
+        float verticalInput = moveInput.y;
+        
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
