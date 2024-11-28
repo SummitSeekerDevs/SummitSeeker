@@ -57,7 +57,7 @@ public class PlayerMovementVid : MonoBehaviour
     }
 
     private void Awake() {
-        _playerInputActions = GameManager.Instance._playerInputActions;
+        _playerInputActions = GameManager.Instance.InputActions;
     }
 
     private void OnEnable() {
