@@ -25,6 +25,7 @@ public class PlayerMovementVid : MonoBehaviour
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
+    bool _crouchingIsPressed;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -71,6 +72,10 @@ public class PlayerMovementVid : MonoBehaviour
         // Jumping
         _playerInputActions.Player.Jump.started += OnJump;
         _playerInputActions.Player.Jump.canceled += OnJumpCanceled;
+
+        // Crouching
+        _playerInputActions.Player.Crouch.started += OnCrouch;
+        _playerInputActions.Player.Crouch.canceled += OnCrouchCanceled;
     }
 
     private void OnDisable() {
@@ -81,6 +86,10 @@ public class PlayerMovementVid : MonoBehaviour
         // Jumping
         _playerInputActions.Player.Jump.started -= OnJump;
         _playerInputActions.Player.Jump.canceled -= OnJumpCanceled;
+
+        // Crouching
+        _playerInputActions.Player.Crouch.started -= OnCrouch;
+        _playerInputActions.Player.Crouch.canceled -= OnCrouchCanceled;
     }
 
     
@@ -128,6 +137,19 @@ public class PlayerMovementVid : MonoBehaviour
         _jumpIsPressed = false;
     }
 
+    private void OnCrouch(InputAction.CallbackContext context) {
+        _crouchingIsPressed = true;
+
+        transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+
+    private void OnCrouchCanceled(InputAction.CallbackContext context) {
+        transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+
+        _crouchingIsPressed = false;
+    }
+
     private void MyInput()
     {
         // when to jump
@@ -140,24 +162,12 @@ public class PlayerMovementVid : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        // start crouch
-        if (Input.GetKeyDown(crouchKey))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        }
-
-        // stop crouch
-        if (Input.GetKeyUp(crouchKey))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-        }
     }
 
     private void StateHandler()
     {
         // Mode - Crouching
-        if (Input.GetKey(crouchKey))
+        if (_crouchingIsPressed)
         {
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
@@ -188,7 +198,7 @@ public class PlayerMovementVid : MonoBehaviour
     {
         float horizontalInput = moveInput.x;
         float verticalInput = moveInput.y;
-        
+
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 

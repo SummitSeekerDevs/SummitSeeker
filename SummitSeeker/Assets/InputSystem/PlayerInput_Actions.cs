@@ -37,6 +37,15 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""be9f24d1-b799-497d-853e-918357734d28"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""3e79d42e-8a74-43fa-b636-88f8a032b304"",
@@ -64,6 +73,17 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ResetToSavePoint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47476ad1-5e97-4d17-bb42-b055b8c2fbf6"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -185,6 +205,7 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_ResetToSavePoint = m_Player.FindAction("ResetToSavePoint", throwIfNotFound: true);
+        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
     }
@@ -254,6 +275,7 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_ResetToSavePoint;
+    private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Move;
     public struct PlayerActions
@@ -261,6 +283,7 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
         private @PlayerInput_Actions m_Wrapper;
         public PlayerActions(@PlayerInput_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @ResetToSavePoint => m_Wrapper.m_Player_ResetToSavePoint;
+        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -275,6 +298,9 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
             @ResetToSavePoint.started += instance.OnResetToSavePoint;
             @ResetToSavePoint.performed += instance.OnResetToSavePoint;
             @ResetToSavePoint.canceled += instance.OnResetToSavePoint;
+            @Crouch.started += instance.OnCrouch;
+            @Crouch.performed += instance.OnCrouch;
+            @Crouch.canceled += instance.OnCrouch;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
@@ -288,6 +314,9 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
             @ResetToSavePoint.started -= instance.OnResetToSavePoint;
             @ResetToSavePoint.performed -= instance.OnResetToSavePoint;
             @ResetToSavePoint.canceled -= instance.OnResetToSavePoint;
+            @Crouch.started -= instance.OnCrouch;
+            @Crouch.performed -= instance.OnCrouch;
+            @Crouch.canceled -= instance.OnCrouch;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
@@ -314,6 +343,7 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnResetToSavePoint(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
     }
