@@ -28,11 +28,6 @@ public class PlayerMovementVid : MonoBehaviour
     private float startYScale;
     bool _crouchingIsPressed;
 
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode sprintKey = KeyCode.LeftShift;
-    public KeyCode crouchKey = KeyCode.LeftControl;
-
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
@@ -101,8 +96,6 @@ public class PlayerMovementVid : MonoBehaviour
         _playerInputActions.Player.Sprint.canceled -= OnSprintCanceled;
     }
 
-    
-
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -134,10 +127,13 @@ public class PlayerMovementVid : MonoBehaviour
         MovePlayer();
     }
 
+    #region Input
+
     private void OnMove(InputAction.CallbackContext context) {
         moveInput = context.ReadValue<Vector2>();
     }
 
+    // Jumping
     private void OnJump(InputAction.CallbackContext context) {
         _jumpingIsPressed = true;
     }
@@ -146,6 +142,7 @@ public class PlayerMovementVid : MonoBehaviour
         _jumpingIsPressed = false;
     }
 
+    // Crouching
     private void OnCrouch(InputAction.CallbackContext context) {
         _crouchingIsPressed = true;
 
@@ -159,6 +156,7 @@ public class PlayerMovementVid : MonoBehaviour
         _crouchingIsPressed = false;
     }
 
+    // Sprinting
     private void OnSprint(InputAction.CallbackContext context) {
         _sprintingIsPressed = true;
     }
@@ -166,6 +164,8 @@ public class PlayerMovementVid : MonoBehaviour
     private void OnSprintCanceled(InputAction.CallbackContext context) {
         _sprintingIsPressed = false;
     }
+
+    #endregion
 
     private void MyInput()
     {
