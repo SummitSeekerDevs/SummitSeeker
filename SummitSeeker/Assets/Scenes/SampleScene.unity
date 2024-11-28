@@ -373,7 +373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068540853346e63479929a2f115398ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  State: 1
 --- !u!1001 &234322901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1656,9 +1655,6 @@ MonoBehaviour:
   airMultiplier: 0.2
   crouchSpeed: 3.5
   crouchYScale: 0.5
-  jumpKey: 32
-  sprintKey: 304
-  crouchKey: 306
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
@@ -1678,7 +1674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6656f084da43c614094b9d0b177dc4e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetToActiveSavePointKey: 114
 --- !u!1001 &620299918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2637,8 +2632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb1c6f29760c43459b03e448f9e959a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 800
-  sensY: 800
+  sensX: 30
+  sensY: 30
   orientation: {fileID: 1608494300}
 --- !u!114 &963194230
 MonoBehaviour:

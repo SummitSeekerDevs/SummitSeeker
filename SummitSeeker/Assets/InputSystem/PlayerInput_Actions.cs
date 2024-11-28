@@ -37,6 +37,24 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Point"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0df86476-99b9-457e-a30b-a77147e3cae3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""8ae577bc-eeb0-4faa-85b7-a61d658212c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""a019eadd-2296-47f6-a955-e4108339c149"",
@@ -82,6 +100,28 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ResetToSavePoint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fd43bf8-9982-4c59-a47a-1f86633fa2da"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae833ad9-6201-412a-87a6-078a50c5a904"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -225,6 +265,8 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_ResetToSavePoint = m_Player.FindAction("ResetToSavePoint", throwIfNotFound: true);
+        m_Player_Point = m_Player.FindAction("Point", throwIfNotFound: true);
+        m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
@@ -296,6 +338,8 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_ResetToSavePoint;
+    private readonly InputAction m_Player_Point;
+    private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Jump;
@@ -305,6 +349,8 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
         private @PlayerInput_Actions m_Wrapper;
         public PlayerActions(@PlayerInput_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @ResetToSavePoint => m_Wrapper.m_Player_ResetToSavePoint;
+        public InputAction @Point => m_Wrapper.m_Player_Point;
+        public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
@@ -321,6 +367,12 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
             @ResetToSavePoint.started += instance.OnResetToSavePoint;
             @ResetToSavePoint.performed += instance.OnResetToSavePoint;
             @ResetToSavePoint.canceled += instance.OnResetToSavePoint;
+            @Point.started += instance.OnPoint;
+            @Point.performed += instance.OnPoint;
+            @Point.canceled += instance.OnPoint;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
@@ -340,6 +392,12 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
             @ResetToSavePoint.started -= instance.OnResetToSavePoint;
             @ResetToSavePoint.performed -= instance.OnResetToSavePoint;
             @ResetToSavePoint.canceled -= instance.OnResetToSavePoint;
+            @Point.started -= instance.OnPoint;
+            @Point.performed -= instance.OnPoint;
+            @Point.canceled -= instance.OnPoint;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
@@ -372,6 +430,8 @@ public partial class @PlayerInput_Actions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnResetToSavePoint(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);

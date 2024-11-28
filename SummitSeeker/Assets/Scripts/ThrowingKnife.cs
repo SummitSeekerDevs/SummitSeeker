@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ThrowingKnife : MonoBehaviour
 {
+    private PlayerInput_Actions _playerInputActions;
+
     [Header("References")]
     public Transform cam, attackPoint;
     public GameObject objectToThrow;
@@ -16,12 +19,35 @@ public class ThrowingKnife : MonoBehaviour
 
     bool readyToThrow;
 
+    private void Awake() {
+        setPlayerInputActions();
+    }
+
+    private void setPlayerInputActions() {
+        if (GameManager.Instance == null) {
+            Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
+            return;
+        }
+        _playerInputActions = GameManager.Instance.InputActions;
+        if (_playerInputActions == null) {
+            Debug.LogError("PlayerInput_Actions not initialized in GameManager");
+        }
+    }
+
+    private void OnEnable() {
+        _playerInputActions.Player.Click.performed += OnThrow;
+    }
+
+    private void OnDisable() {
+        _playerInputActions.Player.Click.performed -= OnThrow;
+    }
+
     private void Start() {
         readyToThrow = true;
     }
 
-    private void Update() {
-        if(Input.GetKeyDown(throwKey) && readyToThrow && totalThrows > 0) {
+    private void OnThrow(InputAction.CallbackContext context) {
+        if(readyToThrow && totalThrows > 0) {
             Throw();
         }
     }
