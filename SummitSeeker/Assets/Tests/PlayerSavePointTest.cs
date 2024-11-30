@@ -6,19 +6,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 
-public class PlayerSafePointTest
+public class PlayerSafePointTest : InputTestFixture
 {
     private GameObject playerGameobject;
     private PlayerSavePoint playerSavePointscript;
     private Keyboard keyboard;
-    private InputTestFixture input;
     private PlayerInput_Actions inputActions;
+    private GameObject gameManager;
 
     [SetUp]
     public void SetUp() {
 
-        input = new InputTestFixture();
-        input.Setup();
+        gameManager = new GameObject();
+        gameManager.AddComponent<GameManager>();
 
         inputActions = new PlayerInput_Actions();
         inputActions.Enable(); 
@@ -52,15 +52,8 @@ public class PlayerSafePointTest
         playerSavePointscript.setActiveSavePoint(savePoint);
 
         // Simuliere das Drücken der Taste
-        //playerSavePointscript.resetToActiveSavePointKey = KeyCode.R;
-        //input.Press(keyboard.rKey);
-        Key key = (Key)System.Enum.Parse(typeof(Key), 'r'.ToString().ToUpper());
-        input.Press(keyboard[key]);
-        //input.Release(keyboard.rKey);
-
-        //inputActions.Player.ResetToSavePoint.PerformInteraction();
-        // Act
-        //yield return new WaitForFixedUpdate();
+        Press(keyboard[Key.R]);
+        
         yield return null;
 
         // Assert
