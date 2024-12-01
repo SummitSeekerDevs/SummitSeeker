@@ -36,7 +36,6 @@ public class ThrowingKnife : MonoBehaviour
         // get rigidbody component
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
-        // neuer kommentar ohne aussage 
         projectileRb.angularDamping = 0f;
 
         // calculate direction
