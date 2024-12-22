@@ -1,7 +1,7 @@
 # SummitSeeker
 
 # Links
- - [Notion](https://www.notion.so/Startseite-148bd82e1ce981cda604d8646e280fa9?pvs=13)
+ - [Game Documentation][link to docu]
 
 # Project Setup
 - Unity Hub: Version 3.10.0 ++
@@ -10,3 +10,5 @@
 - Blender: Version 4.3 ++
 - Gimp / Paint.net
 - GitHub Desktop
+
+[link to docu]: https://summitseekerdevs.github.io/Dokumentation/
