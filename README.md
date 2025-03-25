@@ -10,3 +10,9 @@
 - Blender: Version 4.3 ++
 - Gimp / Paint.net
 - GitHub Desktop
+
+# Development
+## Level Design
+### Rules
+Wird durch ein Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Scene gebaut und getestet. Dies ist darin begründet, dass gleichzeitig an einander angrenzenden Leveln gearbeitet wird und somit der Fall möglich ist, dass ein höheres Level vor einem niedrigeren fertiggestellt wird. 
+Alle 5? Level werden in einem neuen Issue die offenen Level in der Hauptszene, __identisch__ zur Bauweise in den seperaten Level, zusammengeführt.
