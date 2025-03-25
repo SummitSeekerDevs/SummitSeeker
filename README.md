@@ -17,3 +17,7 @@
 ### Rules
 Wird durch ein Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Szene gebaut und getestet. Dies ist darin begründet, dass gleichzeitig an einander angrenzenden Leveln gearbeitet wird und somit der Fall möglich ist, dass ein höheres Level vor einem niedrigeren fertiggestellt wird. 
 Damit jedoch die korrekte Reihenfolge eingehalten wird, werden alle 5? Level in einem neuen Issue die offenen Level in der Hauptszene, __identisch__ zur Bauweise in den seperaten Level, zusammengeführt.
+
+# Testing
+## Rules
+Der durch ein Usecase vom Developer neu hinzugefügte Code muss eine Code Coverage von mindestens 85% haben. Dies ist eine gute Mitte zwischen ausreichend getestet und angemessener Zeitaufwand. 
