@@ -28,8 +28,8 @@ Zum Testen des in C# geschriebenen Codes verwenden wir das “Unity Test Framewo
 
 Dieses Framework unterteilt die Tests in **Edit Mode** - und **Play Mode** - Tests.
 
-Die Tests **Edit-Mode** laufen im Unity-Editor und haben Zugriff auf den Editor und den Code des Spiels. Dies bedeutet, dass die benutzerdefinierten Editor-Erweiterungen getestet oder Tests verwenden können, um Einstellungen im Editor zu ändern und den Abspielmodus aufzurufen, der nützlich ist, um Inspektorwerte anzupassen und dann automatisierte Tests mit vielen verschiedenen Einstellungen durchzuführen.
+Die Tests im **Edit-Mode** laufen im Unity-Editor und haben Zugriff auf den Editor und den Code des Spiels. Dies bedeutet, dass die benutzerdefinierten Editor-Erweiterungen getestet oder Tests verwenden können, um Einstellungen im Editor zu ändern und den Abspielmodus aufzurufen, der nützlich ist, um Inspektorwerte anzupassen und dann automatisierte Tests mit vielen verschiedenen Einstellungen durchzuführen.
 Wie der Name schon vermuten lässt, sind diese Art von Tests also allgemein eher um Funktionalität des Unity Editors bzw. Inspektors z.B. eines benutzerdefinierten Inspektors zu testen und nicht geeignet um den eigentlichen Code des Spiels automatisiert zu testen.
 
 
-Mit den Tests **Play-Mode** kann der Spielcode zur Laufzeit getestet werden. Tests werden in der Regel als Coroutine unter Verwendung des Attributs **[UnityTest]** ausgeführt. So kann der Code getestet werden, der über mehrere Frames hinweg ausgeführt werden kann. Standardmäßig werden die Tests im Play-Mode im Editor ausgeführt, aber sie können auch in einem eigenständigen Player-Build für verschiedene Zielplattformen ausführen werden.
+Mit den Tests im **Play-Mode** kann der Spielcode zur Laufzeit getestet werden. Tests werden in der Regel als Coroutine unter Verwendung des Attributs **[UnityTest]** ausgeführt. So kann der Code getestet werden, der über mehrere Frames hinweg ausgeführt werden kann. Standardmäßig werden die Tests im Play-Mode im Editor ausgeführt, aber sie können auch in einem eigenständigen Player-Build für verschiedene Zielplattformen ausführen werden.
