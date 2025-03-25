@@ -19,5 +19,7 @@ Wird durch ein Usecase die Erstellung eines neuen Levels gefordert, so wird dies
 Damit jedoch die korrekte Reihenfolge eingehalten wird, werden alle 5? Level in einem neuen Issue die offenen Level in der Hauptszene, __identisch__ zur Bauweise in den seperaten Level, zusammengeführt.
 
 # Testing
+## Example Tutorial
+https://www.kodeco.com/38240193-introduction-to-unity-unit-testing
 ## Rules
 Der durch ein Usecase vom Developer neu hinzugefügte Code muss eine Code Coverage von mindestens 85% haben. Dies ist eine gute Mitte zwischen ausreichend getestet und angemessener Zeitaufwand. 
