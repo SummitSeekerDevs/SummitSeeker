@@ -22,3 +22,14 @@ Damit jedoch die korrekte Reihenfolge eingehalten wird, werden alle 5? Level in 
 [Example Tutorial](https://www.kodeco.com/38240193-introduction-to-unity-unit-testing)
 ## Rules
 Der durch ein Usecase vom Developer neu hinzugefügte Code muss eine Code Coverage von mindestens 85% haben. Dies ist eine gute Mitte zwischen ausreichend getestet und angemessener Zeitaufwand. 
+
+## Automatisierte Tests
+Zum Testen des in C# geschriebenen Codes verwenden wir das “Unity Test Framework”.
+
+Dieses Framework unterteilt die Tests in **Edit Mode** - und **Play Mode** - Tests.
+
+Die Tests **Edit-Mode** laufen im Unity-Editor und haben Zugriff auf den Editor und den Code des Spiels. Dies bedeutet, dass die benutzerdefinierten Editor-Erweiterungen getestet oder Tests verwenden können, um Einstellungen im Editor zu ändern und den Abspielmodus aufzurufen, der nützlich ist, um Inspektorwerte anzupassen und dann automatisierte Tests mit vielen verschiedenen Einstellungen durchzuführen.
+Wie der Name schon vermuten lässt, sind diese Art von Tests also allgemein eher um Funktionalität des Unity Editors bzw. Inspektors z.B. eines benutzerdefinierten Inspektors zu testen und nicht geeignet um den eigentlichen Code des Spiels automatisiert zu testen.
+
+
+Mit den Tests **Play-Mode** kann der Spielcode zur Laufzeit getestet werden. Tests werden in der Regel als Coroutine unter Verwendung des Attributs **[UnityTest]** ausgeführt. So kann der Code getestet werden, der über mehrere Frames hinweg ausgeführt werden kann. Standardmäßig werden die Tests im Play-Mode im Editor ausgeführt, aber sie können auch in einem eigenständigen Player-Build für verschiedene Zielplattformen ausführen werden.
