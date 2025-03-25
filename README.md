@@ -1,7 +1,7 @@
 # SummitSeeker
 
 # Links
- - Planung: https://app.milanote.com/1TWnhO1ABvU27u?p=OZxuH37wndh
+ - Planung: https://app.milanote.com/1TWnhO1ABvU27u/summitseekers?p=OZxuH37wndh
  - [Notion](https://www.notion.so/Startseite-148bd82e1ce981cda604d8646e280fa9?pvs=13)
 
 # Project Setup
