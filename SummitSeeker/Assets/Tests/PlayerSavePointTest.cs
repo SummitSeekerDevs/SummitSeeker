@@ -17,8 +17,8 @@ public class PlayerSafePointTest : InputTestFixture
     [SetUp]
     public void SetUp() {
 
-        gameManager = new GameObject();
-        gameManager.AddComponent<GameManager>();
+        gameManager = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/GameManager"));
+        //gameManager.GetComponent<GameManager>();
 
         inputActions = new PlayerInput_Actions();
         inputActions.Enable(); 
@@ -26,9 +26,15 @@ public class PlayerSafePointTest : InputTestFixture
         keyboard = InputSystem.AddDevice<Keyboard>();
 
         // Einrichten des Testspielers mit dem PlayerSavePoint-Script
-        playerGameobject = new GameObject();
-        playerGameobject.AddComponent<Rigidbody>();
-        playerSavePointscript = playerGameobject.AddComponent<PlayerSavePoint>();
+        playerGameobject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Player"), Vector3.zero, Quaternion.identity);
+        //playerGameobject.AddComponent<Rigidbody>();
+        playerSavePointscript = playerGameobject.GetComponent<PlayerSavePoint>();
+     }
+ 
+     [TearDown]
+    public void Teardown() {
+        GameObject.Destroy(gameManager);
+        GameObject.Destroy(playerGameobject);
     }
     
     [Test]
@@ -47,17 +53,22 @@ public class PlayerSafePointTest : InputTestFixture
     public IEnumerator FixedUpdate_ResetsPositionToActiveSavePoint_WhenKeyIsPressed() {
         // Arrange
         var savePoint = new GameObject().transform;
-        savePoint.position = new Vector3(10, 0, 0);
+        savePoint.position = new Vector3(100, 0, 0);
+ 
+        // Gravitation für Rb ausschalten da hier irrelevant
+        var rb = playerGameobject.GetComponent<Rigidbody>();
+        rb.isKinematic = true;
 
         playerSavePointscript.setActiveSavePoint(savePoint);
 
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.R]);
         
-        yield return null;
+        // yield return null is to skip a frame but only use it in edit mode
+        yield return new WaitForSeconds(0.1f);
 
         // Assert
-        Assert.AreEqual(savePoint.position, playerGameobject.GetComponent<Rigidbody>().position);
+        Assert.AreEqual(savePoint.position, rb.position);
 
         
     }
