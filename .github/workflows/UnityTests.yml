@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - 'SummitSeeker'
+          - SummitSeeker
         unityVersion: 
           - 6000.0.28f1 # some version must be included for package testing
         testMode:
