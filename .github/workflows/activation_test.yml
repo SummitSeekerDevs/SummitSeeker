@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: getManualLicenseFile
-        uses: game-ci/unity-request-activation-file@v4
+        uses: game-ci/unity-request-manual-activation-file@v4
       - uses: actions/upload-artifact@v4
         with:
           name: UnityLicenseFile
