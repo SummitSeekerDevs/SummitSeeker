@@ -1,7 +1,6 @@
 name: Get Unity License
 
-on: 
-  workflow_dispatch: {}
+on: push
 
 jobs:
   activation:
