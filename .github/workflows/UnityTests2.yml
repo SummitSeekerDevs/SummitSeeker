@@ -1,0 +1,31 @@
+name: Unity Tests
+
+on:
+  push
+
+jobs:
+  unity-tests:
+    name: Run Unity Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            Library-${{ runner.os }}-
+
+      - name: Run PlayMode Tests
+        uses: game-ci/unity-test-runner@v3
+        with:
+          projectPath: SummitSeeker
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          unityVersion: 2022.3.5f1
+          testMode: PlayMode
