@@ -55,9 +55,6 @@ public class PlayerSafePointTest : InputTestFixture
         var savePoint = new GameObject().transform;
         savePoint.position = new Vector3(100, 0, 0);
 
-        var savePoint2 = new GameObject().transform;
-        savePoint.position = new Vector3(10000, 0, 0);
-
         // Gravitation für Rb ausschalten da hier irrelevant
         var rb = playerGameobject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -71,7 +68,7 @@ public class PlayerSafePointTest : InputTestFixture
         yield return new WaitForSeconds(0.1f);
         
         // Assert
-        Assert.AreEqual(savePoint2.position, rb.position);
+        Assert.AreEqual(savePoint.position, rb.position);
 
         
     }
