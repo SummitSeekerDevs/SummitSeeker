@@ -12,6 +12,11 @@
 - Gimp / Paint.net
 - GitHub Desktop
 
+# Workflows
+## Tipps
+- PackageMode rausnehmen, damit ganzes Projekt getestet wird
+- AssemblyFilters entfernen, damit codeCoverage Artifakt erzeugt werden kann
+
 # Development
 ## Level Design
 ### Rules
