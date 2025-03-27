@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CallablePlatform : MonoBehaviour
-{
+public class CallablePlatform : MonoBehaviour {
     public Transform targetPosition;
     public float moveSpeed = 2f;
     public bool moveToPosition = false;
@@ -16,5 +15,5 @@ public class CallablePlatform : MonoBehaviour
                 moveToPosition = false;
             }
         }
-    }
+}
 }
