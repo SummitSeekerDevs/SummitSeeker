@@ -2,6 +2,7 @@ name: CSharpier Code Format Check
 
 on:
   pull_request:
+  push:
     branches:
       - main
 
@@ -15,10 +16,13 @@ jobs:
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '8.0.x'  # Stelle sicher, dass .NET 8 genutzt wird
 
       - name: Install CSharpier
-        run: dotnet tool install -g csharpier
+        run: dotnet tool install --global csharpier
+
+      - name: Add .NET Tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Run CSharpier Check
         run: csharpier --check .
