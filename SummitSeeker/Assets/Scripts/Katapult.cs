@@ -13,6 +13,18 @@ public class Katapult : MonoBehaviour
     }
 
     // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
+    // BRAUCHt check ob player noch drauf ist
     private void shootPlayerUp() {
         
         playerRb.AddForce(transform.up * shootUpForce, ForceMode.Impulse);

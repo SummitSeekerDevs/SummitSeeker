@@ -1,17 +1,14 @@
-# Pull Request zu Issue: 
-<!-- Hier Referenz zu related Issue -->
+## Description
+<!-- Describe below what this PR is about and what changes have been made" -->
 
-# Beschreibung
 
-<!-- Falls noch etwas gesgt werden sollte, z.B. "Als Entwickler habe ich bewusst auf Punkt XY verzichtet, da dass und das ..."
+## Definition of Done
+<!-- Checklist before requesting a review. Please delete options that are not relevant -->
 
-# Definition of Done
+- [ ] Tests for new code added
+- [ ] New features have been tested manually
+- [ ] Notion-Documentation has been updated
 
-<!-- Der Entwickler ist verantwortlich für die Einhaltung -->
+## Reference
 
-## Allgemeines
-
-- [ ] Code Review durchgeführt
-- [ ] Angemessene Code Dokumentation vorhanden?
-- [ ] Manueller Entwicklertest gegen die Akzeptanzkriterien erfolgreich durchgeführt?
-- [ ] Ausreichend Tests vorhanden
+Closes #

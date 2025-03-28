@@ -16,6 +16,7 @@ public class ThrowingKnife : MonoBehaviour
 
     bool readyToThrow;
 
+    // diese Start() methode und die readytothrow() methode haben den gleichen inhalt
     private void Start() {
         readyToThrow = true;
     }
