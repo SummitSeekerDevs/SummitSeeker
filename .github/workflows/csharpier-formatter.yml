@@ -1,4 +1,4 @@
-name: Csharpier Formatter
+name: CSharpier Formatter
 on: 
     pull_request:
         branches: main
