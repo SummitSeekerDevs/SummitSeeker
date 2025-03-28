@@ -18,6 +18,10 @@
 - AssemblyFilters entfernen, damit codeCoverage Artifakt erzeugt werden kann
 
 # Development
+## Coding
+### Codeformatter
+Bei dem Projekt SummitSeeker verwenden wir den Codeformatter __csharpier__.
+Die Einhaltung dieser Formatregeln wird auch mittels eines workflows geprüft.
 ## Level Design
 ### Rules
 Wird durch ein Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Szene gebaut und getestet. Dies ist darin begründet, dass gleichzeitig an einander angrenzenden Leveln gearbeitet wird und somit der Fall möglich ist, dass ein höheres Level vor einem niedrigeren fertiggestellt wird. 
