@@ -1,12 +1,14 @@
 name: Build Project
 
 on: 
-    pull_request:
-        branches: main
-        paths:
-        - 'SummitSeeker/Assets/**'
-        - 'SummitSeeker/Packages/**'
-        - 'SummitSeeker/ProjectSettings/**'
+    workflow_run:
+      workflows: ["CSharpier Formatter", "Unity Tests"]
+      types:
+        - completed
+        #paths:
+        #- 'SummitSeeker/Assets/**'
+        #- 'SummitSeeker/Packages/**'
+        #- 'SummitSeeker/ProjectSettings/**'
     workflow_dispatch: {}
 
 jobs:
