@@ -7,22 +7,11 @@ on:
       - main
 
 jobs:
-  format-check:
+  check_formatting:
     runs-on: ubuntu-latest
+    name: Check Formatting
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'  # Stelle sicher, dass .NET 8 genutzt wird
-
-      - name: Install CSharpier
-        run: dotnet tool install --global csharpier
-
-      - name: Add .NET Tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Run CSharpier Check
-        run: csharpier --check .
+      - uses: actions/checkout@v4
+      - run: |
+          dotnet tool restore
+          dotnet csharpier --check .
