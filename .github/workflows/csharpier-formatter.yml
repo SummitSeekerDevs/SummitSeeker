@@ -1,0 +1,21 @@
+name: Csharpier Formatter
+on: 
+    pull_request:
+        branches: main
+jobs:
+    check_formatting:
+        runs-on: ubuntu-latest
+        name: Check Formatting
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                lfs: true
+
+            - name: Dotnet restore
+              working-directory: SummitSeeker
+              run: dotnet tool restore # --tool-manifest SummitSeeker/.config/dotnet-tools.json
+
+            - name: Run CSharpier Check
+              working-directory: SummitSeeker
+              run: dotnet tool run dotnet-csharpier --check .
