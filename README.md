@@ -20,7 +20,7 @@
 # Development
 ## Coding
 ### Codeformatter
-Bei dem Projekt SummitSeeker verwenden wir den Codeformatter [__csharpier__](https://csharpier.com).
+Bei dem Projekt SummitSeeker verwenden wir den Codeformatter [csharpier](https://csharpier.com).
 Die Einhaltung dieser Formatregeln wird auch mittels eines workflows geprüft.
 ## Level Design
 ### Rules
