@@ -27,7 +27,8 @@ public class PickNThrow : MonoBehaviour
             }
         }
 
-        if (heldObject != null) {
+        if (heldObject != null)
+        {
             heldObject.transform.rotation = holdPoint.rotation;
         }
     }
@@ -49,7 +50,8 @@ public class PickNThrow : MonoBehaviour
                 {
                     // collider deaktivieren
                     Collider heldCollider = heldObject.GetComponent<Collider>();
-                    if (heldCollider != null) heldCollider.enabled = false;
+                    if (heldCollider != null)
+                        heldCollider.enabled = false;
                     // Objekt vorbereiten
                     heldObjectRb.isKinematic = true; // Physik deaktivieren, solange es gehalten wird
                     heldObject.transform.position = holdPoint.position; // Position setzen
@@ -65,7 +67,8 @@ public class PickNThrow : MonoBehaviour
         {
             // collider deaktivieren
             Collider heldCollider = heldObject.GetComponent<Collider>();
-            if (heldCollider != null) heldCollider.enabled = true;
+            if (heldCollider != null)
+                heldCollider.enabled = true;
 
             // Objekt loslassen und werfen
             heldObjectRb.isKinematic = false; // Physik wieder aktivieren

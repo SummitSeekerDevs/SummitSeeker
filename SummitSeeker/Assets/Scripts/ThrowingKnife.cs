@@ -3,7 +3,8 @@ using UnityEngine;
 public class ThrowingKnife : MonoBehaviour
 {
     [Header("References")]
-    public Transform cam, attackPoint;
+    public Transform cam,
+        attackPoint;
     public GameObject objectToThrow;
 
     [Header("Settings")]
@@ -12,21 +13,26 @@ public class ThrowingKnife : MonoBehaviour
 
     [Header("Throwing")]
     public KeyCode throwKey = KeyCode.Mouse0;
-    public float throwForce, throwUpwardForce;
+    public float throwForce,
+        throwUpwardForce;
 
     bool readyToThrow;
 
-    private void Start() {
+    private void Start()
+    {
         readyToThrow = true;
     }
 
-    private void Update() {
-        if(Input.GetKeyDown(throwKey) && readyToThrow && totalThrows > 0) {
+    private void Update()
+    {
+        if (Input.GetKeyDown(throwKey) && readyToThrow && totalThrows > 0)
+        {
             Throw();
         }
     }
 
-    private void Throw() {
+    private void Throw()
+    {
         readyToThrow = false;
 
         // instantiate object to throw
@@ -42,7 +48,8 @@ public class ThrowingKnife : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(cam.position, cam.forward, out hit, 500f)) {
+        if (Physics.Raycast(cam.position, cam.forward, out hit, 500f))
+        {
             forceDirection = (hit.point - attackPoint.position).normalized;
         }
 
@@ -60,7 +67,8 @@ public class ThrowingKnife : MonoBehaviour
         Invoke(nameof(ResetThrow), throwCooldown);
     }
 
-    private void ResetThrow() {
+    private void ResetThrow()
+    {
         readyToThrow = true;
     }
 }
