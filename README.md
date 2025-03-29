@@ -12,6 +12,10 @@
 - Gimp / Paint.net
 - GitHub Desktop
 
+## Tipps zu Einrichtung
+In Unity unter Edit -> Preferences -> External Tools -> External Script Editor die Option Open by file extension verwenden.
+Ansonsten legt Unity automatisch den .vsCode Ordner mit seinen Dateien an, obwohl diese eine Etage höher im Git-Projekt liegen, da Unity das nicht erkennt. Ein angenehmer Zusatz dazu ist nun, dass wenn Script-Dateien über Unity geöffnet werden und VsCode bereits im GitProjekt geöffnet ist, die Scriptdatei nun im gleichen Fenster geöffnet wird. Dies aber nur sofern vsCode das Standartprogramm zum öffnen von .cs Dateien ist.
+
 # Workflows
 ## Tipps
 - PackageMode rausnehmen, damit ganzes Projekt getestet wird
