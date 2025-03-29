@@ -5,8 +5,6 @@ using UnityEngine.TestTools;
 
 public class PlayerMovementTest
 {
-    private Keyboard keyboard;
-
     [UnityTest]
     public IEnumerator MovePlayerTest()
     {
