@@ -1,15 +1,8 @@
 name: Build Project
 
 on: 
-    workflow_run:
-      workflows: ["CSharpier Formatter", "Unity Tests"]
-      types:
-        - completed
-        #paths:
-        #- 'SummitSeeker/Assets/**'
-        #- 'SummitSeeker/Packages/**'
-        #- 'SummitSeeker/ProjectSettings/**'
-    workflow_dispatch: {}
+    pull_request:
+        branches: main
 
 jobs:
   buildForAllSupportedPlatforms:
