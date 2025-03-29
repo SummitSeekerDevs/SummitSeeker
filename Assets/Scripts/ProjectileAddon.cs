@@ -8,16 +8,20 @@ public class ProjectileAddon : MonoBehaviour
 
     private bool targetHit;
 
-    private void Start() {
+    private void Start()
+    {
         rb = GetComponent<Rigidbody>();
     }
 
-    private void OnCollisionEnter(Collision other) {
+    private void OnCollisionEnter(Collision other)
+    {
         // make sure only to stick to the first target you hit
-        if (targetHit) {
+        if (targetHit)
+        {
             return;
         }
-        else {
+        else
+        {
             targetHit = true;
         }
 

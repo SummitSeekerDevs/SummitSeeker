@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
-    public float sensX, sensY;
+    public float sensX,
+        sensY;
 
     public Transform orientation;
 
-    float xRotation, yRotation;
+    float xRotation,
+        yRotation;
 
-    public void Start() {
+    public void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    public void Update() {
-
+    public void Update()
+    {
         // get mouse input
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
