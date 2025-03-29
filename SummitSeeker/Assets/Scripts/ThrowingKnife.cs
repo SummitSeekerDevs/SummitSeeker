@@ -6,7 +6,8 @@ public class ThrowingKnife : MonoBehaviour
     private PlayerInput_Actions _playerInputActions;
 
     [Header("References")]
-    public Transform cam, attackPoint;
+    public Transform cam,
+        attackPoint;
     public GameObject objectToThrow;
 
     [Header("Settings")]
@@ -14,44 +15,55 @@ public class ThrowingKnife : MonoBehaviour
     public float throwCooldown;
 
     [Header("Throwing")]
-    public float throwForce, throwUpwardForce;
+    public float throwForce,
+        throwUpwardForce;
 
     bool readyToThrow;
 
-    private void Awake() {
+    private void Awake()
+    {
         setPlayerInputActions();
     }
 
-    private void setPlayerInputActions() {
-        if (GameManager.Instance == null) {
+    private void setPlayerInputActions()
+    {
+        if (GameManager.Instance == null)
+        {
             Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
             return;
         }
         _playerInputActions = GameManager.Instance.InputActions;
-        if (_playerInputActions == null) {
+        if (_playerInputActions == null)
+        {
             Debug.LogError("PlayerInput_Actions not initialized in GameManager");
         }
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         _playerInputActions.Player.Click.performed += OnThrow;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _playerInputActions.Player.Click.performed -= OnThrow;
     }
 
-    private void Start() {
+    private void Start()
+    {
         readyToThrow = true;
     }
 
-    private void OnThrow(InputAction.CallbackContext context) {
-        if(readyToThrow && totalThrows > 0) {
+    private void OnThrow(InputAction.CallbackContext context)
+    {
+        if (readyToThrow && totalThrows > 0)
+        {
             Throw();
         }
     }
 
-    private void Throw() {
+    private void Throw()
+    {
         readyToThrow = false;
 
         // instantiate object to throw
@@ -67,7 +79,8 @@ public class ThrowingKnife : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(cam.position, cam.forward, out hit, 500f)) {
+        if (Physics.Raycast(cam.position, cam.forward, out hit, 500f))
+        {
             forceDirection = (hit.point - attackPoint.position).normalized;
         }
 
@@ -85,7 +98,8 @@ public class ThrowingKnife : MonoBehaviour
         Invoke(nameof(ResetThrow), throwCooldown);
     }
 
-    private void ResetThrow() {
+    private void ResetThrow()
+    {
         readyToThrow = true;
     }
 }
