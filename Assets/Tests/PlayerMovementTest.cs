@@ -47,6 +47,9 @@ public class PlayerMovementTest : InputTestFixture
         GameObject.Destroy(playerGameobject);
     }
 
+    /* Aufteilung in Unittestbereich --> funktionen
+    und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
+
     [UnityTest]
     public IEnumerator PlayerJumpTest()
     {
@@ -54,8 +57,7 @@ public class PlayerMovementTest : InputTestFixture
 
         var playerYGrounded = playerGameobject.transform.position.y;
 
-        Debug.Log(playerYGrounded);
-
+        // Tasteneingabe hier entfernen und in Integrationstest wie oben beschrieben auslagern
         // Sprung mit Keyboard auslösen
         Press(keyboard[Key.Space]);
 
