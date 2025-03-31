@@ -75,6 +75,8 @@ public class PlayerSafePointTest : InputTestFixture
         // yield return null is to skip a frame but only use it in edit mode
         yield return new WaitForSeconds(0.1f);
 
+        Release(keyboard[Key.R]);
+
         // Assert
         Assert.AreEqual(savePoint.position, rb.position);
     }
