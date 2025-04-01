@@ -1,5 +1,8 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class PlayerMovementVid : MonoBehaviour
 {
@@ -20,7 +23,7 @@ public class PlayerMovementVid : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
-    bool _jumpingIsPressed;
+    public bool _jumpingIsPressed { get; private set; }
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -207,13 +210,9 @@ public class PlayerMovementVid : MonoBehaviour
     private void MyInput()
     {
         // when to jump
-        if (_jumpingIsPressed && readyToJump && grounded)
+        if (_jumpingIsPressed)
         {
-            readyToJump = false;
-
             Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
 
@@ -303,14 +302,22 @@ public class PlayerMovementVid : MonoBehaviour
         }
     }
 
-    private void Jump()
+    internal void Jump()
     {
-        exitingSlope = true;
+        if (readyToJump && grounded)
+        {
+            readyToJump = false;
 
-        // reset y velocity
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            exitingSlope = true;
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            // reset y velocity
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+            // jump cooldown
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
     }
 
     private void ResetJump()

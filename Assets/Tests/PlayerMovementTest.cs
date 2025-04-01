@@ -58,13 +58,11 @@ public class PlayerMovementTest : InputTestFixture
         var playerYGrounded = playerGameobject.transform.position.y;
 
         // Tasteneingabe hier entfernen und in Integrationstest wie oben beschrieben auslagern
-        // Sprung mit Keyboard auslösen
-        Press(keyboard[Key.Space]);
+
+        // Sprung auslösen
+        playerMovementVid.Jump();
 
         yield return new WaitForSeconds(0.5f); // Warten das er Höhe erreicht
-
-        // Sprungtaste lösen
-        Release(keyboard[Key.Space]);
 
         // Prüfen, ob der Spieler in der Luft ist
         Assert.Greater(
