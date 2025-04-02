@@ -42,3 +42,8 @@ Wie der Name schon vermuten lässt, sind diese Art von Tests also allgemein eher
 
 
 Mit den Tests im **Play-Mode** kann der Spielcode zur Laufzeit getestet werden. Tests werden in der Regel als Coroutine unter Verwendung des Attributs **[UnityTest]** ausgeführt. So kann der Code getestet werden, der über mehrere Frames hinweg ausgeführt werden kann. Standardmäßig werden die Tests im Play-Mode im Editor ausgeführt, aber sie können auch in einem eigenständigen Player-Build für verschiedene Zielplattformen ausführen werden.
+
+## Tipps / übliche Problem
+Wenn Press() zur Simulation einer Tasteneingabe verwendet wird, ist zu beachten das diese Taste solange simuliert gedrückt wird, bis Release() verwendet wird. Nur Press() könnte zu ungewünschten Ergebnisse führen.
+
+GameManager ist ein Singleton, damit einher geht, dass wenn ein neuer GameManager erstellt wird, es bereits aber eine static Instance davon gibt, sich der neue GameManager wieder selbst zerstört. Kann gerade bei Setup und TearDown bei Tests zu Fehler führen.
