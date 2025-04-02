@@ -9,13 +9,27 @@ public class PlayerMovementTest : InputTestFixture
 {
     private GameObject gameManager;
     private Keyboard keyboard;
-    private GameObject playerGameobject;
+    private GameObject playerGameobject,
+        ground;
     private PlayerMovementVid playerMovementVid;
+
+    private void setGameManager()
+    {
+        if (GameManager.Instance != null)
+        {
+            gameManager = GameManager.Instance.gameObject;
+        }
+        else
+        {
+            gameManager = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/GameManager"));
+        }
+    }
 
     [SetUp]
     public void SetUp()
     {
-        gameManager = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/GameManager"));
+        setGameManager();
+
         keyboard = InputSystem.AddDevice<Keyboard>();
 
         // Einrichten des Testspielers mit dem PlayerSavePoint-Script
@@ -29,7 +43,7 @@ public class PlayerMovementTest : InputTestFixture
 
         // Startposition und "Boden" setzen
         playerGameobject.transform.position = Vector3.zero;
-        GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
         ground.transform.position = new Vector3(0, -1, 0);
         ground.transform.localScale = new Vector3(10, 1, 10);
         ground.layer = LayerMask.NameToLayer("whatIsGround");
@@ -43,12 +57,27 @@ public class PlayerMovementTest : InputTestFixture
     [TearDown]
     public void Teardown()
     {
-        GameObject.Destroy(gameManager);
+        GameManager.Destroy(gameManager);
         GameObject.Destroy(playerGameobject);
+        GameObject.Destroy(ground);
     }
 
     /* Aufteilung in Unittestbereich --> funktionen
     und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
+
+    [Test]
+    public void PlayerJumpIntegrationsTest()
+    {
+        // Simuliere das Drücken der Taste
+        Press(keyboard[Key.Space]);
+
+        Assert.AreEqual(true, playerMovementVid._jumpingIsPressed);
+
+        // Simuliere das Loslassen der Taste
+        Release(keyboard[Key.Space]);
+
+        Assert.AreEqual(false, playerMovementVid._jumpingIsPressed);
+    }
 
     [UnityTest]
     public IEnumerator PlayerJumpTest()
