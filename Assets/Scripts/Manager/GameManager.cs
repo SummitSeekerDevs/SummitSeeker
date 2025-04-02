@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         get
         {
             if (_instance == null)
-                Debug.LogError("GameManager is null!");
+                Debug.LogWarning("GameManager is null!");
             return _instance;
         }
     }
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
+            Debug.LogWarning("_instance of GameManager already exists. Destroying self.");
             Destroy(this);
             return;
         }
