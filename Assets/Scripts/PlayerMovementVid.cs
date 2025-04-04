@@ -14,7 +14,7 @@ public class PlayerMovementVid : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
-    bool _sprintingIsPressed;
+    internal bool _sprintingIsPressed { get; private set; }
 
     public float groundDrag;
 
@@ -317,7 +317,7 @@ public class PlayerMovementVid : MonoBehaviour
         exitingSlope = false;
     }
 
-    private void Crouch()
+    internal void Crouch()
     {
         transform.localScale = new Vector3(
             transform.localScale.x,
@@ -327,7 +327,7 @@ public class PlayerMovementVid : MonoBehaviour
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
     }
 
-    private void ResetCrouch()
+    internal void ResetCrouch()
     {
         transform.localScale = new Vector3(
             transform.localScale.x,

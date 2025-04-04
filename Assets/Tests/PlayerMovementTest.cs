@@ -65,6 +65,9 @@ public class PlayerMovementTest : InputTestFixture
     /* Aufteilung in Unittestbereich --> funktionen
     und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
 
+    // TODO: StateHandler, Sprint (Integration + normal Test), Slope, SpeedControl, FallUnderPlattform, Crouch normal Tests
+    // TODO: keyboard Tasten durch Actionmap keybinds ersetzen
+
     [UnityTest]
     public IEnumerator PlayerJumpIntegrationsTest()
     {
@@ -267,5 +270,49 @@ public class PlayerMovementTest : InputTestFixture
         Release(keyboard[Key.LeftCtrl]);
         yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(false, playerMovementVid._crouchingIsPressed, "Crouching release");
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerCrouchTest()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Vector3 normalPlayerScale = playerGameobject.transform.localScale;
+
+        // Crouch
+        playerMovementVid.Crouch();
+
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.AreEqual(
+            playerMovementVid.crouchYScale,
+            playerGameobject.transform.localScale.y,
+            "Crouch scale"
+        );
+
+        // Crouch reset
+        playerMovementVid.ResetCrouch();
+
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.AreEqual(
+            normalPlayerScale.y,
+            playerGameobject.transform.localScale.y,
+            "Normal scale (without crouching)"
+        );
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerSprintIntegrationsTest()
+    {
+        // Simuliere das Drücken der Taste
+        Press(keyboard[Key.LeftShift]);
+        yield return new WaitForSeconds(0.1f);
+        Assert.AreEqual(true, playerMovementVid._sprintingIsPressed, "Sprinting");
+
+        // Simuliere das Loslassen der Taste
+        Release(keyboard[Key.LeftShift]);
+        yield return new WaitForSeconds(0.1f);
+        Assert.AreEqual(false, playerMovementVid._sprintingIsPressed, "Sprinting release");
     }
 }
