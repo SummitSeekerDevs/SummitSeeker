@@ -410,4 +410,16 @@ public class PlayerMovementTest : InputTestFixture
         playerGameobject.GetComponent<Rigidbody>().isKinematic = false;
         GameObject.Destroy(playerSpawnPoint);
     }
+
+    [UnityTest]
+    public IEnumerator PlayerOnSlopeTest()
+    {
+        ground.transform.eulerAngles = new Vector3(0, 0, -20f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        bool isOnSlope = playerMovementVid.OnSlope();
+
+        Assert.AreEqual(true, isOnSlope, "On Slope");
+    }
 }

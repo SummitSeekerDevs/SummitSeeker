@@ -341,7 +341,7 @@ public class PlayerMovementVid : MonoBehaviour
         );
     }
 
-    private bool OnSlope()
+    internal bool OnSlope()
     {
         if (
             Physics.Raycast(
