@@ -174,6 +174,7 @@ public class PlayerMovementVid : MonoBehaviour
     private void OnCrouch(InputAction.CallbackContext context)
     {
         _crouchingIsPressed = true;
+        Crouch();
     }
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
@@ -203,10 +204,10 @@ public class PlayerMovementVid : MonoBehaviour
             Jump();
         }
         // when to crouch
-        if (_crouchingIsPressed)
+        /*if (_crouchingIsPressed)
         {
             Crouch();
-        }
+        }*/
     }
 
     private void StateHandler()

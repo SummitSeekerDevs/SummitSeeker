@@ -65,7 +65,7 @@ public class PlayerMovementTest : InputTestFixture
     /* Aufteilung in Unittestbereich --> funktionen
     und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
 
-    // TODO: StateHandler, Sprint (Integration), Slope, SpeedControl, FallUnderPlattform, Crouch normal Tests
+    // TODO: StateHandler, Sprint (Integration), Slope, SpeedControl, FallUnderPlattform, Crouch normal Tests, walking while crouching, sprinting while walking
     // TODO: keyboard Tasten durch Actionmap keybinds ersetzen
 
     [UnityTest]
