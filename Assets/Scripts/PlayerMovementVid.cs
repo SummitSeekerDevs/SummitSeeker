@@ -23,7 +23,7 @@ public class PlayerMovementVid : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
-    public bool _jumpingIsPressed { get; private set; }
+    internal bool _jumpingIsPressed { get; private set; }
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -43,7 +43,7 @@ public class PlayerMovementVid : MonoBehaviour
 
     public Transform orientation;
 
-    private Vector2 moveInput;
+    internal Vector2 moveInput { get; private set; }
 
     Vector3 moveDirection;
 
@@ -149,7 +149,7 @@ public class PlayerMovementVid : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        MovePlayer(moveInput.x, moveInput.y);
     }
 
     #region Input
@@ -243,11 +243,8 @@ public class PlayerMovementVid : MonoBehaviour
         }
     }
 
-    private void MovePlayer()
+    internal void MovePlayer(float horizontalInput, float verticalInput)
     {
-        float horizontalInput = moveInput.x;
-        float verticalInput = moveInput.y;
-
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 

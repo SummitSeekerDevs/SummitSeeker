@@ -71,12 +71,12 @@ public class PlayerMovementTest : InputTestFixture
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.Space]);
 
-        Assert.AreEqual(true, playerMovementVid._jumpingIsPressed);
+        Assert.AreEqual(true, playerMovementVid._jumpingIsPressed, "Press Space");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.Space]);
 
-        Assert.AreEqual(false, playerMovementVid._jumpingIsPressed);
+        Assert.AreEqual(false, playerMovementVid._jumpingIsPressed, "Release Space");
     }
 
     [UnityTest]
@@ -108,5 +108,142 @@ public class PlayerMovementTest : InputTestFixture
             playerYGrounded + 0.1f,
             "Spieler sollte wieder auf dem Boden sein"
         );
+    }
+
+    [Test]
+    public void PlayerMoveIntegrationsTest()
+    {
+        // Horizontal +
+        // Simuliere das Drücken der Taste
+        Press(keyboard[Key.D]);
+        Assert.AreEqual(1, playerMovementVid.moveInput.x, "Press D");
+
+        // Simuliere das Loslassen der Taste
+        Release(keyboard[Key.D]);
+        Assert.AreEqual(0, playerMovementVid.moveInput.x, "Release D");
+
+        // Horizontal -
+        // Simuliere das Drücken der Taste
+        Press(keyboard[Key.A]);
+        Assert.AreEqual(-1, playerMovementVid.moveInput.x, "Press A");
+
+        // Simuliere das Loslassen der Taste
+        Release(keyboard[Key.A]);
+        Assert.AreEqual(0, playerMovementVid.moveInput.x, "Release A");
+
+        // Vertical +
+        // Simuliere das Drücken der Taste
+        Press(keyboard[Key.W]);
+        Assert.AreEqual(1, playerMovementVid.moveInput.y, "Press W");
+
+        // Simuliere das Loslassen der Taste
+        Release(keyboard[Key.W]);
+        Assert.AreEqual(0, playerMovementVid.moveInput.y, "Release W");
+
+        // Vertical -
+        // Simuliere das Drücken der Taste
+        Press(keyboard[Key.S]);
+        Assert.AreEqual(-1, playerMovementVid.moveInput.y, "Press S");
+
+        // Simuliere das Loslassen der Taste
+        Release(keyboard[Key.S]);
+        Assert.AreEqual(0, playerMovementVid.moveInput.y, "Release S");
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerMoveOnGroundTest()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Vector3 startStepPos = playerGameobject.transform.position;
+
+        // horizontal movement
+
+        // horizontal +
+        playerMovementVid.MovePlayer(1f, 0);
+        yield return new WaitForSeconds(0.25f);
+        // Sollte man hier eine genaue Zahl nehmen oder reicht größer, weil man daran ja sieht das er sich bewegt hat
+        Assert.Greater(playerGameobject.transform.position.x, startStepPos.x, "Horizontal +");
+
+        // Step position setzen
+        startStepPos = playerGameobject.transform.position;
+
+        // horizontal -
+        playerMovementVid.MovePlayer(-1f, 0);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Less(playerGameobject.transform.position.x, startStepPos.x, "Horizontal -");
+
+        // Step position setzen
+        startStepPos = playerGameobject.transform.position;
+
+        // vertical movement
+
+        // vertical +
+        playerMovementVid.MovePlayer(0, 1f);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Greater(playerGameobject.transform.position.z, startStepPos.z, "Vertical +");
+
+        // Step position setzen
+        startStepPos = playerGameobject.transform.position;
+
+        // vertical -
+        playerMovementVid.MovePlayer(0, -1f);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Less(playerGameobject.transform.position.z, startStepPos.z, "Vertical -");
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerMoveInAirTest()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // Sehr hoch in die Luft setzen
+        playerGameobject.transform.position = new Vector3(0, 200, 0);
+
+        Vector3 startStepPos = playerGameobject.transform.position;
+
+        // ############# horizontal + ###########
+        playerMovementVid.MovePlayer(1f, 0);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Greater(playerGameobject.transform.position.x, startStepPos.x, "Horizontal +");
+
+        // Sehr hoch in die Luft setzen und Reset velocity
+        playerGameobject.transform.position = new Vector3(0, 200, 0);
+        playerGameobject.GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(0.1f); // Rücksetzen auf Physik anwenden
+
+        // Step position setzen
+        startStepPos = playerGameobject.transform.position;
+
+        // ############# horizontal - ###########
+        playerMovementVid.MovePlayer(-1f, 0);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Less(playerGameobject.transform.position.x, startStepPos.x, "Horizontal -");
+
+        // Sehr hoch in die Luft setzen und Reset velocity
+        playerGameobject.transform.position = new Vector3(0, 200, 0);
+        playerGameobject.GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(0.1f); // Rücksetzen auf Physik anwenden
+
+        // Step position setzen
+        startStepPos = playerGameobject.transform.position;
+
+        // ############# vertical + ###########
+        playerMovementVid.MovePlayer(0, 1f);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Greater(playerGameobject.transform.position.z, startStepPos.z, "Vertical +");
+
+        // Sehr hoch in die Luft setzen und Reset velocity
+        playerGameobject.transform.position = new Vector3(0, 200, 0);
+        playerGameobject.GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(0.1f); // Rücksetzen auf Physik anwenden
+
+        // Step position setzen
+        startStepPos = playerGameobject.transform.position;
+
+        // ############# vertical - ###########
+        playerMovementVid.MovePlayer(0, -1f);
+        yield return new WaitForSeconds(0.25f);
+        Assert.Less(playerGameobject.transform.position.z, startStepPos.z, "Vertical -");
     }
 }
