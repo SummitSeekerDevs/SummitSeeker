@@ -260,14 +260,19 @@ public class PlayerMovementVid : MonoBehaviour
                 ForceMode.Force
             );
 
-            if (rb.position.y <= -15f)
-            {
-                rb.position = spawnPoint.position;
-            }
+            ResetUnderMap();
         }
 
         // turn gravity off while on slope
         rb.useGravity = !OnSlope();
+    }
+
+    internal void ResetUnderMap()
+    {
+        if (rb.position.y <= -15f)
+        {
+            rb.position = spawnPoint.position;
+        }
     }
 
     private void SpeedControl()
