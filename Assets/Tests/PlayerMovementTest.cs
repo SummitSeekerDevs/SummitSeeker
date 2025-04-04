@@ -65,7 +65,7 @@ public class PlayerMovementTest : InputTestFixture
     /* Aufteilung in Unittestbereich --> funktionen
     und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
 
-    // TODO: StateHandler, Sprint (Integration + normal Test), Slope, SpeedControl, FallUnderPlattform, Crouch normal Tests
+    // TODO: StateHandler, Sprint (Integration), Slope, SpeedControl, FallUnderPlattform, Crouch normal Tests
     // TODO: keyboard Tasten durch Actionmap keybinds ersetzen
 
     [UnityTest]
@@ -102,6 +102,11 @@ public class PlayerMovementTest : InputTestFixture
             playerYGrounded,
             "Spieler sollte in der Luft sein"
         );
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.air,
+            playerMovementVid.state,
+            "MovementState air - jumping"
+        );
 
         yield return new WaitForSeconds(1f); // Warten bis Spieler wieder landet
 
@@ -110,6 +115,11 @@ public class PlayerMovementTest : InputTestFixture
             playerGameobject.transform.position.y,
             playerYGrounded + 0.1f,
             "Spieler sollte wieder auf dem Boden sein"
+        );
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "MovementState walking - landet"
         );
     }
 
@@ -175,6 +185,11 @@ public class PlayerMovementTest : InputTestFixture
         yield return new WaitForSeconds(0.25f);
         // Sollte man hier eine genaue Zahl nehmen oder reicht größer, weil man daran ja sieht das er sich bewegt hat
         Assert.Greater(playerGameobject.transform.position.x, startStepPos.x, "Horizontal +");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "MovementState walking - horizontal +"
+        );
 
         // Step position setzen
         startStepPos = playerGameobject.transform.position;
@@ -183,6 +198,11 @@ public class PlayerMovementTest : InputTestFixture
         playerMovementVid.MovePlayer(-1f, 0);
         yield return new WaitForSeconds(0.25f);
         Assert.Less(playerGameobject.transform.position.x, startStepPos.x, "Horizontal -");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "MovementState walking - horizontal -"
+        );
 
         // Step position setzen
         startStepPos = playerGameobject.transform.position;
@@ -193,6 +213,11 @@ public class PlayerMovementTest : InputTestFixture
         playerMovementVid.MovePlayer(0, 1f);
         yield return new WaitForSeconds(0.25f);
         Assert.Greater(playerGameobject.transform.position.z, startStepPos.z, "Vertical +");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "MovementState walking - vertical +"
+        );
 
         // Step position setzen
         startStepPos = playerGameobject.transform.position;
@@ -201,6 +226,11 @@ public class PlayerMovementTest : InputTestFixture
         playerMovementVid.MovePlayer(0, -1f);
         yield return new WaitForSeconds(0.25f);
         Assert.Less(playerGameobject.transform.position.z, startStepPos.z, "Vertical -");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "MovementState walking - vertical -"
+        );
     }
 
     [UnityTest]
@@ -210,13 +240,18 @@ public class PlayerMovementTest : InputTestFixture
 
         // Sehr hoch in die Luft setzen
         playerGameobject.transform.position = new Vector3(0, 200, 0);
-
         Vector3 startStepPos = playerGameobject.transform.position;
+        yield return new WaitForSeconds(0.1f);
 
         // ############# horizontal + ###########
         playerMovementVid.MovePlayer(1f, 0);
         yield return new WaitForSeconds(0.25f);
         Assert.Greater(playerGameobject.transform.position.x, startStepPos.x, "Horizontal +");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.air,
+            playerMovementVid.state,
+            "MovementState air - horizontal +"
+        );
 
         // Sehr hoch in die Luft setzen und Reset velocity
         playerGameobject.transform.position = new Vector3(0, 200, 0);
@@ -230,6 +265,11 @@ public class PlayerMovementTest : InputTestFixture
         playerMovementVid.MovePlayer(-1f, 0);
         yield return new WaitForSeconds(0.25f);
         Assert.Less(playerGameobject.transform.position.x, startStepPos.x, "Horizontal -");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.air,
+            playerMovementVid.state,
+            "MovementState air - horizontal -"
+        );
 
         // Sehr hoch in die Luft setzen und Reset velocity
         playerGameobject.transform.position = new Vector3(0, 200, 0);
@@ -243,6 +283,11 @@ public class PlayerMovementTest : InputTestFixture
         playerMovementVid.MovePlayer(0, 1f);
         yield return new WaitForSeconds(0.25f);
         Assert.Greater(playerGameobject.transform.position.z, startStepPos.z, "Vertical +");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.air,
+            playerMovementVid.state,
+            "MovementState air - vertical +"
+        );
 
         // Sehr hoch in die Luft setzen und Reset velocity
         playerGameobject.transform.position = new Vector3(0, 200, 0);
@@ -256,6 +301,11 @@ public class PlayerMovementTest : InputTestFixture
         playerMovementVid.MovePlayer(0, -1f);
         yield return new WaitForSeconds(0.25f);
         Assert.Less(playerGameobject.transform.position.z, startStepPos.z, "Vertical -");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.air,
+            playerMovementVid.state,
+            "MovementState air - vertical -"
+        );
     }
 
     [UnityTest]
@@ -265,11 +315,21 @@ public class PlayerMovementTest : InputTestFixture
         Press(keyboard[Key.LeftCtrl]);
         yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(true, playerMovementVid._crouchingIsPressed, "Crouching");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.crouching,
+            playerMovementVid.state,
+            "Crouching"
+        );
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.LeftCtrl]);
         yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(false, playerMovementVid._crouchingIsPressed, "Crouching release");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "Crouching release"
+        );
     }
 
     [UnityTest]
@@ -309,10 +369,20 @@ public class PlayerMovementTest : InputTestFixture
         Press(keyboard[Key.LeftShift]);
         yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(true, playerMovementVid._sprintingIsPressed, "Sprinting");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.sprinting,
+            playerMovementVid.state,
+            "To sprinting"
+        );
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.LeftShift]);
         yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(false, playerMovementVid._sprintingIsPressed, "Sprinting release");
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "Sprinting to walking"
+        );
     }
 }
