@@ -65,17 +65,17 @@ public class PlayerMovementTest : InputTestFixture
     /* Aufteilung in Unittestbereich --> funktionen
     und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
 
-    [Test]
-    public void PlayerJumpIntegrationsTest()
+    [UnityTest]
+    public IEnumerator PlayerJumpIntegrationsTest()
     {
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.Space]);
-
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(true, playerMovementVid._jumpingIsPressed, "Jumping");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.Space]);
-
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(false, playerMovementVid._jumpingIsPressed, "Jumping release");
     }
 
@@ -110,43 +110,51 @@ public class PlayerMovementTest : InputTestFixture
         );
     }
 
-    [Test]
-    public void PlayerMoveIntegrationsTest()
+    [UnityTest]
+    public IEnumerator PlayerMoveIntegrationsTest()
     {
         // Horizontal +
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.D]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(1, playerMovementVid.moveInput.x, "Move right");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.D]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(0, playerMovementVid.moveInput.x, "Move right release");
 
         // Horizontal -
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.A]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(-1, playerMovementVid.moveInput.x, "Move left");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.A]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(0, playerMovementVid.moveInput.x, "Move left release");
 
         // Vertical +
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.W]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(1, playerMovementVid.moveInput.y, "Move forward");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.W]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(0, playerMovementVid.moveInput.y, "Move forward release");
 
         // Vertical -
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.S]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(-1, playerMovementVid.moveInput.y, "Move backwards");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.S]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(0, playerMovementVid.moveInput.y, "Move backwards release");
     }
 
@@ -247,15 +255,17 @@ public class PlayerMovementTest : InputTestFixture
         Assert.Less(playerGameobject.transform.position.z, startStepPos.z, "Vertical -");
     }
 
-    [Test]
-    public void PlayerCrouchIntegrationTest()
+    [UnityTest]
+    public IEnumerator PlayerCrouchIntegrationTest()
     {
         // Simuliere das Drücken der Taste
         Press(keyboard[Key.LeftCtrl]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(true, playerMovementVid._crouchingIsPressed, "Crouching");
 
         // Simuliere das Loslassen der Taste
         Release(keyboard[Key.LeftCtrl]);
+        yield return new WaitForSeconds(0.1f);
         Assert.AreEqual(false, playerMovementVid._crouchingIsPressed, "Crouching release");
     }
 }
