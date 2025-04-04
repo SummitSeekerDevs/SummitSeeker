@@ -29,7 +29,7 @@ public class PlayerMovementVid : MonoBehaviour
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
-    bool _crouchingIsPressed;
+    internal bool _crouchingIsPressed { get; private set; }
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -174,23 +174,11 @@ public class PlayerMovementVid : MonoBehaviour
     private void OnCrouch(InputAction.CallbackContext context)
     {
         _crouchingIsPressed = true;
-
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            crouchYScale,
-            transform.localScale.z
-        );
-        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
     }
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
     {
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            startYScale,
-            transform.localScale.z
-        );
-
+        ResetCrouch();
         _crouchingIsPressed = false;
     }
 
@@ -213,6 +201,11 @@ public class PlayerMovementVid : MonoBehaviour
         if (_jumpingIsPressed)
         {
             Jump();
+        }
+        // when to crouch
+        if (_crouchingIsPressed)
+        {
+            Crouch();
         }
     }
 
@@ -322,6 +315,25 @@ public class PlayerMovementVid : MonoBehaviour
         readyToJump = true;
 
         exitingSlope = false;
+    }
+
+    private void Crouch()
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            crouchYScale,
+            transform.localScale.z
+        );
+        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+
+    private void ResetCrouch()
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            startYScale,
+            transform.localScale.z
+        );
     }
 
     private bool OnSlope()
