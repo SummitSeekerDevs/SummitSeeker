@@ -385,4 +385,29 @@ public class PlayerMovementTest : InputTestFixture
             "Sprinting to walking"
         );
     }
+
+    [UnityTest]
+    public IEnumerator PlayerFallUnderMapTest()
+    {
+        // Leeres Spawnpoint Gameobject erstellen und position zuweisen
+        GameObject playerSpawnPoint = new GameObject("Spawnpoint");
+        playerSpawnPoint.transform.position = new Vector3(7, 7, 7);
+
+        playerMovementVid.spawnPoint = playerSpawnPoint.transform;
+        playerGameobject.GetComponent<Rigidbody>().isKinematic = true;
+
+        playerGameobject.GetComponent<Rigidbody>().position = new Vector3(0, -20f, 0);
+
+        playerMovementVid.ResetUnderMap();
+
+        yield return new WaitForSeconds(0.1f);
+        Assert.AreEqual(
+            playerMovementVid.spawnPoint.position,
+            playerGameobject.transform.position,
+            "Reset under map to spawnpoint"
+        );
+
+        playerGameobject.GetComponent<Rigidbody>().isKinematic = false;
+        GameObject.Destroy(playerSpawnPoint);
+    }
 }
