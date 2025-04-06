@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //QualitySettings.vSyncCount = 1; 1 = VSync on 0 = off
+        Application.targetFrameRate = 120;
+
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
