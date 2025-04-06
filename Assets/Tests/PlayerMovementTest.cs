@@ -45,7 +45,7 @@ public class PlayerMovementTest : InputTestFixture
         playerGameobject.transform.position = Vector3.zero;
         ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
         ground.transform.position = new Vector3(0, -1, 0);
-        ground.transform.localScale = new Vector3(10, 1, 10);
+        ground.transform.localScale = new Vector3(30, 1, 30);
         ground.layer = LayerMask.NameToLayer("whatIsGround");
 
         if (ground.GetComponent<BoxCollider>() == null)
@@ -333,7 +333,7 @@ public class PlayerMovementTest : InputTestFixture
     }
 
     [UnityTest]
-    public IEnumerator PlayerCrouchTest()
+    public IEnumerator PlayerCrouchScaleTest()
     {
         yield return new WaitForSeconds(0.5f);
 
@@ -360,6 +360,106 @@ public class PlayerMovementTest : InputTestFixture
             playerGameobject.transform.localScale.y,
             "Normal scale (without crouching)"
         );
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerMoveCrouchWalkSprintDistanceTest()
+    {
+        yield return new WaitForSeconds(0.5f); // Warten das Spieler den Boden erreicht
+
+        float minCrouchDist = 1.54f;
+        float minWalkDist = 4.46f;
+        float minSprintDist = 7f;
+
+        // Crouch walk
+        Vector3 startStepPos = playerGameobject.transform.position;
+
+        // Crouch Taste simulieren und warten das System es erkennt
+        Press(keyboard[Key.LeftCtrl]);
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.crouching,
+            playerMovementVid.state,
+            "MovementState crouching"
+        );
+
+        Press(keyboard[Key.W]);
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für die Distanz
+
+        Assert.AreEqual(1f, playerMovementVid.moveInput.y, "Moving forward while crouching");
+
+        // Tasten loslassen und warten das System es erkennt
+        Release(keyboard[Key.W]);
+        Release(keyboard[Key.LeftCtrl]);
+        yield return new WaitForSeconds(0.1f);
+
+        Vector3 endStepPos = playerGameobject.transform.position;
+
+        float crouchDist = endStepPos.z - startStepPos.z;
+        Debug.Log(crouchDist);
+
+        Assert.GreaterOrEqual(crouchDist, minCrouchDist * 0.965f, "Minimum crouch distance"); // 3,5% Abweichung ist im Rahmen
+
+        // Walking
+        startStepPos = playerGameobject.transform.position;
+
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.walking,
+            playerMovementVid.state,
+            "MovementState walking"
+        );
+
+        Press(keyboard[Key.W]);
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für die Distanz
+
+        Assert.AreEqual(1f, playerMovementVid.moveInput.y, "Moving forward while walking");
+
+        // Tasten loslassen und warten das System es erkennt
+        Release(keyboard[Key.W]);
+        Release(keyboard[Key.LeftCtrl]);
+        yield return new WaitForSeconds(0.1f);
+
+        endStepPos = playerGameobject.transform.position;
+
+        float walkDist = endStepPos.z - startStepPos.z;
+        Debug.Log(walkDist);
+
+        Assert.GreaterOrEqual(walkDist, minWalkDist * 0.965f, "Minimum walk distance"); // 3,5% Abweichung ist im Rahmen
+
+        // Sprinting
+        startStepPos = playerGameobject.transform.position;
+
+        // Sprint Taste simulieren und warten das System es erkennt
+        Press(keyboard[Key.LeftShift]);
+        yield return new WaitForSeconds(0.1f);
+
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.sprinting,
+            playerMovementVid.state,
+            "MovementState sprinting"
+        );
+
+        Press(keyboard[Key.W]);
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für die Distanz
+
+        Assert.AreEqual(1f, playerMovementVid.moveInput.y, "Moving forward while sprinting");
+
+        // Tasten loslassen und warten das System es erkennt
+        Release(keyboard[Key.W]);
+        Release(keyboard[Key.LeftShift]);
+        yield return new WaitForSeconds(0.1f);
+
+        endStepPos = playerGameobject.transform.position;
+
+        float sprintDist = endStepPos.z - startStepPos.z;
+        Debug.Log(sprintDist);
+
+        Assert.GreaterOrEqual(sprintDist, minSprintDist * 0.965f, "Minimum sprint distance"); // 3,5% Abweichung ist im Rahmen
+
+        // Vergleiche zwischen distanzen
+        Assert.Less(crouchDist, walkDist, "Crouch - walk (Distance)");
+        Assert.Less(walkDist, sprintDist, "Walk - sprint (Distance)");
     }
 
     [UnityTest]
