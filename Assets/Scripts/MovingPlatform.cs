@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class MovingPlatform : MonoBehaviour
 {
@@ -15,39 +18,15 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        target = points[nextIndex].position;
-
-        rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
+        InitiateVars();
     }
 
     private void FixedUpdate()
     {
         if (rb != null)
         {
-            Vector3 currentPosition = rb.position;
-            Vector3 nextPosition = Vector3.MoveTowards(
-                currentPosition,
-                target,
-                moveSpeed * Time.fixedDeltaTime
-            );
-
-            rb.MovePosition(nextPosition);
-
-            if (Vector3.Distance(rb.position, target) < 0.1f)
-            {
-                nextIndex++;
-
-                if (nextIndex >= points.Length)
-                {
-                    nextIndex = 0;
-                    target = points[nextIndex].position;
-                }
-                else
-                {
-                    target = points[nextIndex].position;
-                }
-            }
+            MovePlatform();
+            TargetPointDistanceCheckSetNextTarget();
         }
     }
 
@@ -64,6 +43,50 @@ public class MovingPlatform : MonoBehaviour
         if (other.transform.tag == "Player")
         {
             other.transform.parent = null;
+        }
+    }
+
+    private void InitiateVars()
+    {
+        target = points[nextIndex].position;
+
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+    }
+
+    private void MovePlatform()
+    {
+        Vector3 nextPos = getNextPositionTowardsTarget();
+        rb.MovePosition(nextPos);
+    }
+
+    internal Vector3 getNextPositionTowardsTarget()
+    {
+        Vector3 currentPosition = rb.position;
+        Vector3 nextPosition = Vector3.MoveTowards(
+            currentPosition,
+            target,
+            moveSpeed * Time.fixedDeltaTime
+        );
+
+        return nextPosition;
+    }
+
+    private void TargetPointDistanceCheckSetNextTarget()
+    {
+        if (Vector3.Distance(rb.position, target) < 0.1f)
+        {
+            nextIndex++;
+
+            if (nextIndex >= points.Length)
+            {
+                nextIndex = 0;
+                target = points[nextIndex].position;
+            }
+            else
+            {
+                target = points[nextIndex].position;
+            }
         }
     }
 
