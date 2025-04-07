@@ -14,7 +14,7 @@ public class MovingPlatform : MonoBehaviour
     internal Vector3 target;
 
     private int nextIndex = 0;
-    Rigidbody rb;
+    Rigidbody rb; // Wird benötigt damit sich der Spieler beim draufstehen auch mitbewegt
     internal float distanceToTarget = 0.1f;
 
     private void Start()
