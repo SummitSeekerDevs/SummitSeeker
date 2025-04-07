@@ -32,7 +32,7 @@ public class PlayerMovementTest : InputTestFixture
 
         keyboard = InputSystem.AddDevice<Keyboard>();
 
-        // Einrichten des Testspielers mit dem PlayerSavePoint-Script
+        // Einrichten des Testspielers
         playerGameobject = GameObject.Instantiate(
             Resources.Load<GameObject>("Prefabs/Player"),
             Vector3.zero,
@@ -65,8 +65,10 @@ public class PlayerMovementTest : InputTestFixture
     /* Aufteilung in Unittestbereich --> funktionen
     und Integrationstestbereich --> tasteneingabe (space == onJump, WASD == onMove ect.)*/
 
-    // TODO: SpeedControl Funktion
     // TODO: keyboard Tasten durch Actionmap keybinds ersetzen
+
+
+    // TODO: Simulieren der Taste waitforSeconds durch waitfornextframe ersetzen, waitforSeconds 0.25f durch waitforfixedupdate ersetzen
 
     [UnityTest]
     public IEnumerator PlayerJumpIntegrationsTest()
@@ -182,7 +184,7 @@ public class PlayerMovementTest : InputTestFixture
 
         // horizontal +
         playerMovementVid.MovePlayer(1f, 0);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForFixedUpdate();
         // Sollte man hier eine genaue Zahl nehmen oder reicht größer, weil man daran ja sieht das er sich bewegt hat
         Assert.Greater(playerGameobject.transform.position.x, startStepPos.x, "Horizontal +");
         Assert.AreEqual(
