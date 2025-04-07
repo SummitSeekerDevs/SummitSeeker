@@ -11,10 +11,11 @@ public class MovingPlatform : MonoBehaviour
 {
     public float moveSpeed;
     public Transform[] points;
-    private Vector3 target;
+    internal Vector3 target;
 
     private int nextIndex = 0;
     Rigidbody rb;
+    internal float distanceToTarget = 0.1f;
 
     private void Start()
     {
@@ -74,7 +75,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void TargetPointDistanceCheckSetNextTarget()
     {
-        if (Vector3.Distance(rb.position, target) < 0.1f)
+        if (Vector3.Distance(rb.position, target) < distanceToTarget)
         {
             nextIndex++;
 
