@@ -363,19 +363,18 @@ public class PlayerMovementTest : InputTestFixture
     }
 
     [UnityTest]
-    public IEnumerator PlayerMoveCrouchWalkSprintSpeedTest()
+    public IEnumerator PlayerMoveCrouchWalkSprintAirSpeedTest()
     {
         yield return new WaitForSeconds(0.5f); // Warten das Spieler den Boden erreicht
 
         // Crouch walk
-        Vector3 startStepPos = playerGameobject.transform.position;
 
         // Crouch Taste simulieren und warten das System es erkennt
         Press(keyboard[Key.LeftCtrl]);
         yield return new WaitForSeconds(0.1f);
 
         Press(keyboard[Key.W]);
-        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für die Distanz
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für Movement
 
         Assert.AreEqual(
             PlayerMovementVid.MovementState.crouching,
@@ -401,7 +400,7 @@ public class PlayerMovementTest : InputTestFixture
         // Walking
 
         Press(keyboard[Key.W]);
-        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für die Distanz
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für Movement
 
         Assert.AreEqual(
             PlayerMovementVid.MovementState.walking,
@@ -430,7 +429,7 @@ public class PlayerMovementTest : InputTestFixture
         yield return new WaitForSeconds(0.1f);
 
         Press(keyboard[Key.W]);
-        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für die Distanz
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für Movement
 
         Assert.AreEqual(
             PlayerMovementVid.MovementState.sprinting,
@@ -447,6 +446,38 @@ public class PlayerMovementTest : InputTestFixture
         );
 
         Assert.AreEqual(playerMovementVid.sprintSpeed, flatVel.magnitude, "Sprint speed check");
+
+        // Tasten loslassen und warten das System es erkennt
+        Release(keyboard[Key.W]);
+        Release(keyboard[Key.LeftShift]);
+        yield return new WaitForSeconds(0.1f);
+
+        // Air
+        // Sehr hoch in die Luft setzen und Reset velocity
+        playerGameobject.transform.position = new Vector3(0, 200, 0);
+        playerGameobject.GetComponent<Rigidbody>().linearVelocity = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(0.1f); // Rücksetzen auf Physik anwenden
+
+        Press(keyboard[Key.W]);
+        yield return new WaitForSeconds(0.5f); // halbe Sekunde Zeit für Movement
+
+        Assert.AreEqual(
+            PlayerMovementVid.MovementState.air,
+            playerMovementVid.state,
+            "MovementState air"
+        );
+
+        Assert.AreEqual(1f, playerMovementVid.moveInput.y, "Moving forward while in air");
+
+        flatVel = new Vector3(
+            playerGameobject.GetComponent<Rigidbody>().linearVelocity.x,
+            0f,
+            playerGameobject.GetComponent<Rigidbody>().linearVelocity.z
+        );
+
+        Debug.Log(flatVel.magnitude);
+
+        Assert.AreEqual(playerMovementVid.walkSpeed * 0.2f, flatVel.magnitude, "Air speed check");
 
         // Tasten loslassen und warten das System es erkennt
         Release(keyboard[Key.W]);
