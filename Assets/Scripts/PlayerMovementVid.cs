@@ -11,7 +11,7 @@ public class PlayerMovementVid : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Movement")]
-    private float moveSpeed;
+    internal float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
     internal bool _sprintingIsPressed { get; private set; }
@@ -234,7 +234,6 @@ public class PlayerMovementVid : MonoBehaviour
         else
         {
             state = MovementState.air;
-            moveSpeed = walkSpeed * airMultiplier;
         }
     }
 
@@ -257,7 +256,10 @@ public class PlayerMovementVid : MonoBehaviour
         // in air
         else if (!grounded)
         {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(
+                moveDirection.normalized * moveSpeed * 10f * airMultiplier,
+                ForceMode.Force
+            );
 
             ResetUnderMap();
         }
