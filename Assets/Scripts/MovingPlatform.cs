@@ -24,11 +24,8 @@ public class MovingPlatform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb != null)
-        {
-            MovePlatform();
-            TargetPointDistanceCheckSetNextTarget();
-        }
+        MovePlatform();
+        TargetPointDistanceCheckSetNextTarget();
     }
 
     private void OnCollisionEnter(Collision other)
