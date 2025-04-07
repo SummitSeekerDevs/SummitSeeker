@@ -475,9 +475,11 @@ public class PlayerMovementTest : InputTestFixture
             playerGameobject.GetComponent<Rigidbody>().linearVelocity.z
         );
 
-        Debug.Log(flatVel.magnitude);
-
-        Assert.AreEqual(playerMovementVid.walkSpeed * 0.2f, flatVel.magnitude, "Air speed check");
+        Assert.AreEqual(
+            playerMovementVid.moveSpeed * playerMovementVid.airMultiplier,
+            flatVel.magnitude * playerMovementVid.airMultiplier,
+            "Air speed check"
+        );
 
         // Tasten loslassen und warten das System es erkennt
         Release(keyboard[Key.W]);
