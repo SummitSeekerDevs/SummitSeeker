@@ -32,6 +32,8 @@ Damit jedoch die korrekte Reihenfolge eingehalten wird, werden alle 5? Level in 
 ## Rules
 Der durch ein Usecase vom Developer neu hinzugefügte Code muss eine Code Coverage von mindestens 85% haben. Dies ist eine gute Mitte zwischen ausreichend getestet und angemessener Zeitaufwand. 
 
+Um schnell mitzubekommen bei welcher Assertion ein Test fehlschlägt, wird der Methoden-Overload verwendet, bei dem eine Message in Form eines Strings mitgegeben werden kann. Diese Nachricht wird aussagekräftig gewählt.
+
 ## Automatisierte Tests
 Zum Testen des in C# geschriebenen Codes verwenden wir das “Unity Test Framework”.
 
