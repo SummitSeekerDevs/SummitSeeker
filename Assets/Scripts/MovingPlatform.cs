@@ -90,21 +90,4 @@ public class MovingPlatform : MonoBehaviour
             }
         }
     }
-
-    /*private void OnTriggerEnter(Collider other) {
-        
-        if (other.transform.tag == "Player") {
-            other.transform.parent = transform;
-            Debug.Log(other.transform.parent);
-
-        }
-    }
-
-    private void OnTriggerExit(Collider other) {
-        if (other.transform.tag == "Player") {
-            other.transform.parent = null;
-            Debug.Log(other.transform.parent);
-
-        }
-    }*/
 }
