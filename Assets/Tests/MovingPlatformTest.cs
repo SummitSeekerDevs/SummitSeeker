@@ -9,7 +9,8 @@ public class MovingPlatformTest
     private GameObject platform,
         point1,
         point2,
-        parentObj;
+        parentObj,
+        playerGameobject;
     private Rigidbody rb;
     private MovingPlatform movingPlatform;
 
@@ -69,12 +70,21 @@ public class MovingPlatformTest
         movingPlatform.points = new Transform[2];
         movingPlatform.points[0] = point1.transform;
         movingPlatform.points[1] = point2.transform;
+
+        // Einrichten des Testspielers
+        playerGameobject = GameObject.Instantiate(
+            Resources.Load<GameObject>("Prefabs/Player"),
+            Vector3.zero,
+            Quaternion.identity
+        );
+        playerGameobject.transform.position = Vector3.zero;
     }
 
     [TearDown]
     public void Teardown()
     {
         GameManager.Destroy(gameManager);
+        GameObject.Destroy(playerGameobject);
         GameObject.Destroy(platform);
     }
 
@@ -130,6 +140,48 @@ public class MovingPlatformTest
             movingPlatform.points[0].position, // Wenn legth von Points-Array erreicht ist, reset auf Element 0
             movingPlatform.target,
             "Check next targetpoint is first Element"
+        );
+    }
+
+    [UnityTest]
+    public IEnumerator PlayerBecomesChildToMovingPlatformOnCollisionAndMovesWithPlatformTest()
+    {
+        Vector3 startPosition = playerGameobject.transform.position;
+
+        // Entering Platform
+        yield return new WaitForSeconds(0.25f); // Wait for Player to fall onto platform
+
+        Assert.AreEqual(
+            platform.transform,
+            playerGameobject.transform.parent,
+            "Player is child of platform on and while collision"
+        );
+
+        // Moving with platform
+        yield return new WaitForFixedUpdate();
+
+        // Platform is moving on x-Axis
+        float startDistance = Vector3.Distance(
+            new Vector3(startPosition.x, 0, 0),
+            new Vector3(movingPlatform.target.x, 0, 0)
+        );
+
+        float endDistance = Vector3.Distance(
+            new Vector3(playerGameobject.transform.position.x, 0, 0),
+            new Vector3(movingPlatform.target.x, 0, 0)
+        );
+
+        Assert.Less(endDistance, startDistance, "Player Position check when moving with platform");
+
+        // Leaving Platform
+        playerGameobject.transform.position = new Vector3(0, 100, 0);
+
+        yield return new WaitForFixedUpdate();
+
+        Assert.AreNotEqual(
+            platform.transform,
+            playerGameobject.transform.parent,
+            "Player is not child of platform anymore"
         );
     }
 }
