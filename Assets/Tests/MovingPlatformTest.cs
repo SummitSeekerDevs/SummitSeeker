@@ -86,6 +86,9 @@ public class MovingPlatformTest
         GameManager.Destroy(gameManager);
         GameObject.Destroy(playerGameobject);
         GameObject.Destroy(platform);
+        GameObject.Destroy(point1);
+        GameObject.Destroy(point2);
+        GameObject.Destroy(parentObj);
     }
 
     [UnityTest]
