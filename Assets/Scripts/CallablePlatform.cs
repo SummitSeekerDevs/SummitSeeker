@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class CallablePlatform : MonoBehaviour
 {
@@ -23,7 +26,7 @@ public class CallablePlatform : MonoBehaviour
         if (moveToPosition)
         {
             MovePlatform();
-            TargetPointDistanceCheckSetNextTarget();
+            TargetPointDistanceCheckTurnOffPlatformMovement();
         }
     }
 
@@ -45,7 +48,7 @@ public class CallablePlatform : MonoBehaviour
         return nextPosition;
     }
 
-    private void TargetPointDistanceCheckSetNextTarget()
+    private void TargetPointDistanceCheckTurnOffPlatformMovement()
     {
         if (Vector3.Distance(rb.position, targetPosition.position) < distanceToTarget)
         {
