@@ -8,9 +8,13 @@ public class CallablePlatformTest
     private GameObject gameManager;
     private GameObject platform,
         target,
-        parentObj;
-    private Rigidbody rb;
+        parentObj,
+        throwTargetObj,
+        throwableObj;
+    private Rigidbody rb,
+        throwableObjRb;
     private CallablePlatform callablePlatform;
+    private ThrowTarget throwTarget;
 
     private void setGameManager()
     {
@@ -61,6 +65,37 @@ public class CallablePlatformTest
         callablePlatform = platform.AddComponent<CallablePlatform>();
         callablePlatform.moveSpeed = 2f;
         callablePlatform.targetPosition = target.transform;
+
+        // Create ThrowTarget
+        throwTargetObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        throwTargetObj.transform.position = new Vector3(3, 0, 0);
+        throwTargetObj.transform.localScale = Vector3.one;
+        throwTargetObj.transform.parent = parentObj.transform;
+
+        // ThrowTarget Add Box Collider
+        if (throwTargetObj.GetComponent<BoxCollider>() == null)
+        {
+            throwTargetObj.AddComponent<BoxCollider>();
+        }
+
+        // Add ThrowTarget Script
+        throwTarget = throwTargetObj.AddComponent<ThrowTarget>();
+        throwTarget.colliderTag = "Throwable";
+        throwTarget.connectedPlatform = callablePlatform;
+
+        // Create fake throwable obj
+        throwableObj = new GameObject();
+        throwableObj.transform.position = new Vector3(10, 0, 0);
+        throwableObj.transform.localScale = Vector3.one;
+        throwableObj.transform.tag = "Throwable";
+        // ThrowableObj Add Box Collider
+        if (throwableObj.GetComponent<BoxCollider>() == null)
+        {
+            throwableObj.AddComponent<BoxCollider>();
+        }
+
+        throwableObjRb = throwableObj.AddComponent<Rigidbody>();
+        throwableObjRb.useGravity = false;
     }
 
     [TearDown]
@@ -68,6 +103,9 @@ public class CallablePlatformTest
     {
         GameManager.Destroy(gameManager);
         GameObject.Destroy(platform);
+        GameObject.Destroy(target);
+        GameObject.Destroy(throwTargetObj);
+        GameObject.Destroy(parentObj);
     }
 
     [UnityTest]
@@ -116,6 +154,33 @@ public class CallablePlatformTest
             false,
             callablePlatform.moveToPosition,
             "Check turned off platform movement"
+        );
+
+        // Callable Platform deaktivieren
+        callablePlatform.moveToPosition = false;
+    }
+
+    [UnityTest]
+    public IEnumerator ThrowTargetCollisionAktivatesCallablePlatformTest()
+    {
+        // Callable Platform deaktivieren
+        callablePlatform.moveToPosition = false;
+
+        // ThrowableObj und throwTargetObj kollidieren lassen
+        throwableObjRb.position = throwTargetObj.transform.position;
+
+        yield return new WaitForFixedUpdate();
+
+        Assert.AreEqual(
+            true,
+            callablePlatform.moveToPosition,
+            "Check turned on platform movement when ThrowTarget is hit"
+        );
+
+        Assert.AreEqual(
+            false,
+            throwTarget.gameObject.activeSelf,
+            "Check ThrowTargetObj is inaktive after collision"
         );
     }
 }
