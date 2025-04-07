@@ -213,7 +213,7 @@ public class PlayerMovementVid : MonoBehaviour
     private void StateHandler()
     {
         // Mode - Crouching
-        if (_crouchingIsPressed)
+        if (grounded && _crouchingIsPressed)
         {
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
@@ -234,6 +234,7 @@ public class PlayerMovementVid : MonoBehaviour
         else
         {
             state = MovementState.air;
+            moveSpeed = walkSpeed * airMultiplier;
         }
     }
 
@@ -256,10 +257,7 @@ public class PlayerMovementVid : MonoBehaviour
         // in air
         else if (!grounded)
         {
-            rb.AddForce(
-                moveDirection.normalized * moveSpeed * 10f * airMultiplier,
-                ForceMode.Force
-            );
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
             ResetUnderMap();
         }
