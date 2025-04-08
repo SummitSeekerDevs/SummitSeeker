@@ -62,6 +62,7 @@ public class PlayerMovementVid : MonoBehaviour
     private void Awake()
     {
         setPlayerInputActions();
+        GameManager.Instance.setPlayerGameObject(this.gameObject);
     }
 
     private void setPlayerInputActions()

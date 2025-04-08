@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     private PlayerInput_Actions _playerInputActions;
     public PlayerInput_Actions InputActions => _playerInputActions;
 
+    // Referenced GameObjects
+    public GameObject playerGO { get; private set; }
+
     public static GameManager Instance
     {
         get
@@ -51,6 +54,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError($"Failed to initialize input actions: {e.Message}");
         }
+    }
+
+    public void setPlayerGameObject(GameObject player)
+    {
+        playerGO = player;
     }
 
     private void OnEnable()
