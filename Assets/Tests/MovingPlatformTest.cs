@@ -41,12 +41,6 @@ public class MovingPlatformTest
         platform.layer = LayerMask.NameToLayer("whatIsGround");
         platform.transform.parent = parentObj.transform;
 
-        // Add Box Collider
-        if (platform.GetComponent<BoxCollider>() == null)
-        {
-            platform.AddComponent<BoxCollider>();
-        }
-
         // Add Rigidbody
         rb = platform.AddComponent<Rigidbody>();
         rb.useGravity = false;

@@ -43,12 +43,6 @@ public class CallablePlatformTest
         platform.layer = LayerMask.NameToLayer("whatIsGround");
         platform.transform.parent = parentObj.transform;
 
-        // Add Box Collider
-        if (platform.GetComponent<BoxCollider>() == null)
-        {
-            platform.AddComponent<BoxCollider>();
-        }
-
         // Add Rigidbody
         rb = platform.AddComponent<Rigidbody>();
         rb.useGravity = false;
@@ -71,12 +65,6 @@ public class CallablePlatformTest
         throwTargetObj.transform.position = new Vector3(3, 0, 0);
         throwTargetObj.transform.localScale = Vector3.one;
         throwTargetObj.transform.parent = parentObj.transform;
-
-        // ThrowTarget Add Box Collider
-        if (throwTargetObj.GetComponent<BoxCollider>() == null)
-        {
-            throwTargetObj.AddComponent<BoxCollider>();
-        }
 
         // Add ThrowTarget Script
         throwTarget = throwTargetObj.AddComponent<ThrowTarget>();

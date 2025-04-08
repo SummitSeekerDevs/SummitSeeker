@@ -47,11 +47,6 @@ public class PlayerMovementTest : InputTestFixture
         ground.transform.position = new Vector3(0, -1, 0);
         ground.transform.localScale = new Vector3(30, 1, 30);
         ground.layer = LayerMask.NameToLayer("whatIsGround");
-
-        if (ground.GetComponent<BoxCollider>() == null)
-        {
-            ground.AddComponent<BoxCollider>();
-        }
     }
 
     [TearDown]
