@@ -5041,6 +5041,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savePoint: {fileID: 240534466}
   playerSavePoint: {fileID: 603089418}
+  colliderTag: Throwable
 --- !u!1 &2104381349
 GameObject:
   m_ObjectHideFlags: 0
