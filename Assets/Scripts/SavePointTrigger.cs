@@ -8,9 +8,9 @@ using UnityEngine;
 public class SavePointTrigger : MonoBehaviour
 {
     [SerializeField]
-    private Transform savePoint;
+    internal Transform savePoint;
     private PlayerSavePoint playerSavePoint;
-    private bool usedSavePoint = false;
+    internal bool usedSavePoint = false;
     public string colliderTag;
 
     private void Start()
