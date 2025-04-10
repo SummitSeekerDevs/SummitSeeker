@@ -1,5 +1,8 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +30,11 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        initializeGameManager();
+    }
+
+    internal void initializeGameManager()
+    {
         if (_instance != null && _instance != this)
         {
             Debug.LogWarning("_instance of GameManager already exists. Destroying self.");
@@ -34,18 +42,21 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //QualitySettings.vSyncCount = 1; 1 = VSync on 0 = off
-        Application.targetFrameRate = 120;
-
         _instance = this;
+
+        // Set Framerate and Vsync
+        Application.targetFrameRate = 120;
+        QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
+
+        // Make it last over Scenes
         DontDestroyOnLoad(gameObject);
 
+        // Input
         setPlayerInputActions();
     }
 
     private void setPlayerInputActions()
     {
-        // Set PlayerInput Actions
         try
         {
             _playerInputActions = new PlayerInput_Actions();
@@ -68,7 +79,8 @@ public class GameManager : MonoBehaviour
 
     private void OnDisable()
     {
-        _playerInputActions.Player.Disable();
+        if (_playerInputActions != null)
+            _playerInputActions.Player.Disable();
     }
 
     public void ButtonUpdateGameState(int newStateInt)
