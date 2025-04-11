@@ -127,6 +127,20 @@ public class PlayerMovementVid : MonoBehaviour
         startYScale = transform.localScale.y;
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.transform.CompareTag("Projectile"))
+        {
+            Vector3 direction = collider.gameObject.GetComponent<Rigidbody>().linearVelocity;
+            direction.y = 0;
+            direction.Normalize();
+            direction.y = 0.1f;
+
+            rb.AddForce(direction * 120f, ForceMode.Impulse);
+            Debug.Log(direction);
+        }
+    }
+
     private void Update()
     {
         // ground check

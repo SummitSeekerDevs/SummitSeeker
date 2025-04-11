@@ -89,7 +89,6 @@ public class CallablePlatformTest
     [TearDown]
     public void Teardown()
     {
-        GameManager.Destroy(gameManager);
         GameObject.Destroy(platform);
         GameObject.Destroy(target);
         GameObject.Destroy(throwTargetObj);
