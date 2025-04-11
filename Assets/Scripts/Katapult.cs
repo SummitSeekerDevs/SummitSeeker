@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class Katapult : MonoBehaviour
 {
@@ -19,7 +22,7 @@ public class Katapult : MonoBehaviour
         Invoke(nameof(shootPlayerUp), 4f);
     }
 
-    private void ToggleFreezePlayerPosition(Rigidbody playerRb, bool freeze)
+    internal void ToggleFreezePlayerPosition(Rigidbody playerRb, bool freeze)
     {
         if (freeze)
         {
@@ -32,7 +35,7 @@ public class Katapult : MonoBehaviour
     }
 
     // BRAUCHt check ob player noch drauf ist
-    private void shootPlayerUp()
+    internal void shootPlayerUp()
     {
         ToggleFreezePlayerPosition(playerRb, false);
 
