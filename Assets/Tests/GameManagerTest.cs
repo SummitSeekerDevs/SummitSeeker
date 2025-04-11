@@ -58,12 +58,55 @@ public class GameManagerTest
     }
 
     [UnityTest]
-    public IEnumerator CanUpdateGameStateWithButtonTest()
+    public IEnumerator CanUpdateGameStateWithButtonAllStatesTest()
     {
-        GameManager.Instance.ButtonUpdateGameState(1); // 1 = InGame state
+        // Main Menu
+        GameManager.Instance.ButtonUpdateGameState(0);
+
+        yield return null;
+
+        Assert.AreEqual(GameState.MainMenu, GameManager.Instance.CurrentState);
+
+        // In Game
+        GameManager.Instance.ButtonUpdateGameState(1);
 
         yield return null;
 
         Assert.AreEqual(GameState.InGame, GameManager.Instance.CurrentState);
+
+        // Pause
+        GameManager.Instance.ButtonUpdateGameState(2);
+
+        yield return null;
+
+        Assert.AreEqual(GameState.Pause, GameManager.Instance.CurrentState);
+    }
+
+    [UnityTest]
+    public IEnumerator TogglePauseTest()
+    {
+        GameManager.Instance.UpdateGameState(GameState.InGame);
+
+        GameManager.Instance.TogglePause();
+
+        yield return null;
+
+        Assert.AreEqual(0, Time.timeScale, "Game time is paused");
+        Assert.AreEqual(
+            GameState.Pause,
+            GameManager.Instance.CurrentState,
+            "Gamestate toggled to pause"
+        );
+
+        GameManager.Instance.TogglePause();
+
+        yield return null;
+
+        Assert.AreEqual(1, Time.timeScale, "Game time is resumed");
+        Assert.AreEqual(
+            GameState.InGame,
+            GameManager.Instance.CurrentState,
+            "Gamestate toggled to inGame"
+        );
     }
 }
