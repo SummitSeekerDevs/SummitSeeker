@@ -16,13 +16,13 @@ public class Katapult : MonoBehaviour
         playerRb = collision.transform.GetComponent<Rigidbody>();
         playerRbDefaultconstraints = playerRb.constraints;
 
-        ToggleFreezePlayerPosition(playerRb, true);
+        ToggleFreezePlayerPosition(true);
 
         // Set timer
         Invoke(nameof(ShootPlayerUp), 4f);
     }
 
-    internal void ToggleFreezePlayerPosition(Rigidbody playerRb, bool freeze)
+    internal void ToggleFreezePlayerPosition(bool freeze)
     {
         if (freeze)
         {
@@ -37,10 +37,10 @@ public class Katapult : MonoBehaviour
     // BRAUCHt check ob player noch drauf ist
     internal void ShootPlayerUp()
     {
-        ToggleFreezePlayerPosition(playerRb, false);
+        ToggleFreezePlayerPosition(false);
 
         playerRb.AddForce(transform.up * shootUpForce, ForceMode.Impulse);
 
-        Debug.Log(playerRb.linearVelocity);
+        Debug.Log(playerRb.position);
     }
 }

@@ -39,11 +39,19 @@ public class KatapultTest
         // Einrichten des Testspielers
         playerObj = GameObject.Instantiate(
             Resources.Load<GameObject>("Prefabs/Player"),
-            Vector3.zero,
+            new Vector3(0, 1, 0),
             Quaternion.identity
         );
         playerObj.transform.position = Vector3.zero;
         playerRb = playerObj.GetComponent<Rigidbody>();
+    }
+
+    [TearDown]
+    public void Teardown()
+    {
+        GameManager.Destroy(gameManager);
+        GameObject.Destroy(katapultObj);
+        GameObject.Destroy(playerObj);
     }
 
     [UnityTest]
@@ -51,7 +59,7 @@ public class KatapultTest
     {
         katapultScript.playerRbDefaultconstraints = playerRb.constraints;
 
-        katapultScript.ToggleFreezePlayerPosition(playerRb, true);
+        katapultScript.ToggleFreezePlayerPosition(true);
 
         yield return new WaitForEndOfFrame();
 
@@ -61,7 +69,7 @@ public class KatapultTest
             "Freezed playerRb position and rotation"
         );
 
-        katapultScript.ToggleFreezePlayerPosition(playerRb, false);
+        katapultScript.ToggleFreezePlayerPosition(false);
 
         Assert.AreEqual(
             katapultScript.playerRbDefaultconstraints,
@@ -73,15 +81,16 @@ public class KatapultTest
     [UnityTest]
     public IEnumerator ShootPlayerUpTest()
     {
-        yield return new WaitForSeconds(0.5f);
         katapultScript.playerRbDefaultconstraints = playerRb.constraints;
         katapultScript.playerRb = playerRb;
 
-        Debug.Log(playerRb.position);
+        Debug.Log(katapultScript.playerRbDefaultconstraints);
+
+        yield return new WaitForSeconds(0.5f);
 
         katapultScript.ShootPlayerUp();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForFixedUpdate();
 
         Assert.AreEqual(
             katapultScript.playerRbDefaultconstraints,
