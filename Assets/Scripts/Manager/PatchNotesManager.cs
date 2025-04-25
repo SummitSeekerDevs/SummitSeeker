@@ -8,10 +8,9 @@ public class PatchNotesManager : MonoBehaviour
     private TextAsset patchNotesFile;
 
     [SerializeField]
-    TMP_Text titleText;
-
-    [SerializeField]
-    TMP_Text notesText;
+    TMP_Text titleText,
+        notesText,
+        dateText;
 
     private void Start()
     {
@@ -37,6 +36,7 @@ public class PatchNotesManager : MonoBehaviour
     {
         titleText.text = update.title + " | PATCH NOTES";
         notesText.text = "- " + string.Join("\n- ", update.patchnotes);
+        dateText.text = update.date;
     }
 
     UpdateEntry GetUpdateByVersion(List<UpdateEntry> updates)
