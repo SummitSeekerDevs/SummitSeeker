@@ -40,7 +40,5 @@ public class Katapult : MonoBehaviour
         ToggleFreezePlayerPosition(false);
 
         playerRb.AddForce(transform.up * shootUpForce, ForceMode.Impulse);
-
-        Debug.Log(playerRb.position);
     }
 }
