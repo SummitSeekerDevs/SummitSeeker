@@ -116,6 +116,9 @@ public class GameManager : MonoBehaviour
             case GameState.Pause:
                 HandlePauseState();
                 break;
+            case GameState.QuitGame:
+                HandleQuitGameState();
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
@@ -144,6 +147,11 @@ public class GameManager : MonoBehaviour
         // Add pause state logic
     }
 
+    private void HandleQuitGameState()
+    {
+        Application.Quit();
+    }
+
     public void TogglePause()
     {
         if (_currentState != GameState.Pause)
@@ -164,4 +172,5 @@ public enum GameState
     MainMenu,
     InGame,
     Pause,
+    QuitGame,
 }
