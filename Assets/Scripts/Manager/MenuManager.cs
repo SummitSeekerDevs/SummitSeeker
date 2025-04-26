@@ -1,12 +1,15 @@
 using System;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 
+[assembly: InternalsVisibleTo("Tests")]
+
 public class MenuManager : MonoBehaviour
 {
     private static MenuManager _instance;
-    private MenuState _currentState;
+    internal MenuState _currentState;
 
     [SerializeField]
     private GameObject MenuPanel,
@@ -16,7 +19,7 @@ public class MenuManager : MonoBehaviour
         SettingsMenuButtons;
 
     [SerializeField]
-    TMP_Text versionText;
+    private TMP_Text versionText;
 
     public static MenuManager Instance
     {

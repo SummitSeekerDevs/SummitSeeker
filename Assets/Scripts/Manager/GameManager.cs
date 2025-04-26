@@ -50,8 +50,8 @@ public class GameManager : MonoBehaviour
         sceneLoader = GetComponent<SceneLoader>();
 
         // Set Framerate and Vsync
-        //Application.targetFrameRate = 120;
-        //QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
+        Application.targetFrameRate = 120;
+        QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
 
         // Make it last over Scenes
         DontDestroyOnLoad(gameObject);

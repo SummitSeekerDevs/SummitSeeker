@@ -1968,56 +1968,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &876448242
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 876448244}
-  - component: {fileID: 876448243}
-  m_Layer: 0
-  m_Name: MenuManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &876448243
+--- !u!114 &876448243 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+  m_PrefabInstance: {fileID: 5371054211231917028}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876448242}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 273296cf93df65445a5b3e9962cc4858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MenuPanel: {fileID: 107361398}
-  NewsPanel: {fileID: 29666049}
-  CreditsPanel: {fileID: 1788691823}
-  MainMenuButtons: {fileID: 2070269023}
-  SettingsMenuButtons: {fileID: 1598389031}
-  versionText: {fileID: 1527735250}
---- !u!4 &876448244
+--- !u!4 &876448244 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+  m_PrefabInstance: {fileID: 5371054211231917028}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876448242}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1755869033}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &881999941
 GameObject:
   m_ObjectHideFlags: 0
@@ -7325,6 +7291,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2143684931}
   m_CullTransparentMesh: 1
+--- !u!1001 &5371054211231917028
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1755869033}
+    m_Modifications:
+    - target: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: MenuPanel
+      value: 
+      objectReference: {fileID: 107361398}
+    - target: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: NewsPanel
+      value: 
+      objectReference: {fileID: 29666049}
+    - target: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: versionText
+      value: 
+      objectReference: {fileID: 1527735250}
+    - target: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: CreditsPanel
+      value: 
+      objectReference: {fileID: 1788691823}
+    - target: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: MainMenuButtons
+      value: 
+      objectReference: {fileID: 2070269023}
+    - target: {fileID: 772169121677274147, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: SettingsMenuButtons
+      value: 
+      objectReference: {fileID: 1598389031}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065859412268302437, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241245038884855362, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
+      propertyPath: m_Name
+      value: MenuManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 397e7d3fec7a77c4596b02eaf71365b5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
