@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState => _currentState;
     public event Action<GameState> OnGameStateChanged;
 
+    private SceneLoader sceneLoader;
+
     // Input
     private PlayerInput_Actions _playerInputActions;
     public PlayerInput_Actions InputActions => _playerInputActions;
@@ -44,9 +46,11 @@ public class GameManager : MonoBehaviour
 
         _instance = this;
 
+        sceneLoader = GetComponent<SceneLoader>();
+
         // Set Framerate and Vsync
-        Application.targetFrameRate = 120;
-        QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
+        //Application.targetFrameRate = 120;
+        //QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
 
         // Make it last over Scenes
         DontDestroyOnLoad(gameObject);
@@ -135,6 +139,7 @@ public class GameManager : MonoBehaviour
     private void HandleMainMenuState()
     {
         // Add main menu state logic
+        MenuManager.Instance.UpdateMenuState(MenuState.StartupMenu);
     }
 
     private void HandleInGameState()
@@ -169,8 +174,8 @@ public class GameManager : MonoBehaviour
 
 public enum GameState
 {
-    MainMenu,
-    InGame,
-    Pause,
-    QuitGame,
+    MainMenu = 0,
+    InGame = 1,
+    Pause = 2,
+    QuitGame = 3,
 }
