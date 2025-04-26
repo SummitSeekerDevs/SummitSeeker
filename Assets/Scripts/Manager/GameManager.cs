@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [assembly: InternalsVisibleTo("Tests")]
 
@@ -57,6 +58,9 @@ public class GameManager : MonoBehaviour
 
         // Input
         setPlayerInputActions();
+
+        // State auf MainMenu
+        UpdateGameState(GameState.MainMenu);
     }
 
     private void setPlayerInputActions()
@@ -139,7 +143,10 @@ public class GameManager : MonoBehaviour
     private void HandleMainMenuState()
     {
         // Add main menu state logic
-        MenuManager.Instance.UpdateMenuState(MenuState.StartupMenu);
+        if (SceneManager.GetActiveScene().name != "HomeMenuScene")
+        {
+            sceneLoader.LoadSceneWhenReady("HomeMenuScene");
+        }
     }
 
     private void HandleInGameState()

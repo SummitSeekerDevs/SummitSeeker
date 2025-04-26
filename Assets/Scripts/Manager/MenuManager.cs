@@ -45,6 +45,9 @@ public class MenuManager : MonoBehaviour
         _instance = this;
 
         setVersionText();
+
+        // Set State to startup
+        UpdateMenuState(MenuState.StartupMenu);
     }
 
     private bool IsValidStateTransition(MenuState from, MenuState to)
