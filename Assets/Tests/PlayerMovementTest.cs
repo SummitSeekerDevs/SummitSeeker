@@ -52,7 +52,7 @@ public class PlayerMovementTest : InputTestFixture
     [TearDown]
     public void Teardown()
     {
-        GameManager.Destroy(gameManager);
+        GameObject.Destroy(gameManager);
         GameObject.Destroy(playerGameobject);
         GameObject.Destroy(ground);
     }
