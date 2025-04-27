@@ -9,8 +9,8 @@ public class GameManagerTest
     private GameObject gameManager;
     private GameManager gameManagerScript;
 
-    private int DEFAULT_FPS = 120,
-        DEFAULT_VSYNC_MODE = 0;
+    private int MENU_FPS = 30,
+        MENU_VSYNC_MODE = 0;
     private string DONT_DESTROY_ON_LOAD_SCENE = "DontDestroyOnLoad";
 
     private void setGameManager()
@@ -34,11 +34,13 @@ public class GameManagerTest
     [UnityTest]
     public IEnumerator GameManagerInitTest()
     {
+        // Wechselt standartmäßig bei Start in MainMenu -> Fps auf 30
+
         yield return null;
 
-        Assert.AreEqual(DEFAULT_FPS, Application.targetFrameRate, "Framerate is set to default");
+        Assert.AreEqual(MENU_FPS, Application.targetFrameRate, "Framerate is set to default");
         Assert.AreEqual(
-            DEFAULT_VSYNC_MODE,
+            MENU_VSYNC_MODE,
             QualitySettings.vSyncCount,
             "Vsync mode is set to default"
         );
