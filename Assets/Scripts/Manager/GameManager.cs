@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         setPlayerInputActions();
 
         // State auf MainMenu
-        UpdateGameState(GameState.MainMenu);
+        //UpdateGameState(GameState.MainMenu);
     }
 
     private void setPlayerInputActions()
