@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public void LoadSceneWhenReady(string sceneName)
+    public void LoadSceneWhenReady(string sceneName, Action onSceneLoaded = null)
     {
-        StartCoroutine(LoadSceneAsync(sceneName));
+        StartCoroutine(LoadSceneAsync(sceneName, onSceneLoaded));
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName)
+    private IEnumerator LoadSceneAsync(string sceneName, Action onSceneLoaded)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
@@ -31,5 +32,8 @@ public class SceneLoader : MonoBehaviour
 
             yield return null;
         }
+
+        // Szene fertig geladen
+        onSceneLoaded?.Invoke();
     }
 }

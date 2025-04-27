@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
         // Add main menu state logic
         if (SceneManager.GetActiveScene().name != "HomeMenuScene")
         {
-            sceneLoader.LoadSceneWhenReady("HomeMenuScene");
+            sceneLoader.LoadSceneWhenReady("HomeMenuScene", OnMenuSceneLoaded);
         }
 
         // Set Framerate and Vsync to lower cpu/gpu usage
@@ -180,6 +180,12 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             UpdateGameState(GameState.InGame);
         }
+    }
+
+    private void OnMenuSceneLoaded()
+    {
+        // Menu Manager State auf Starup setzen
+        MenuManager.Instance.UpdateMenuState(MenuState.StartupMenu);
     }
 }
 
