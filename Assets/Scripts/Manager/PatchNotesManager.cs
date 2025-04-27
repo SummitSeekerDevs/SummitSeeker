@@ -10,7 +10,8 @@ public class PatchNotesManager : MonoBehaviour
     [SerializeField]
     TMP_Text titleText,
         notesText,
-        dateText;
+        dateText,
+        versionText;
 
     private void Start()
     {
@@ -30,6 +31,14 @@ public class PatchNotesManager : MonoBehaviour
                 Debug.LogWarning("Kein Patchnotes des Updates für die aktuelle Version gefunden");
             }
         }
+
+        DisplayApplicationVersion();
+    }
+
+    // Textelemente
+    private void DisplayApplicationVersion()
+    {
+        versionText.text = "Version: " + Application.version;
     }
 
     private void DisplayPatchNotes(UpdateEntry update)

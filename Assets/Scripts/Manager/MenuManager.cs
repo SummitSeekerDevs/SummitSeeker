@@ -12,14 +12,11 @@ public class MenuManager : MonoBehaviour
     internal MenuState _currentState;
 
     [SerializeField]
-    private GameObject MenuPanel,
+    internal GameObject MenuPanel,
         NewsPanel,
         CreditsPanel,
         MainMenuButtons,
         SettingsMenuButtons;
-
-    [SerializeField]
-    private TMP_Text versionText;
 
     public static MenuManager Instance
     {
@@ -46,11 +43,6 @@ public class MenuManager : MonoBehaviour
         }
 
         _instance = this;
-
-        setVersionText();
-
-        // Set State to startup
-        UpdateMenuState(MenuState.StartupMenu);
     }
 
     private bool IsValidStateTransition(MenuState from, MenuState to)
@@ -160,12 +152,6 @@ public class MenuManager : MonoBehaviour
     private void HandleControlsMenuState()
     {
         // controls menu logic
-    }
-
-    // Textelemente
-    private void setVersionText()
-    {
-        versionText.text = "Version: " + Application.version;
     }
 }
 
