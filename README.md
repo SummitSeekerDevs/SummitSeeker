@@ -18,6 +18,13 @@
 - AssemblyFilters entfernen, damit codeCoverage Artifakt erzeugt werden kann
 
 # Development
+## Planing
+### Main Menu
+Kontextdiagramm für das MainMenu
+
+
+![MainMenuGameState drawio](https://github.com/user-attachments/assets/5d8caa3d-50fc-4e40-8b05-5267b41a3f3c)
+
 ## Coding
 ### Codeformatter
 Bei dem Projekt SummitSeeker verwenden wir den Codeformatter [csharpier](https://csharpier.com).
