@@ -20,9 +20,9 @@
 # Development
 ## Planing
 ### Main Menu
-Kontextdiagramm für das MainMenu
+Um im GameManager nur die globalen Spielzustände und -abläufe zu erfassen und gleichzeitig volle Kontrolle über die Zustände im Hauptmenu zu behalten, befindet sich im Bereich des Hauptmenüs ein weiterer Manager - der MenuManager. Dieser erfasst ausdrücklich __nur__ die Zustände die im Hauptmenu möglich sind, keine globalen Spielzustände, und übernimmt im Moment, wenn sich der GameManager im State MainMenuGameState befindet, die Kontrolle. Führt eine Aktion im Hauptmenu durch die Änderung des MenuStates dazu, dass dieses verlassen wird, ändert der MenuManager den GameState beim GameManager von MainMenuGameState zu einem anderen und übergibt somit die Kontrolle zurück an den GameManager.
 
-
+#### Kontextdiagramm für das MainMenu
 ![MainMenuGameState drawio](https://github.com/user-attachments/assets/5d8caa3d-50fc-4e40-8b05-5267b41a3f3c)
 
 ## Coding
