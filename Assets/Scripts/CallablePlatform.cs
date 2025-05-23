@@ -8,7 +8,8 @@ public class CallablePlatform : MonoBehaviour
     public float moveSpeed = 2f;
     public bool moveToPosition = false;
 
-    private void FixedUpdate(){
+    private void FixedUpdate()
+    {
         if (moveToPosition)
         {
             transform.position = Vector3.MoveTowards(
