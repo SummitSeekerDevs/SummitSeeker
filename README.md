@@ -23,10 +23,10 @@ Um im GameManager nur die globalen Spielzustände und -abläufe zu erfassen und 
 ## Coding
 ### Codeformatter
 Bei dem Projekt SummitSeeker verwenden wir den Codeformatter [csharpier](https://csharpier.com).
-Die Einhaltung dieser Formatregeln wird auch mittels eines workflows geprüft.
+Die Einhaltung dieser Formatierungsregeln wird auch mittels eines Workflows geprüft.
 ## Level Design
 ### Rules
-Wird durch ein Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Szene gebaut und getestet. Dies ist darin begründet, dass gleichzeitig an einander angrenzenden Leveln gearbeitet wird und somit der Fall möglich ist, dass ein höheres Level vor einem niedrigeren fertiggestellt wird. 
+Potentiell ist es möglich, dass bereits an einem höheren Level gearbeitet bzw. fertig gestellt wird, bevor das niedrigere Level fertig und komplett in der Hauptspielscene, in der sich alle Level befinden, integriert wurde. Wird also durch einen Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Szene gebaut und getestet, um die möglichen Konflikte mit einem anderen Level zu verhindern.
 Damit jedoch die korrekte Reihenfolge eingehalten wird, werden alle 5? Level in einem neuen Issue die offenen Level in der Hauptszene, __identisch__ zur Bauweise in den seperaten Level, zusammengeführt.
 
 # Testing
