@@ -1,18 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerSavePoint : MonoBehaviour
 {
     public Transform activeSavePoint { get; private set;}
-    public KeyCode resetToActiveSavePoint = KeyCode.R;
+    
+    private PlayerInput_Actions _playerInputActions;
 
-    public void setActiveSavePoint(Transform savePoint) {
+    private void Awake() {
+        SetPlayerInputActions();
+    }
+
+    private void SetPlayerInputActions() {
+        if (GameManager.Instance == null) {
+            Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
+            return;
+        }
+        _playerInputActions = GameManager.Instance.InputActions;
+        if (_playerInputActions == null) {
+            Debug.LogError("PlayerInput_Actions not initialized in GameManager");
+        }
+    }
+
+    private void OnEnable() {
+        _playerInputActions.Player.ResetToSavePoint.performed += OnResetToSavePoint;
+    }
+
+    private void OnDisable() {
+        _playerInputActions.Player.ResetToSavePoint.performed -= OnResetToSavePoint;
+    }
+
+    public void SetActiveSavePoint(Transform savePoint) {
         activeSavePoint = savePoint;
     }
 
-    private void FixedUpdate() {
-        if (activeSavePoint != null && Input.GetKey(resetToActiveSavePoint)) {
+    private void OnResetToSavePoint(InputAction.CallbackContext context) {
+        if (activeSavePoint != null) {
             GetComponent<Rigidbody>().position = activeSavePoint.position;
             activeSavePoint = null;
         }
