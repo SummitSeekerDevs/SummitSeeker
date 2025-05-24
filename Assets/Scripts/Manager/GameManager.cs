@@ -142,15 +142,15 @@ public class GameManager : MonoBehaviour
 
     private void HandleMainMenuState()
     {
+        // Set Framerate and Vsync to lower cpu/gpu usage
+        Application.targetFrameRate = 30;
+        QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
+
         // Add main menu state logic
         if (SceneManager.GetActiveScene().name != "HomeMenuScene")
         {
             sceneLoader.LoadSceneWhenReady("HomeMenuScene", OnMenuSceneLoaded);
         }
-
-        // Set Framerate and Vsync to lower cpu/gpu usage
-        Application.targetFrameRate = 30;
-        QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
     }
 
     private void HandleInGameState()
