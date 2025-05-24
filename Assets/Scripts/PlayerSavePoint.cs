@@ -8,10 +8,10 @@ public class PlayerSavePoint : MonoBehaviour
     private PlayerInput_Actions _playerInputActions;
 
     private void Awake() {
-        setPlayerInputActions();
+        SetPlayerInputActions();
     }
 
-    private void setPlayerInputActions() {
+    private void SetPlayerInputActions() {
         if (GameManager.Instance == null) {
             Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
             return;
@@ -30,7 +30,7 @@ public class PlayerSavePoint : MonoBehaviour
         _playerInputActions.Player.ResetToSavePoint.performed -= OnResetToSavePoint;
     }
 
-    public void setActiveSavePoint(Transform savePoint) {
+    public void SetActiveSavePoint(Transform savePoint) {
         activeSavePoint = savePoint;
     }
 

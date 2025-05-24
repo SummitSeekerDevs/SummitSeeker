@@ -14,10 +14,10 @@ public class PlayerCam : MonoBehaviour
     private Vector2 mouseDelta;
 
     private void Awake() {
-        setPlayerInputActions();
+        SetPlayerInputActions();
     }
 
-    private void setPlayerInputActions() {
+    private void SetPlayerInputActions() {
         if (GameManager.Instance == null) {
             Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
             return;
