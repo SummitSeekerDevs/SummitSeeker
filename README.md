@@ -30,24 +30,16 @@ Potentiell ist es möglich, dass bereits an einem höheren Level gearbeitet bzw.
 Damit jedoch die korrekte Reihenfolge eingehalten wird, werden alle 5? Level in einem neuen Issue die offenen Level in der Hauptszene, __identisch__ zur Bauweise in den seperaten Level, zusammengeführt.
 
 # Testing
-[Example Tutorial](https://www.kodeco.com/38240193-introduction-to-unity-unit-testing)
 ## Rules
 Der durch ein Usecase vom Developer neu hinzugefügte Code muss eine Code Coverage von mindestens 85% haben. Dies ist eine gute Mitte zwischen ausreichend getestet und angemessener Zeitaufwand. 
 
 Um schnell mitzubekommen bei welcher Assertion ein Test fehlschlägt, wird der Methoden-Overload verwendet, bei dem eine Message in Form eines Strings mitgegeben werden kann. Diese Nachricht wird **aussagekräftig** gewählt.
 
 ## Automatisierte Tests
-Zum Testen des in C# geschriebenen Codes verwenden wir das “Unity Test Framework”.
+Zum Testen des in C# geschriebenen Codes verwenden wir das [Unity Test Framework](https://docs.unity3d.com/Packages/com.unity.test-framework@1.1/manual/index.html).
+Beschreibung in [Dokumentation](https://summitseekerdevs.github.io/Dokumentation/developer/unity/automatisierte_tests/)
 
-Dieses Framework unterteilt die Tests in **Edit Mode** - und **Play Mode** - Tests.
-
-Die Tests im **Edit-Mode** laufen im Unity-Editor und haben Zugriff auf den Editor und den Code des Spiels. Dies bedeutet, dass die benutzerdefinierten Editor-Erweiterungen getestet oder Tests verwenden können, um Einstellungen im Editor zu ändern und den Abspielmodus aufzurufen, der nützlich ist, um Inspektorwerte anzupassen und dann automatisierte Tests mit vielen verschiedenen Einstellungen durchzuführen.
-Wie der Name schon vermuten lässt, sind diese Art von Tests also allgemein eher um Funktionalität des Unity Editors bzw. Inspektors z.B. eines benutzerdefinierten Inspektors zu testen und nicht geeignet um den eigentlichen Code des Spiels automatisiert zu testen.
-
-
-Mit den Tests im **Play-Mode** kann der Spielcode zur Laufzeit getestet werden. Tests werden in der Regel als Coroutine unter Verwendung des Attributs **[UnityTest]** ausgeführt. So kann der Code getestet werden, der über mehrere Frames hinweg ausgeführt werden kann. Standardmäßig werden die Tests im Play-Mode im Editor ausgeführt, aber sie können auch in einem eigenständigen Player-Build für verschiedene Zielplattformen ausführen werden.
-
-## Tipps / übliche Problem
+## Tipps / übliche Probleme
 Sobald die Unity Engine für einen Test verwendet werden muss, beispielsweise wenn Physik, Update-Methoden oder das InputSystem etc. benötigt werden, dann muss **[UnityTest]** verwendet werden. Geht es andernfalls nur um reine Logiktests, wo die Unity Engine nicht nötig für ist, dann kann **[Test]** verwendet werden
 
 Viele Methoden einer Klasse werden als private deklariert. Dies ist gut um die Sichtbarkeit nur auf diese Klasse zu beschränken. Jedoch führt es zu Problemen beim Testen, da die Methode dadurch auch nicht in der Testklasse sichtbar ist. Um diesem Problem zu entkommen, werden die Methoden statt mit private mit internals deklariert und über der Klassendefinition ein ''[assembly: InternalsVisibleTo("Tests")]'' hinzugefügt, wobei der Inhalt in Anführungsstrichen, der Name der Assembly ist in dem der Test liegt, der die Methode verwenden möchte.
