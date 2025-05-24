@@ -58,14 +58,17 @@ public class MenuManagerTest
         Object.Destroy(MenuManager.Instance.MainMenuButtons);
         Object.Destroy(MenuManager.Instance.SettingsMenuButtons);
 
-        Object.Destroy(gameManager);
         Object.Destroy(menuManager);
     }
 
     [UnityTest]
     public IEnumerator MenuManagerInitTest()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        GameManager.Instance.UpdateGameState(GameState.MainMenu);
+
+        yield return new WaitForSeconds(5f);
 
         Assert.AreEqual(
             MENU_FPS,
