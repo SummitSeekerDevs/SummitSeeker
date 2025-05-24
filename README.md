@@ -1,7 +1,6 @@
 # SummitSeeker
 
 # Links
- - Planung: https://app.milanote.com/1TWnhO1ABvU27u/summitseekers?p=OZxuH37wndh
  - [Notion](https://www.notion.so/Startseite-148bd82e1ce981cda604d8646e280fa9?pvs=13)
 
 # Project Setup
@@ -11,11 +10,6 @@
 - Blender: Version 4.3 ++
 - Gimp / Paint.net
 - GitHub Desktop
-
-# Workflows
-## Tipps
-- PackageMode rausnehmen, damit ganzes Projekt getestet wird
-- AssemblyFilters entfernen, damit codeCoverage Artifakt erzeugt werden kann
 
 # Development
 ## Planing
