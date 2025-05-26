@@ -42,7 +42,7 @@ Beschreibung in [Dokumentation](https://summitseekerdevs.github.io/Dokumentation
 ## Tipps / übliche Probleme
 Sobald die Unity Engine für einen Test verwendet werden muss, beispielsweise wenn Physik, Update-Methoden oder das InputSystem etc. benötigt werden, dann muss **[UnityTest]** verwendet werden. Geht es andernfalls nur um reine Logiktests, wo die Unity Engine nicht nötig für ist, dann kann **[Test]** verwendet werden
 
-Viele Methoden einer Klasse werden als private deklariert. Dies ist gut um die Sichtbarkeit nur auf diese Klasse zu beschränken. Jedoch führt es zu Problemen beim Testen, da die Methode dadurch auch nicht in der Testklasse sichtbar ist. Um diesem Problem zu entkommen, werden die Methoden statt mit private mit internals deklariert und über der Klassendefinition ein ''[assembly: InternalsVisibleTo("Tests")]'' hinzugefügt, wobei der Inhalt in Anführungsstrichen, der Name der Assembly ist in dem der Test liegt, der die Methode verwenden möchte.
+Die privaten Methoden einer Klasse sollten statt mir `private` mit `internals` deklariert und über die Klassendefinition ein ''[assembly: InternalsVisibleTo("Tests")]'' hinzugefügt werden, um sie für die Tests "sichtbar" zu machen. Der Inhalt in Anführungsstrichen ist der Name der Assembly, in dem der Test liegt, der die Methode verwenden möchte.
 
 Wenn Press() zur Simulation einer Tasteneingabe verwendet wird, ist zu beachten das diese Taste solange simuliert gedrückt wird, bis Release() verwendet wird. Nur Press() könnte zu ungewünschten Ergebnisse führen.
 
