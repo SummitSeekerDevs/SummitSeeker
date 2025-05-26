@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class SceneLoader : MonoBehaviour
 {
@@ -10,7 +13,7 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadSceneAsync(sceneName, onSceneLoaded));
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName, Action onSceneLoaded)
+    internal IEnumerator LoadSceneAsync(string sceneName, Action onSceneLoaded)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
