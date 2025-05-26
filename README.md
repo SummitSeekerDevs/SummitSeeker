@@ -47,3 +47,5 @@ Die privaten Methoden einer Klasse sollten statt mir `private` mit `internals` d
 Wenn Press() zur Simulation einer Tasteneingabe verwendet wird, ist zu beachten das diese Taste solange simuliert gedrückt wird, bis Release() verwendet wird. Nur Press() könnte zu ungewünschten Ergebnisse führen.
 
 GameManager ist ein Singleton, damit einher geht, dass wenn ein neuer GameManager erstellt wird, es bereits aber eine static Instance davon gibt, sich der neue GameManager wieder selbst zerstört. Kann gerade bei Setup und TearDown bei Tests zu Fehler führen.
+
+[link to docu]: https://summitseekerdevs.github.io/Dokumentation/
