@@ -1,22 +1,56 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class PatchNotesManager : MonoBehaviour
 {
-    [SerializeField]
-    private TextAsset patchNotesFile;
+    private static PatchNotesManager _instance;
 
     [SerializeField]
-    TMP_Text titleText,
+    internal TextAsset patchNotesFile;
+
+    [SerializeField]
+    internal TMP_Text titleText,
         notesText,
         dateText,
         versionText;
 
+    internal UpdateEntry exactUpdateEntry;
+
     private void Start()
+    {
+        InitializePatchNotesManager();
+        SetExactUpdateEntry();
+        SetUITexts();
+    }
+
+    private void SetUITexts()
+    {
+        versionText.text = GetFormattedVersionText();
+
+        if (exactUpdateEntry != null)
+        {
+            var (title, notes, date) = FormatPatchNotes(exactUpdateEntry);
+            titleText.text = title;
+            notesText.text = notes;
+            dateText.text = date;
+        }
+        else
+        {
+            Debug.Log("No Patchinfo to show. UpdateEntry is null");
+        }
+    }
+
+    private void SetExactUpdateEntry()
     {
         if (patchNotesFile != null)
         {
+            // json auslesen
             UpdateList allUpdates = JsonUtility.FromJson<UpdateList>(patchNotesFile.text);
 
             // Finde neuestes Update
@@ -24,31 +58,54 @@ public class PatchNotesManager : MonoBehaviour
 
             if (exactUpdate != null)
             {
-                DisplayPatchNotes(exactUpdate);
+                exactUpdateEntry = exactUpdate;
             }
             else
             {
                 Debug.LogWarning("Kein Patchnotes des Updates für die aktuelle Version gefunden");
             }
         }
+        else
+        {
+            throw new FileNotFoundException("Patchnotes file not found");
+        }
+    }
 
-        DisplayApplicationVersion();
+    private void InitializePatchNotesManager()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Debug.LogWarning("_instance of PatchNotesManager already exists. Destroying self.");
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+
+        // PatchNotesManager darf nur in Hauptmenu Szene existieren
+        if (SceneManager.GetActiveScene().name != GameManager.Instance.mainMenuSceneName)
+        {
+            Debug.LogWarning("PatchNotesManager should not exist in this scene. Destroying self.");
+            Destroy(gameObject);
+            return;
+        }
     }
 
     // Textelemente
-    private void DisplayApplicationVersion()
+    internal string GetFormattedVersionText()
     {
-        versionText.text = "Version: " + Application.version;
+        return "Version: " + Application.version;
     }
 
-    private void DisplayPatchNotes(UpdateEntry update)
+    internal (string title, string notes, string date) FormatPatchNotes(UpdateEntry update)
     {
-        titleText.text = update.title + " | PATCH NOTES";
-        notesText.text = "- " + string.Join("\n- ", update.patchnotes);
-        dateText.text = update.date;
+        string title = update.title + " | PATCH NOTES";
+        string notes = "- " + string.Join("\n- ", update.patchnotes);
+        string date = update.date;
+        return (title, notes, date);
     }
 
-    UpdateEntry GetUpdateByVersion(List<UpdateEntry> updates)
+    internal UpdateEntry GetUpdateByVersion(List<UpdateEntry> updates)
     {
         // Suchen nach einem Update, das exakt der Spielversion entspricht
         foreach (UpdateEntry update in updates)
@@ -62,7 +119,7 @@ public class PatchNotesManager : MonoBehaviour
         return null; // Kein exaktes Update gefunden
     }
 
-    UpdateEntry GetLatestUpdate(List<UpdateEntry> updates)
+    internal UpdateEntry GetLatestUpdate(List<UpdateEntry> updates)
     {
         // Sortiere Updates nach Versionsnummer
         updates.Sort(
@@ -81,7 +138,7 @@ public class PatchNotesManager : MonoBehaviour
         return null; // Kein passendes Update gefunden
     }
 
-    public static int CompareVersionsWithBuild(string versionA, string versionB)
+    internal static int CompareVersionsWithBuild(string versionA, string versionB)
     {
         var aParts = versionA.Split('b');
         var bParts = versionB.Split('b');
@@ -104,7 +161,7 @@ public class PatchNotesManager : MonoBehaviour
         return 0; // Wenn keine Buildnummer vorhanden ist, als gleiche betrachten
     }
 
-    private static int CompareBaseVersions(string a, string b)
+    internal static int CompareBaseVersions(string a, string b)
     {
         var aParts = a.Split('.');
         var bParts = b.Split('.');
