@@ -3,13 +3,15 @@ using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 [assembly: InternalsVisibleTo("Tests")]
 
 public class MenuManager : MonoBehaviour
 {
     private static MenuManager _instance;
-    internal MenuState _currentState;
+    internal MenuState _currentState = MenuState.StartupMenu;
 
     [SerializeField]
     internal GameObject MenuPanel,
@@ -18,31 +20,29 @@ public class MenuManager : MonoBehaviour
         MainMenuButtons,
         SettingsMenuButtons;
 
-    public static MenuManager Instance
+    private void Start()
     {
-        get
-        {
-            if (_instance == null)
-                Debug.LogWarning("MenuManager is null!");
-            return _instance;
-        }
+        InitializeMenuManager();
     }
 
-    void Awake()
-    {
-        initializeMenuManager();
-    }
-
-    internal void initializeMenuManager()
+    private void InitializeMenuManager()
     {
         if (_instance != null && _instance != this)
         {
             Debug.LogWarning("_instance of MenuManager already exists. Destroying self.");
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
         _instance = this;
+
+        // MenuManager darf nur in Hauptmenu Szene existieren
+        if (SceneManager.GetActiveScene().name != GameManager.Instance.mainMenuSceneName)
+        {
+            Debug.LogWarning("MenuManager should not exist in this scene. Destroying self.");
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private bool IsValidStateTransition(MenuState from, MenuState to)
