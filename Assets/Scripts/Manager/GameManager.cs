@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     // Referenced GameObjects
     public GameObject playerGO { get; private set; }
 
+    public string mainMenuSceneName { get; private set; } = "HomeMenuScene";
+
     public static GameManager Instance
     {
         get
@@ -147,9 +149,9 @@ public class GameManager : MonoBehaviour
         QualitySettings.vSyncCount = 0; // 1 = VSync on <--> 0 = off
 
         // Add main menu state logic
-        if (SceneManager.GetActiveScene().name != "HomeMenuScene")
+        if (SceneManager.GetActiveScene().name != mainMenuSceneName)
         {
-            sceneLoader.LoadSceneWhenReady("HomeMenuScene", OnMenuSceneLoaded);
+            sceneLoader.LoadSceneWhenReady(mainMenuSceneName, null);
         }
     }
 
@@ -180,12 +182,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             UpdateGameState(GameState.InGame);
         }
-    }
-
-    private void OnMenuSceneLoaded()
-    {
-        // Menu Manager State auf Starup setzen
-        MenuManager.Instance.UpdateMenuState(MenuState.StartupMenu);
     }
 }
 
