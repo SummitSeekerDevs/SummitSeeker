@@ -1,11 +1,26 @@
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using NUnit.Framework;
-using TMPro;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class PatchNotesManagerTest
 {
+    private GameObject patchnotesManager;
+    private PatchNotesManager patchNotesManagerScript;
+
+    [SetUp]
+    public void SetUp()
+    {
+        patchnotesManager = new GameObject("PatchNotesManager");
+        patchNotesManagerScript = patchnotesManager.AddComponent<PatchNotesManager>();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        UnityEngine.Object.Destroy(patchnotesManager);
+    }
+
     [Test]
     public void CompareBaseVersionsTest()
     {
@@ -40,5 +55,35 @@ public class PatchNotesManagerTest
         // Treat missing build as equal
         result = PatchNotesManager.CompareVersionsWithBuild("1.0.0", "1.0.0");
         Assert.AreEqual(0, result, "Treat missing build as equal");
+    }
+
+    [Test]
+    public void GetUpdateByVersionTest()
+    {
+        // Should return correct update when version matches
+        var updates = new List<UpdateEntry>
+        {
+            new UpdateEntry
+            {
+                version = "1.0.0",
+                title = "Test",
+                date = "01/01/2025",
+                patchnotes = new List<String> { "Fix 1" },
+            },
+            new UpdateEntry
+            {
+                version = "1.1.0",
+                title = "New",
+                date = "04/01/2025",
+                patchnotes = new List<String> { "Fix 2" },
+            },
+        };
+
+        var currentVersion = "1.1.0";
+
+        UpdateEntry result = patchNotesManagerScript.GetUpdateByVersion(updates, currentVersion);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(currentVersion, result.version);
     }
 }
