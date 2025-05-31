@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -85,5 +86,32 @@ public class PatchNotesManagerTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(currentVersion, result.version);
+    }
+
+    [Test]
+    public void SetExactUpdateEntryTest_FindEntry()
+    {
+        TextAsset patchInfofixture = Resources.Load<TextAsset>("Test/Fixture/patchInfo_fixture");
+        patchNotesManagerScript.patchNotesFile = patchInfofixture;
+
+        var currentVersion = "0.1.0";
+
+        var resultUpdateEntry = patchNotesManagerScript.SetExactUpdateEntry(currentVersion);
+
+        Assert.IsNotNull(resultUpdateEntry);
+        Assert.AreEqual(currentVersion, resultUpdateEntry.version);
+        Assert.AreEqual("UPDATE 0.1.0 - TESTNAME 2", resultUpdateEntry.title);
+        Assert.AreEqual("25/04/2025", resultUpdateEntry.date);
+        Assert.AreEqual("Fixed trampoline bounce bug.", resultUpdateEntry.patchnotes[0]);
+    }
+
+    [Test]
+    public void SetExactUpdateEntryTest_FileException()
+    {
+        var currentVersion = "0.1.0";
+
+        void resultGetUpdateEntry() => patchNotesManagerScript.SetExactUpdateEntry(currentVersion);
+
+        Assert.Throws<FileNotFoundException>(resultGetUpdateEntry);
     }
 }
