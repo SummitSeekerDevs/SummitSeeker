@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 [assembly: InternalsVisibleTo("Tests")]
@@ -25,7 +26,7 @@ public class PatchNotesManager : MonoBehaviour
     private void Start()
     {
         InitializePatchNotesManager();
-        SetExactUpdateEntry();
+        exactUpdateEntry = SetExactUpdateEntry(Application.version);
         SetUITexts();
     }
 
@@ -46,7 +47,7 @@ public class PatchNotesManager : MonoBehaviour
         }
     }
 
-    private void SetExactUpdateEntry()
+    internal UpdateEntry SetExactUpdateEntry(string currentVersion)
     {
         if (patchNotesFile != null)
         {
@@ -54,15 +55,16 @@ public class PatchNotesManager : MonoBehaviour
             UpdateList allUpdates = JsonUtility.FromJson<UpdateList>(patchNotesFile.text);
 
             // Finde neuestes Update
-            UpdateEntry exactUpdate = GetUpdateByVersion(allUpdates.updates);
+            UpdateEntry exactUpdate = GetUpdateByVersion(allUpdates.updates, currentVersion);
 
             if (exactUpdate != null)
             {
-                exactUpdateEntry = exactUpdate;
+                return exactUpdate;
             }
             else
             {
                 Debug.LogWarning("Kein Patchnotes des Updates für die aktuelle Version gefunden");
+                return null;
             }
         }
         else
@@ -105,12 +107,12 @@ public class PatchNotesManager : MonoBehaviour
         return (title, notes, date);
     }
 
-    internal UpdateEntry GetUpdateByVersion(List<UpdateEntry> updates)
+    internal UpdateEntry GetUpdateByVersion(List<UpdateEntry> updates, string targetVersion)
     {
         // Suchen nach einem Update, das exakt der Spielversion entspricht
         foreach (UpdateEntry update in updates)
         {
-            if (CompareVersionsWithBuild(update.version, Application.version) == 0)
+            if (CompareVersionsWithBuild(update.version, targetVersion) == 0)
             {
                 return update; // Exaktes Update gefunden
             }
