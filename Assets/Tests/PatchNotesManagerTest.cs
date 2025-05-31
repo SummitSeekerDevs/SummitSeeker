@@ -84,8 +84,12 @@ public class PatchNotesManagerTest
 
         UpdateEntry result = patchNotesManagerScript.GetUpdateByVersion(updates, currentVersion);
 
-        Assert.IsNotNull(result);
-        Assert.AreEqual(currentVersion, result.version);
+        Assert.IsNotNull(result, "UpdateEntry found");
+        Assert.AreEqual(
+            currentVersion,
+            result.version,
+            "Return correct update when version matches"
+        );
     }
 
     [Test]
@@ -98,11 +102,15 @@ public class PatchNotesManagerTest
 
         var resultUpdateEntry = patchNotesManagerScript.SetExactUpdateEntry(currentVersion);
 
-        Assert.IsNotNull(resultUpdateEntry);
-        Assert.AreEqual(currentVersion, resultUpdateEntry.version);
-        Assert.AreEqual("UPDATE 0.1.0 - TESTNAME 2", resultUpdateEntry.title);
-        Assert.AreEqual("25/04/2025", resultUpdateEntry.date);
-        Assert.AreEqual("Fixed trampoline bounce bug.", resultUpdateEntry.patchnotes[0]);
+        Assert.IsNotNull(resultUpdateEntry, "UpdateEntry found");
+        Assert.AreEqual(currentVersion, resultUpdateEntry.version, "Version matches");
+        Assert.AreEqual("UPDATE 0.1.0 - TESTNAME 2", resultUpdateEntry.title, "Title matches");
+        Assert.AreEqual("25/04/2025", resultUpdateEntry.date, "Date matches");
+        Assert.AreEqual(
+            "Fixed trampoline bounce bug.",
+            resultUpdateEntry.patchnotes[0],
+            "First patchnotes entry matches"
+        );
     }
 
     [Test]
@@ -112,6 +120,9 @@ public class PatchNotesManagerTest
 
         void resultGetUpdateEntry() => patchNotesManagerScript.SetExactUpdateEntry(currentVersion);
 
-        Assert.Throws<FileNotFoundException>(resultGetUpdateEntry);
+        Assert.Throws<FileNotFoundException>(
+            resultGetUpdateEntry,
+            "Throws exception when patchnotesfile is not set"
+        );
     }
 }
