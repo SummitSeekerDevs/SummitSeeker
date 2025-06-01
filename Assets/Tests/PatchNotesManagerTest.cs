@@ -93,6 +93,36 @@ public class PatchNotesManagerTest
     }
 
     [Test]
+    public void GetLatestUpdateTest()
+    {
+        // Should return correct update when version matches
+        var updates = new List<UpdateEntry>
+        {
+            new UpdateEntry
+            {
+                version = "1.0.0",
+                title = "Test",
+                date = "01/01/2025",
+                patchnotes = new List<String> { "Fix 1" },
+            },
+            new UpdateEntry
+            {
+                version = "1.1.4",
+                title = "New",
+                date = "04/01/2025",
+                patchnotes = new List<String> { "Fix 2" },
+            },
+        };
+
+        var currentVersion = "1.1.2";
+
+        UpdateEntry result = patchNotesManagerScript.GetLatestUpdate(updates, currentVersion);
+
+        Assert.IsNotNull(result, "UpdateEntry found");
+        Assert.GreaterOrEqual(result.version, currentVersion, "Return same or higher update");
+    }
+
+    [Test]
     public void SetExactUpdateEntryTest_FindEntry()
     {
         TextAsset patchInfofixture = Resources.Load<TextAsset>("Test/Fixture/patchInfo_fixture");

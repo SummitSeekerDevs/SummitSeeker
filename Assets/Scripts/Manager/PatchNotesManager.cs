@@ -107,7 +107,7 @@ public class PatchNotesManager : MonoBehaviour
         return null; // Kein exaktes Update gefunden
     }
 
-    internal UpdateEntry GetLatestUpdate(List<UpdateEntry> updates)
+    internal UpdateEntry GetLatestUpdate(List<UpdateEntry> updates, string targetVersion)
     {
         // Sortiere Updates nach Versionsnummer
         updates.Sort(
@@ -117,7 +117,7 @@ public class PatchNotesManager : MonoBehaviour
         // Rückgabe des ersten Updates, das neuer oder gliech der aktuellen Version ist
         foreach (UpdateEntry update in updates)
         {
-            if (CompareVersionsWithBuild(update.version, Application.version) >= 0)
+            if (CompareVersionsWithBuild(update.version, targetVersion) >= 0)
             {
                 return update;
             }
