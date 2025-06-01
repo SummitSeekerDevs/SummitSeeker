@@ -25,6 +25,7 @@ public class MenuManager : MonoBehaviour
         InitializeMenuManager();
     }
 
+    #region Initialization
     private void InitializeMenuManager()
     {
         if (_instance != null && _instance != this)
@@ -45,6 +46,9 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region State changing logic
     private bool IsValidStateTransition(MenuState from, MenuState to)
     {
         // Add state transition validation logic here
@@ -104,6 +108,9 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region State handling
     private void HandleStartGameMenuState()
     {
         GameManager.Instance.UpdateGameState(GameState.InGame);
@@ -144,6 +151,8 @@ public class MenuManager : MonoBehaviour
     {
         // controls menu logic
     }
+
+    #endregion
 }
 
 public enum MenuState
