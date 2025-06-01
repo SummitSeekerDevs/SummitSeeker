@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 public class MenuManager : MonoBehaviour
 {
-    private static MenuManager _instance;
+    public static MenuManager _instance { get; private set; }
     internal MenuState _currentState = MenuState.StartupMenu;
 
     [SerializeField]
@@ -96,44 +96,35 @@ public class MenuManager : MonoBehaviour
             case MenuState.ControlsMenu:
                 HandleControlsMenuState();
                 break;
+            case MenuState.StartGameMenu:
+                HandleStartGameMenuState();
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
     }
 
+    private void HandleStartGameMenuState()
+    {
+        GameManager.Instance.UpdateGameState(GameState.InGame);
+    }
+
     private void HandleStartupMenuState()
     {
-        // Panels
-        MenuPanel.SetActive(true);
-        NewsPanel.SetActive(true);
-        CreditsPanel.SetActive(false);
-
-        // Buttons
-        MainMenuButtons.SetActive(true);
-        SettingsMenuButtons.SetActive(false);
+        UIController._instance.ShowStartUpMenu();
     }
 
     private void HandleOptionsMenuState()
     {
-        // Panels
-        MenuPanel.SetActive(true);
-        NewsPanel.SetActive(true);
-        CreditsPanel.SetActive(false);
-
-        // Buttons
-        MainMenuButtons.SetActive(false);
-        SettingsMenuButtons.SetActive(true);
+        UIController._instance.ShowOptionsMenu();
     }
 
     private void HandleCreditsMenuState()
     {
-        // Panels
-        MenuPanel.SetActive(false);
-        NewsPanel.SetActive(false);
-        CreditsPanel.SetActive(true);
+        UIController._instance.ShowCreditsMenu();
     }
 
-    // Setting-Views
+    // Setting-States
     private void HandleLanguageMenuState()
     {
         // language menu logic
@@ -164,4 +155,5 @@ public enum MenuState
     SoundMenu = 4,
     GameplayMenu = 5,
     ControlsMenu = 6,
+    StartGameMenu = 7,
 }

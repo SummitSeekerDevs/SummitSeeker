@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerGO { get; private set; }
 
     public string mainMenuSceneName { get; private set; } = "HomeMenuScene";
+    public string inGameSceneName { get; private set; } = "SampleScene";
 
     public static GameManager Instance
     {
@@ -158,6 +159,10 @@ public class GameManager : MonoBehaviour
     private void HandleInGameState()
     {
         // Add In game state logic
+        if (SceneManager.GetActiveScene().name != inGameSceneName)
+        {
+            sceneLoader.LoadSceneWhenReady(inGameSceneName, null);
+        }
     }
 
     private void HandlePauseState()
