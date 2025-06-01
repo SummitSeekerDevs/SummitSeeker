@@ -15,12 +15,6 @@ public class PatchNotesManager : MonoBehaviour
     [SerializeField]
     internal TextAsset patchNotesFile;
 
-    [SerializeField]
-    internal TMP_Text titleText,
-        notesText,
-        dateText,
-        versionText;
-
     internal UpdateEntry exactUpdateEntry;
 
     private void Start()
@@ -32,14 +26,12 @@ public class PatchNotesManager : MonoBehaviour
 
     private void SetUITexts()
     {
-        versionText.text = GetFormattedVersionText();
+        UIController._instance.SetVersionUIText();
 
         if (exactUpdateEntry != null)
         {
             var (title, notes, date) = FormatPatchNotes(exactUpdateEntry);
-            titleText.text = title;
-            notesText.text = notes;
-            dateText.text = date;
+            UIController._instance.SetPatchNotesUITexts(title, notes, date);
         }
         else
         {
@@ -91,12 +83,6 @@ public class PatchNotesManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-    }
-
-    // Textelemente
-    internal string GetFormattedVersionText()
-    {
-        return "Version: " + Application.version;
     }
 
     internal (string title, string notes, string date) FormatPatchNotes(UpdateEntry update)

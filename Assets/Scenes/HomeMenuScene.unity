@@ -698,6 +698,10 @@ MonoBehaviour:
   CreditsPanel: {fileID: 1788691823}
   MainMenuButtons: {fileID: 2070269023}
   SettingsMenuButtons: {fileID: 1598389031}
+  titleText: {fileID: 1072664754}
+  notesText: {fileID: 1226511840}
+  dateText: {fileID: 1482218971}
+  versionText: {fileID: 1527735250}
 --- !u!1 &206403817
 GameObject:
   m_ObjectHideFlags: 0
@@ -7035,10 +7039,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patchNotesFile: {fileID: 4900000, guid: ce582662979649743953fc9ac82b0be9, type: 3}
-  titleText: {fileID: 1072664754}
-  notesText: {fileID: 1226511840}
-  dateText: {fileID: 1482218971}
-  versionText: {fileID: 1527735250}
 --- !u!4 &2132301057
 Transform:
   m_ObjectHideFlags: 0

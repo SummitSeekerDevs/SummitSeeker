@@ -1,11 +1,13 @@
+using System;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
     public static UIController _instance { get; private set; }
 
-    // MainMenu UI-elements
+    #region MainMenu UI-References
     [Header("MainMenu UI References")]
     // - Panels
     [Header("Panels")]
@@ -25,6 +27,21 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     internal GameObject SettingsMenuButtons;
+
+    [Header("PatchNotesManager References")]
+    [SerializeField]
+    internal TMP_Text titleText;
+
+    [SerializeField]
+    internal TMP_Text notesText;
+
+    [SerializeField]
+    internal TMP_Text dateText;
+
+    [SerializeField]
+    internal TMP_Text versionText;
+
+    #endregion
 
     private void Awake()
     {
@@ -93,6 +110,23 @@ public class UIController : MonoBehaviour
             NewsPanel.SetActive(false);
             CreditsPanel.SetActive(true);
         }
+    }
+    #endregion
+
+    #region PatchNotes Texts
+    public void SetPatchNotesUITexts(string title, string notes, string date)
+    {
+        if (GameManager.Instance.CurrentState == GameState.MainMenu)
+        {
+            titleText.text = title;
+            notesText.text = notes;
+            dateText.text = date;
+        }
+    }
+
+    public void SetVersionUIText()
+    {
+        versionText.text = "Version: " + Application.version;
     }
     #endregion
 }
