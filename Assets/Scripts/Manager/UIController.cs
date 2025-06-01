@@ -48,6 +48,7 @@ public class UIController : MonoBehaviour
         InitializeUIContoller();
     }
 
+    #region Initialize
     private void InitializeUIContoller()
     {
         if (_instance != null && _instance != this)
@@ -59,6 +60,8 @@ public class UIController : MonoBehaviour
 
         _instance = this;
     }
+
+    #endregion
 
     #region MainMenu - Show menu
 
