@@ -30,7 +30,11 @@ public class SceneLoaderTest
 
         yield return sceneLoaderScript.LoadSceneAsync("HomeMenuScene", () => sceneLoaded = true);
 
-        Assert.IsTrue(sceneLoaded);
-        Assert.AreEqual("HomeMenuScene", SceneManager.GetActiveScene().name);
+        Assert.IsTrue(sceneLoaded, "Scene loaded");
+        Assert.AreEqual(
+            "HomeMenuScene",
+            SceneManager.GetActiveScene().name,
+            "Loaded correct scene"
+        );
     }
 }
