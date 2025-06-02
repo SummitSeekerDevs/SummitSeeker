@@ -65,22 +65,22 @@ public class UIController : MonoBehaviour
 
     #region MainMenu - Show menu
 
-    public void ShowStartUpMenu()
+    public virtual void ShowStartUpMenu()
     {
-        if (
-            GameManager.Instance.CurrentState == GameState.MainMenu
-            && MenuManager._instance._currentState == MenuState.StartupMenu
-        )
-        {
-            // Panels
-            MenuPanel.SetActive(true);
-            NewsPanel.SetActive(true);
-            CreditsPanel.SetActive(false);
-
-            // Buttons
-            MainMenuButtons.SetActive(true);
-            SettingsMenuButtons.SetActive(false);
-        }
+        /* if (
+             GameManager.Instance.CurrentState == GameState.MainMenu
+             && MenuManager._instance._currentState == MenuState.StartupMenu
+         )
+         {
+             // Panels
+             MenuPanel.SetActive(true);
+             NewsPanel.SetActive(true);
+             CreditsPanel.SetActive(false);
+ 
+             // Buttons
+             MainMenuButtons.SetActive(true);
+             SettingsMenuButtons.SetActive(false);
+         }*/
     }
 
     public void ShowOptionsMenu()
