@@ -13,9 +13,7 @@ jobs:
                 lfs: true
 
             - name: Dotnet restore
-              #working-directory: SummitSeeker
-              run: dotnet tool restore # --tool-manifest SummitSeeker/.config/dotnet-tools.json
+              run: dotnet tool restore
 
             - name: Run CSharpier Check
-              #working-directory: SummitSeeker
               run: dotnet tool run dotnet-csharpier --check .
