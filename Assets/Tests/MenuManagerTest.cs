@@ -5,14 +5,18 @@ using UnityEngine.TestTools;
 
 public class MenuManagerTest
 {
-    private GameObject menuManager;
+    private GameObject menuManager,
+        uIController;
     private MenuManager menuManagerScript;
+    private UIController uIControllerScript;
 
     [SetUp]
     public void SetUp()
     {
         menuManager = new GameObject("MenuManager");
         menuManagerScript = menuManager.AddComponent<MenuManager>();
+
+        // UIController mit text und panel referenzen erstellen, da kein Mockup
     }
 
     [TearDown]

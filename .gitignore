@@ -10,6 +10,12 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
+#NuGet
+[Nn]uGet
+/[Aa]ssets/[Nn]uGet.config
+/[Aa]ssets/[Nn]uGet.config.meta
+/[Aa]ssets/[Nn]uGet.meta
+
 # Code Coverage
 [Cc]odeCoverage
 
