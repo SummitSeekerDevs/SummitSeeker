@@ -33,10 +33,10 @@ public class GameManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
-        setPlayerInputActions();
+        SetPlayerInputActions();
     }
 
-    private void setPlayerInputActions()
+    private void SetPlayerInputActions()
     {
         // Set PlayerInput Actions
         try
