@@ -8,8 +8,10 @@ public class SavePointTrigger : MonoBehaviour
     public PlayerSavePoint playerSavePoint;
     private bool usedSavePoint = false;
 
-    private void OnTriggerEnter(Collider other) {
-        if (!usedSavePoint) {
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!usedSavePoint)
+        {
             Debug.Log("1 use savepoint unlocked");
             playerSavePoint.SetActiveSavePoint(savePoint);
             usedSavePoint = true;

@@ -1,12 +1,12 @@
-using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovementVid : MonoBehaviour
 {
     private PlayerInput_Actions _playerInputActions;
 
     public Transform spawnPoint;
-    
+
     [Header("Movement")]
     private float moveSpeed;
     public float walkSpeed;
@@ -37,7 +37,6 @@ public class PlayerMovementVid : MonoBehaviour
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
-    
 
     public Transform orientation;
 
@@ -48,30 +47,36 @@ public class PlayerMovementVid : MonoBehaviour
     Rigidbody rb;
 
     public MovementState state;
+
     public enum MovementState
     {
         walking,
         sprinting,
         crouching,
-        air
+        air,
     }
 
-    private void Awake() {
+    private void Awake()
+    {
         SetPlayerInputActions();
     }
 
-    private void SetPlayerInputActions() {
-        if (GameManager.Instance == null) {
+    private void SetPlayerInputActions()
+    {
+        if (GameManager.Instance == null)
+        {
             Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
             return;
         }
         _playerInputActions = GameManager.Instance.InputActions;
-        if (_playerInputActions == null) {
+        if (_playerInputActions == null)
+        {
             Debug.LogError("PlayerInput_Actions not initialized in GameManager");
         }
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         // Movin
         _playerInputActions.Player.Move.performed += OnMove;
         _playerInputActions.Player.Move.canceled += OnMove;
@@ -89,7 +94,8 @@ public class PlayerMovementVid : MonoBehaviour
         _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         // Moving
         _playerInputActions.Player.Move.performed -= OnMove;
         _playerInputActions.Player.Move.canceled -= OnMove;
@@ -120,7 +126,12 @@ public class PlayerMovementVid : MonoBehaviour
     private void Update()
     {
         // ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(
+            transform.position,
+            Vector3.down,
+            playerHeight * 0.5f + 0.2f,
+            whatIsGround
+        );
 
         MyInput();
         SpeedControl();
@@ -140,39 +151,54 @@ public class PlayerMovementVid : MonoBehaviour
 
     #region Input
 
-    private void OnMove(InputAction.CallbackContext context) {
+    private void OnMove(InputAction.CallbackContext context)
+    {
         moveInput = context.ReadValue<Vector2>();
     }
 
     // Jumping
-    private void OnJump(InputAction.CallbackContext context) {
+    private void OnJump(InputAction.CallbackContext context)
+    {
         _jumpingIsPressed = true;
     }
 
-    private void OnJumpCanceled(InputAction.CallbackContext context) {
+    private void OnJumpCanceled(InputAction.CallbackContext context)
+    {
         _jumpingIsPressed = false;
     }
 
     // Crouching
-    private void OnCrouch(InputAction.CallbackContext context) {
+    private void OnCrouch(InputAction.CallbackContext context)
+    {
         _crouchingIsPressed = true;
 
-        transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            crouchYScale,
+            transform.localScale.z
+        );
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
     }
 
-    private void OnCrouchCanceled(InputAction.CallbackContext context) {
-        transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+    private void OnCrouchCanceled(InputAction.CallbackContext context)
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            startYScale,
+            transform.localScale.z
+        );
 
         _crouchingIsPressed = false;
     }
 
     // Sprinting
-    private void OnSprint(InputAction.CallbackContext context) {
+    private void OnSprint(InputAction.CallbackContext context)
+    {
         _sprintingIsPressed = true;
     }
 
-    private void OnSprintCanceled(InputAction.CallbackContext context) {
+    private void OnSprintCanceled(InputAction.CallbackContext context)
+    {
         _sprintingIsPressed = false;
     }
 
@@ -181,7 +207,7 @@ public class PlayerMovementVid : MonoBehaviour
     private void MyInput()
     {
         // when to jump
-        if(_jumpingIsPressed && readyToJump && grounded)
+        if (_jumpingIsPressed && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -189,7 +215,6 @@ public class PlayerMovementVid : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-
     }
 
     private void StateHandler()
@@ -200,21 +225,18 @@ public class PlayerMovementVid : MonoBehaviour
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
         }
-
         // Mode - Sprinting
-        else if(grounded && _sprintingIsPressed)
+        else if (grounded && _sprintingIsPressed)
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
         }
-
         // Mode - Walking
         else if (grounded)
         {
             state = MovementState.walking;
             moveSpeed = walkSpeed;
         }
-
         // Mode - Air
         else
         {
@@ -238,16 +260,19 @@ public class PlayerMovementVid : MonoBehaviour
             if (rb.linearVelocity.y > 0)
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }
-
         // on ground
-        else if(grounded)
+        else if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-
         // in air
-        else if(!grounded) {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        else if (!grounded)
+        {
+            rb.AddForce(
+                moveDirection.normalized * moveSpeed * 10f * airMultiplier,
+                ForceMode.Force
+            );
 
-            if (rb.position.y <= -15f) {
+            if (rb.position.y <= -15f)
+            {
                 rb.position = spawnPoint.position;
             }
         }
@@ -264,7 +289,6 @@ public class PlayerMovementVid : MonoBehaviour
             if (rb.linearVelocity.magnitude > moveSpeed)
                 rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
         }
-
         // limiting speed on ground or in air
         else
         {
@@ -288,6 +312,7 @@ public class PlayerMovementVid : MonoBehaviour
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
+
     private void ResetJump()
     {
         readyToJump = true;
@@ -297,7 +322,14 @@ public class PlayerMovementVid : MonoBehaviour
 
     private bool OnSlope()
     {
-        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        if (
+            Physics.Raycast(
+                transform.position,
+                Vector3.down,
+                out slopeHit,
+                playerHeight * 0.5f + 0.3f
+            )
+        )
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeAngle && angle != 0;

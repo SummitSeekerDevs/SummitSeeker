@@ -7,8 +7,10 @@ public class ThrowTarget : MonoBehaviour
     public string colliderTag;
     public CallablePlatform connectedPlatform;
 
-    private void OnCollisionEnter(Collision other) {
-        if (other.transform.CompareTag(colliderTag)) {
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.transform.CompareTag(colliderTag))
+        {
             connectedPlatform.moveToPosition = true;
             this.gameObject.SetActive(false);
         }

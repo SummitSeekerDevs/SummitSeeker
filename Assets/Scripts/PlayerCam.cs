@@ -1,58 +1,69 @@
-using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCam : MonoBehaviour
 {
     private PlayerInput_Actions _playerInputActions;
 
-    public float sensX, sensY;
+    public float sensX,
+        sensY;
 
     public Transform orientation;
 
-    float xRotation, yRotation;
+    float xRotation,
+        yRotation;
 
     private Vector2 mouseDelta;
 
-    private void Awake() {
+    private void Awake()
+    {
         SetPlayerInputActions();
     }
 
-    private void SetPlayerInputActions() {
-        if (GameManager.Instance == null) {
+    private void SetPlayerInputActions()
+    {
+        if (GameManager.Instance == null)
+        {
             Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
             return;
         }
         _playerInputActions = GameManager.Instance.InputActions;
-        if (_playerInputActions == null) {
+        if (_playerInputActions == null)
+        {
             Debug.LogError("PlayerInput_Actions not initialized in GameManager");
         }
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         _playerInputActions.Player.Point.performed += OnLook;
         _playerInputActions.Player.Point.canceled += OnLookCanceled;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _playerInputActions.Player.Point.performed -= OnLook;
         _playerInputActions.Player.Point.canceled -= OnLookCanceled;
     }
 
-    public void Start() {
+    public void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void OnLook(InputAction.CallbackContext context) {
+    private void OnLook(InputAction.CallbackContext context)
+    {
         mouseDelta = context.ReadValue<Vector2>();
     }
 
-    private void OnLookCanceled(InputAction.CallbackContext context) {
+    private void OnLookCanceled(InputAction.CallbackContext context)
+    {
         mouseDelta = Vector2.zero;
     }
 
-    public void Update() {
-
+    public void Update()
+    {
         // get mouse input
         float mouseX = mouseDelta.x * Time.deltaTime * sensX;
         float mouseY = mouseDelta.y * Time.deltaTime * sensY;
