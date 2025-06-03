@@ -12,62 +12,77 @@ public class GameManager : MonoBehaviour
     private PlayerInput_Actions _playerInputActions;
     public PlayerInput_Actions InputActions => _playerInputActions;
 
-    public static GameManager Instance {
-        get {
-            if (_instance == null) 
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
                 Debug.LogError("GameManager is null!");
             return _instance;
         }
     }
 
-    void Awake() {
-        if (_instance != null && _instance != this) {
+    void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
             Destroy(this);
             return;
         }
-        
+
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
         setPlayerInputActions();
-        
     }
 
-    private void setPlayerInputActions() {
+    private void setPlayerInputActions()
+    {
         // Set PlayerInput Actions
-        try {
+        try
+        {
             _playerInputActions = new PlayerInput_Actions();
         }
-        catch (System.Exception e) {
+        catch (System.Exception e)
+        {
             Debug.LogError($"Failed to initialize input actions: {e.Message}");
         }
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         _playerInputActions.Player.Enable();
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _playerInputActions.Player.Disable();
     }
 
-    public void ButtonUpdateGameState(int newStateInt) {
-        if (Enum.IsDefined(typeof(GameState), newStateInt)) {
-            UpdateGameState((GameState) newStateInt);
-        } else {
+    public void ButtonUpdateGameState(int newStateInt)
+    {
+        if (Enum.IsDefined(typeof(GameState), newStateInt))
+        {
+            UpdateGameState((GameState)newStateInt);
+        }
+        else
+        {
             Debug.LogError($"Invalid game state value: {newStateInt}");
         }
     }
 
-    public void UpdateGameState(GameState newState) {
-        if (!IsValidStateTransition(_currentState, newState)) {
+    public void UpdateGameState(GameState newState)
+    {
+        if (!IsValidStateTransition(_currentState, newState))
+        {
             Debug.LogWarning($"Invalid state transition from {_currentState} to {newState}");
             return;
         }
 
         _currentState = newState;
 
-        switch (newState) {
+        switch (newState)
+        {
             case GameState.MainMenu:
                 HandleMainMenuState();
                 break;
@@ -84,38 +99,45 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
     }
 
-    private bool IsValidStateTransition(GameState from, GameState to) {
+    private bool IsValidStateTransition(GameState from, GameState to)
+    {
         // Add state transition validation logic here
         return true;
     }
 
-    private void HandleMainMenuState() {
+    private void HandleMainMenuState()
+    {
         // Add main menu state logic
     }
 
-    private void HandleInGameState() {
+    private void HandleInGameState()
+    {
         // Add In game state logic
     }
 
-    private void HandlePauseState() {
+    private void HandlePauseState()
+    {
         // Add pause state logic
     }
 
-    public void TogglePause() {
-        if (_currentState != GameState.Pause) {
+    public void TogglePause()
+    {
+        if (_currentState != GameState.Pause)
+        {
             Time.timeScale = 0;
             UpdateGameState(GameState.Pause);
         }
-        else {
+        else
+        {
             Time.timeScale = 1;
             UpdateGameState(GameState.InGame);
         }
     }
-    
 }
 
-public enum GameState {
+public enum GameState
+{
     MainMenu,
     InGame,
-    Pause
+    Pause,
 }
