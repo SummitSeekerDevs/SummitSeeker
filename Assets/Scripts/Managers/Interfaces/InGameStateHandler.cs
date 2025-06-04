@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class InGameStateHandler : IGameStateHandler
 {
     private readonly SceneLoader _sceneLoader;
-    private readonly string _inGameSceneName = "InGame";
+    private readonly string _inGameSceneName = "SampleScene";
 
     public GameState State => GameState.InGame;
 
