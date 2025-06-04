@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
 
     private void SetPlayerInputActions()
     {
-        // Set PlayerInput Actions
         try
         {
             _playerInputActions = new PlayerInput_Actions();
