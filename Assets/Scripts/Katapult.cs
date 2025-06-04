@@ -10,11 +10,11 @@ public class Katapult : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         playerRb = other.transform.GetComponent<Rigidbody>();
-        Invoke(nameof(shootPlayerUp), 4f);
+        Invoke(nameof(ShootPlayerUp), 4f);
     }
 
     // BRAUCHt check ob player noch drauf ist
-    private void shootPlayerUp()
+    private void ShootPlayerUp()
     {
         playerRb.AddForce(transform.up * shootUpForce, ForceMode.Impulse);
     }
