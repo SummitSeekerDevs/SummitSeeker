@@ -5,7 +5,6 @@ using Zenject;
 public class PlayerMovementVid : MonoBehaviour
 {
     private PlayerInput_Actions _playerInputActions;
-    private GameManager _gameManager;
 
     public Transform spawnPoint;
 
@@ -59,9 +58,8 @@ public class PlayerMovementVid : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(GameManager gameManager, PlayerInput_Actions playerInputAction)
+    public void Construct(PlayerInput_Actions playerInputAction)
     {
-        _gameManager = gameManager;
         _playerInputActions = playerInputAction;
     }
 
