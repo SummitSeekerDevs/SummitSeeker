@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Zenject;
 
@@ -18,7 +19,7 @@ public class GameManager : IInitializable
 
     public void Initialize()
     {
-        UpdateGameState(GameState.MainMenu);
+        UpdateGameState(GameState.InGame);
     }
 
     public void UpdateGameState(GameState newState)
