@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class GameInstaller : MonoInstaller
+public class GameInstaller : MonoInstaller<GameInstaller>
 {
     [SerializeField]
     private SceneLoader sceneLoaderPrefab;
