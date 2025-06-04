@@ -1,7 +1,7 @@
 # SummitSeeker
 
 # Links
- - [Game Documentation][link to docu]
+- [Game Documentation](https://summitseekerdevs.github.io/Dokumentation/)
 
 # Project Setup
 - Unity Hub: Version 3.10.0 ++
