@@ -1,23 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class SavePointTrigger : MonoBehaviour
 {
     [SerializeField]
     internal Transform savePoint;
-    private PlayerSavePoint playerSavePoint;
+    private GameObject _playerGameObject;
     internal bool usedSavePoint = false;
     public string colliderTag;
 
-    private void Start()
+    [Inject]
+    public void Construct(GameObject playerGameObject)
     {
-        playerSavePoint = GameManager.Instance.playerGO.GetComponent<PlayerSavePoint>();
+        _playerGameObject = playerGameObject;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!usedSavePoint && other.transform.CompareTag(colliderTag))
+        if (
+            !usedSavePoint
+            && other.transform.CompareTag(colliderTag)
+            && _playerGameObject.TryGetComponent<PlayerSavePoint>(
+                out PlayerSavePoint playerSavePoint
+            )
+        )
         {
             Debug.Log("1 use savepoint unlocked");
             playerSavePoint.setActiveSavePoint(savePoint);
