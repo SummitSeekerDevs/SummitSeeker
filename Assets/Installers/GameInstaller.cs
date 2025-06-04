@@ -4,13 +4,13 @@ using Zenject;
 public class GameInstaller : MonoInstaller<GameInstaller>
 {
     [SerializeField]
-    private SceneLoader sceneLoaderPrefab;
+    private SceneLoader _sceneLoaderPrefab;
 
     public override void InstallBindings()
     {
         Container
             .Bind<SceneLoader>()
-            .FromComponentInNewPrefab(sceneLoaderPrefab)
+            .FromComponentInNewPrefab(_sceneLoaderPrefab)
             .AsSingle()
             .NonLazy();
 
