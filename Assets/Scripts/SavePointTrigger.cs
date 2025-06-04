@@ -13,7 +13,7 @@ public class SavePointTrigger : MonoBehaviour
         if (!usedSavePoint)
         {
             Debug.Log("1 use savepoint unlocked");
-            playerSavePoint.setActiveSavePoint(savePoint);
+            playerSavePoint.SetActiveSavePoint(savePoint);
             usedSavePoint = true;
         }
     }
