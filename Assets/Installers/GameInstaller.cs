@@ -14,6 +14,13 @@ public class GameInstaller : MonoInstaller<GameInstaller>
             .AsSingle()
             .NonLazy();
 
+        var _playerInputActions = new PlayerInput_Actions();
+        Container
+            .Bind<PlayerInput_Actions>()
+            .FromInstance(_playerInputActions)
+            .AsSingle()
+            .NonLazy();
+
         Container.BindInterfacesAndSelfTo<GameManager>().AsSingle().NonLazy();
 
         Container.Bind<IGameStateHandler>().To<MainMenuStateHandler>().AsSingle();

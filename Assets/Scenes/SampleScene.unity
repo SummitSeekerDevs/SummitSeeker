@@ -1587,7 +1587,6 @@ MonoBehaviour:
   objectToThrow: {fileID: 7001848271421976872, guid: cfeba98e75fbba241b46207da4f95de1, type: 3}
   totalThrows: 100
   throwCooldown: 0.1
-  throwKey: 323
   throwForce: 4
   throwUpwardForce: 0
 --- !u!114 &603089417
@@ -1611,9 +1610,6 @@ MonoBehaviour:
   airMultiplier: 0.2
   crouchSpeed: 3.5
   crouchYScale: 0.5
-  jumpKey: 32
-  sprintKey: 304
-  crouchKey: 306
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
@@ -1633,7 +1629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6656f084da43c614094b9d0b177dc4e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetToActiveSavePoint: 114
 --- !u!1001 &620299918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5030,7 +5025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savePoint: {fileID: 240534466}
-  playerSavePoint: {fileID: 603089418}
+  colliderTag: 
 --- !u!1 &2104381349
 GameObject:
   m_ObjectHideFlags: 0

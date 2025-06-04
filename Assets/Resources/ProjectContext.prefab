@@ -74,4 +74,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d263c9148d9f0248a3c89efd10231f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoaderPrefab: {fileID: 1133565150235254154, guid: d1acedb0be616b24b813862d38b93a84, type: 3}
+  _sceneLoaderPrefab: {fileID: 1133565150235254154, guid: d1acedb0be616b24b813862d38b93a84, type: 3}
