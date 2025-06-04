@@ -9,10 +9,10 @@ public class PlayerSavePoint : MonoBehaviour
 
     private void Awake()
     {
-        SetPlayerInputActions();
+        setPlayerInputActions();
     }
 
-    private void SetPlayerInputActions()
+    private void setPlayerInputActions()
     {
         if (GameManager.Instance == null)
         {
@@ -36,7 +36,7 @@ public class PlayerSavePoint : MonoBehaviour
         _playerInputActions.Player.ResetToSavePoint.performed -= OnResetToSavePoint;
     }
 
-    public void SetActiveSavePoint(Transform savePoint)
+    public void setActiveSavePoint(Transform savePoint)
     {
         activeSavePoint = savePoint;
     }

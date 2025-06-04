@@ -4,18 +4,40 @@ using UnityEngine;
 
 public class Katapult : MonoBehaviour
 {
-    Rigidbody playerRb;
+    internal Rigidbody playerRb;
     public float shootUpForce = 50f;
+    internal RigidbodyConstraints playerRbDefaultconstraints;
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        playerRb = other.transform.GetComponent<Rigidbody>();
+        playerRb = collision.transform.GetComponent<Rigidbody>();
+        playerRbDefaultconstraints = playerRb.constraints;
+
+        ToggleFreezePlayerPosition(true);
+
+        // Set timer
         Invoke(nameof(ShootPlayerUp), 4f);
     }
 
-    // BRAUCHt check ob player noch drauf ist
-    private void ShootPlayerUp()
+    internal void ToggleFreezePlayerPosition(bool freeze)
     {
+        if (freeze)
+        {
+            playerRb.constraints = RigidbodyConstraints.FreezeAll;
+        }
+        else
+        {
+            playerRb.constraints = playerRbDefaultconstraints;
+        }
+    }
+
+    // BRAUCHt check ob player noch drauf ist
+    internal void ShootPlayerUp()
+    {
+        ToggleFreezePlayerPosition(false);
+
         playerRb.AddForce(transform.up * shootUpForce, ForceMode.Impulse);
+
+        Debug.Log(playerRb.position);
     }
 }

@@ -22,10 +22,10 @@ public class ThrowingKnife : MonoBehaviour
 
     private void Awake()
     {
-        SetPlayerInputActions();
+        setPlayerInputActions();
     }
 
-    private void SetPlayerInputActions()
+    private void setPlayerInputActions()
     {
         if (GameManager.Instance == null)
         {

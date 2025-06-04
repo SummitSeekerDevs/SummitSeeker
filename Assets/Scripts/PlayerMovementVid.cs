@@ -8,10 +8,10 @@ public class PlayerMovementVid : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Movement")]
-    private float moveSpeed;
+    internal float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
-    bool _sprintingIsPressed;
+    internal bool _sprintingIsPressed { get; private set; }
 
     public float groundDrag;
 
@@ -20,13 +20,13 @@ public class PlayerMovementVid : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
-    bool _jumpingIsPressed;
+    internal bool _jumpingIsPressed { get; private set; }
 
     [Header("Crouching")]
     public float crouchSpeed;
     public float crouchYScale;
     private float startYScale;
-    bool _crouchingIsPressed;
+    internal bool _crouchingIsPressed { get; private set; }
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -40,7 +40,7 @@ public class PlayerMovementVid : MonoBehaviour
 
     public Transform orientation;
 
-    private Vector2 moveInput;
+    internal Vector2 moveInput { get; private set; }
 
     Vector3 moveDirection;
 
@@ -58,10 +58,11 @@ public class PlayerMovementVid : MonoBehaviour
 
     private void Awake()
     {
-        SetPlayerInputActions();
+        setPlayerInputActions();
+        GameManager.Instance.setPlayerGameObject(this.gameObject);
     }
 
-    private void SetPlayerInputActions()
+    private void setPlayerInputActions()
     {
         if (GameManager.Instance == null)
         {
@@ -146,7 +147,7 @@ public class PlayerMovementVid : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        MovePlayer(moveInput.x, moveInput.y);
     }
 
     #region Input
@@ -171,23 +172,12 @@ public class PlayerMovementVid : MonoBehaviour
     private void OnCrouch(InputAction.CallbackContext context)
     {
         _crouchingIsPressed = true;
-
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            crouchYScale,
-            transform.localScale.z
-        );
-        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        Crouch();
     }
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
     {
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            startYScale,
-            transform.localScale.z
-        );
-
+        ResetCrouch();
         _crouchingIsPressed = false;
     }
 
@@ -207,20 +197,21 @@ public class PlayerMovementVid : MonoBehaviour
     private void MyInput()
     {
         // when to jump
-        if (_jumpingIsPressed && readyToJump && grounded)
+        if (_jumpingIsPressed)
         {
-            readyToJump = false;
-
             Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
         }
+        // when to crouch
+        /*if (_crouchingIsPressed)
+        {
+            Crouch();
+        }*/
     }
 
     private void StateHandler()
     {
         // Mode - Crouching
-        if (_crouchingIsPressed)
+        if (grounded && _crouchingIsPressed)
         {
             state = MovementState.crouching;
             moveSpeed = crouchSpeed;
@@ -244,11 +235,8 @@ public class PlayerMovementVid : MonoBehaviour
         }
     }
 
-    private void MovePlayer()
+    internal void MovePlayer(float horizontalInput, float verticalInput)
     {
-        float horizontalInput = moveInput.x;
-        float verticalInput = moveInput.y;
-
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -271,14 +259,19 @@ public class PlayerMovementVid : MonoBehaviour
                 ForceMode.Force
             );
 
-            if (rb.position.y <= -15f)
-            {
-                rb.position = spawnPoint.position;
-            }
+            ResetUnderMap();
         }
 
         // turn gravity off while on slope
         rb.useGravity = !OnSlope();
+    }
+
+    internal void ResetUnderMap()
+    {
+        if (rb.position.y <= -15f)
+        {
+            rb.position = spawnPoint.position;
+        }
     }
 
     private void SpeedControl()
@@ -303,14 +296,22 @@ public class PlayerMovementVid : MonoBehaviour
         }
     }
 
-    private void Jump()
+    internal void Jump()
     {
-        exitingSlope = true;
+        if (readyToJump && grounded)
+        {
+            readyToJump = false;
 
-        // reset y velocity
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            exitingSlope = true;
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            // reset y velocity
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+            // jump cooldown
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
     }
 
     private void ResetJump()
@@ -320,7 +321,26 @@ public class PlayerMovementVid : MonoBehaviour
         exitingSlope = false;
     }
 
-    private bool OnSlope()
+    internal void Crouch()
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            crouchYScale,
+            transform.localScale.z
+        );
+        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+
+    internal void ResetCrouch()
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            startYScale,
+            transform.localScale.z
+        );
+    }
+
+    internal bool OnSlope()
     {
         if (
             Physics.Raycast(

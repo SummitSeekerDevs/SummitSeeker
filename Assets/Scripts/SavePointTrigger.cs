@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class SavePointTrigger : MonoBehaviour
 {
-    public Transform savePoint;
-    public PlayerSavePoint playerSavePoint;
-    private bool usedSavePoint = false;
+    [SerializeField]
+    internal Transform savePoint;
+    private PlayerSavePoint playerSavePoint;
+    internal bool usedSavePoint = false;
+    public string colliderTag;
+
+    private void Start()
+    {
+        playerSavePoint = GameManager.Instance.playerGO.GetComponent<PlayerSavePoint>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!usedSavePoint)
+        if (!usedSavePoint && other.transform.CompareTag(colliderTag))
         {
             Debug.Log("1 use savepoint unlocked");
-            playerSavePoint.SetActiveSavePoint(savePoint);
+            playerSavePoint.setActiveSavePoint(savePoint);
             usedSavePoint = true;
         }
     }

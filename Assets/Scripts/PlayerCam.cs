@@ -17,10 +17,10 @@ public class PlayerCam : MonoBehaviour
 
     private void Awake()
     {
-        SetPlayerInputActions();
+        setPlayerInputActions();
     }
 
-    private void SetPlayerInputActions()
+    private void setPlayerInputActions()
     {
         if (GameManager.Instance == null)
         {
