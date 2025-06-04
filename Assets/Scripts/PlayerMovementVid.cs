@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class PlayerMovementVid : MonoBehaviour
 {
     private PlayerInput_Actions _playerInputActions;
+    private GameManager _gameManager;
 
     public Transform spawnPoint;
 
@@ -56,24 +58,11 @@ public class PlayerMovementVid : MonoBehaviour
         air,
     }
 
-    private void Awake()
+    [Inject]
+    public void Construct(GameManager gameManager, PlayerInput_Actions playerInputAction)
     {
-        setPlayerInputActions();
-        GameManager.Instance.setPlayerGameObject(this.gameObject);
-    }
-
-    private void setPlayerInputActions()
-    {
-        if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
-            return;
-        }
-        _playerInputActions = GameManager.Instance.InputActions;
-        if (_playerInputActions == null)
-        {
-            Debug.LogError("PlayerInput_Actions not initialized in GameManager");
-        }
+        _gameManager = gameManager;
+        _playerInputActions = playerInputAction;
     }
 
     private void OnEnable()
