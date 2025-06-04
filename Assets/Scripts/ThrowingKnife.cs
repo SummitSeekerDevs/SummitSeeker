@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class ThrowingKnife : MonoBehaviour
 {
@@ -20,23 +21,10 @@ public class ThrowingKnife : MonoBehaviour
 
     bool readyToThrow;
 
-    private void Awake()
+    [Inject]
+    public void Construct(PlayerInput_Actions playerInputAction)
     {
-        setPlayerInputActions();
-    }
-
-    private void setPlayerInputActions()
-    {
-        if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager.Instance is null. Ensure GameManager exists in the scene.");
-            return;
-        }
-        _playerInputActions = GameManager.Instance.InputActions;
-        if (_playerInputActions == null)
-        {
-            Debug.LogError("PlayerInput_Actions not initialized in GameManager");
-        }
+        _playerInputActions = playerInputAction;
     }
 
     private void OnEnable()
