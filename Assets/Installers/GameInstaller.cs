@@ -3,9 +3,18 @@ using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
+    [SerializeField]
+    private SceneLoader sceneLoaderPrefab;
+
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<GameManager>().AsSingle();
+        Container
+            .Bind<SceneLoader>()
+            .FromComponentInNewPrefab(sceneLoaderPrefab)
+            .AsSingle()
+            .NonLazy();
+
+        Container.BindInterfacesAndSelfTo<GameManager>().AsSingle().NonLazy();
 
         Container.Bind<IGameStateHandler>().To<MainMenuStateHandler>().AsSingle();
         Container.Bind<IGameStateHandler>().To<InGameStateHandler>().AsSingle();
