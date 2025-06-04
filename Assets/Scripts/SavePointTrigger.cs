@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Zenject;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class SavePointTrigger : MonoBehaviour
 {
