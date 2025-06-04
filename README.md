@@ -16,9 +16,6 @@
 ### Main Menu
 Um im GameManager nur die globalen Spielzustände und -abläufe zu erfassen und gleichzeitig die volle Kontrolle über die Zustände im Hauptmenü zu behalten, befindet sich im Bereich des Hauptmenüs ein weiterer Manager - der __MenuManager__. Dieser erfasst ausdrücklich __nur__ diejenigen Zustände, die im Hauptmenu möglich sind, keine globalen Spielzustände und übernimmt im Moment, wenn sich der GameManager im State MainMenuGameState befindet, die Kontrolle. Führt eine Aktion im Hauptmenu durch die Änderung des MenuStates dazu, dass dieses verlassen wird, ändert der MenuManager den GameState beim GameManager von MainMenuGameState zu einem anderen und übergibt somit die Kontrolle zurück an den GameManager.
 
-#### Kontextdiagramm für das MainMenu
-![MainMenuGameStateDiagram drawio](https://github.com/user-attachments/assets/8128edbe-3529-47a7-82ea-4d644496f459)
-
 ## Coding
 ### Codeformatter
 Bei dem Projekt SummitSeeker verwenden wir den Codeformatter [csharpier](https://csharpier.com).
