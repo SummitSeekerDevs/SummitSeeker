@@ -1,4 +1,11 @@
 #!/bin/bash
+set -euo pipefail
+
+# checks if org + repo arguments were passed correctly, exits script if not
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <org> <repo>"
+  exit 1
+fi
 
 org="$1"
 repo="$2"
