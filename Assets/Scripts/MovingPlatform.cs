@@ -15,13 +15,13 @@ public class MovingPlatform : MonoBehaviour
 
     internal Vector3 target;
 
-    [SerializeField]
     private Rigidbody _rb; // Wird benötigt damit sich der Spieler beim draufstehen auch mitbewegt
-    PlatformPath _platformPath;
+    private PlatformPath _platformPath;
 
     [Inject]
     public void Construct(PlatformPath platformPath)
     {
+        _rb = GetComponent<Rigidbody>();
         _rb.isKinematic = true; // sollte in Rigidbody bereits richtig eingestellt sein
 
         _platformPath = platformPath;
