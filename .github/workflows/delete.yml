@@ -1,0 +1,18 @@
+name: Remove Expired Workflow Runs
+on:
+  workflow_dispatch:
+
+jobs:
+  clean:
+    name: Delete Expired Workflow Runs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Action Code
+        uses: actions/checkout@v2
+
+      - name: Run Delete Script
+        # run: sh ./delete.sh (your org or github name) (your repo name)
+        run: sh ./delete.sh SummitSeekerDevs SummitSeeker
+        working-directory: .github/actions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
