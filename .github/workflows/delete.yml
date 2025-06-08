@@ -1,10 +1,6 @@
 name: Remove Expired Workflow Runs
 on:
   workflow_dispatch:
-  # todo: remove after verifying (run on pr to test out if it works)
-  pull_request:
-    branches:
-      - main
 
 jobs:
   clean:
