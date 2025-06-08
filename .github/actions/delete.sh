@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 org="$1"
 repo="$2"
