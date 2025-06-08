@@ -10,17 +10,16 @@ workflows_temp=$(mktemp) # Creates a temporary file to store workflow data.
 gh api repos/$org/$repo/actions/workflows | jq -r '.workflows[] | [.id, .path] | @tsv' > $workflows_temp # Lookup workflow
 cat "$workflows_temp" 
 
-#---
+# get all workflows that do not have "main" in name or path
 filtered_workflows=$(awk '{print $2}' "$workflows_temp" | grep -v "main")
 
-# main_workflow gezielt hinzufügen, auch wenn es "main" enthält
-main_workflow=".github/workflows/main_workflow.yml"
-if grep -q "$main_workflow" "$workflows_temp"; then
-  filtered_workflows=$(printf "%s\n%s" "$filtered_workflows" "$main_workflow")
-fi
+### --- explicitly add workflow with "main" in name or path to "filtered_workflows" (example for "main_workflow.yml") ---
+# main_workflow=".github/workflows/main_workflow.yml"
+# if grep -q "$main_workflow" "$workflows_temp"; then
+#   filtered_workflows=$(printf "%s\n%s" "$filtered_workflows" "$main_workflow")
+# fi
 
 workflows_names="$filtered_workflows"
-#---
 
 if [ -z "$workflows_names" ]; then
 
