@@ -2,24 +2,31 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 [assembly: InternalsVisibleTo("Tests")]
 
 public class MovingPlatform : MonoBehaviour
 {
     public float moveSpeed;
-    public Transform[] points;
+
     internal Vector3 target;
 
-    private int nextIndex = 0;
-    Rigidbody rb; // Wird benötigt damit sich der Spieler beim draufstehen auch mitbewegt
-    internal float distanceToTarget = 0.1f;
+    [SerializeField]
+    private Rigidbody _rb; // Wird benötigt damit sich der Spieler beim draufstehen auch mitbewegt
+    PlatformPath _platformPath;
 
-    private void Start()
+    [Inject]
+    public void Construct(PlatformPath platformPath)
     {
-        InitiateVars();
+        _rb.isKinematic = true; // sollte in Rigidbody bereits richtig eingestellt sein
+
+        _platformPath = platformPath;
+
+        target = _platformPath.GetNextTarget();
     }
 
     private void FixedUpdate()
@@ -44,47 +51,22 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    private void InitiateVars()
-    {
-        target = points[nextIndex].position;
-
-        rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
-    }
-
     private void MovePlatform()
     {
-        Vector3 nextPos = getNextPositionTowardsTarget();
-        rb.MovePosition(nextPos);
-    }
-
-    internal Vector3 getNextPositionTowardsTarget()
-    {
-        Vector3 currentPosition = rb.position;
-        Vector3 nextPosition = Vector3.MoveTowards(
-            currentPosition,
+        Vector3 nextPos = PlatformMover.GetNextPositionTowardsTarget(
+            _rb.position,
             target,
-            moveSpeed * Time.fixedDeltaTime
+            moveSpeed,
+            Time.fixedDeltaTime
         );
-
-        return nextPosition;
+        _rb.MovePosition(nextPos);
     }
 
     private void TargetPointDistanceCheckSetNextTarget()
     {
-        if (Vector3.Distance(rb.position, target) < distanceToTarget)
+        if (PlatformMover.HasReachedTarget(_rb.position, target))
         {
-            nextIndex++;
-
-            if (nextIndex >= points.Length)
-            {
-                nextIndex = 0;
-                target = points[nextIndex].position;
-            }
-            else
-            {
-                target = points[nextIndex].position;
-            }
+            target = _platformPath.GetNextTarget();
         }
     }
 }
