@@ -10,9 +10,12 @@ public class SavePointTrigger : MonoBehaviour
 {
     [SerializeField]
     internal Transform savePoint;
+
+    [SerializeField]
+    private string colliderTag;
+
     private GameObject _playerGameObject;
-    internal bool usedSavePoint = false;
-    public string colliderTag;
+    internal bool _usedSavePoint = false;
 
     [Inject]
     public void Construct(GameObject playerGameObject)
@@ -22,17 +25,26 @@ public class SavePointTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (
-            !usedSavePoint
-            && other.transform.CompareTag(colliderTag)
-            && _playerGameObject.TryGetComponent<PlayerSavePoint>(
-                out PlayerSavePoint playerSavePoint
-            )
-        )
+        CheckActivateSavePoint(other);
+    }
+
+    #region SavePoint activation
+    private void CheckActivateSavePoint(Collider other)
+    {
+        if (_usedSavePoint || !other.transform.CompareTag(colliderTag))
+            return;
+
+        if (_playerGameObject.TryGetComponent<PlayerSavePoint>(out PlayerSavePoint playerSavePoint))
         {
-            Debug.Log("1 use savepoint unlocked");
-            playerSavePoint.setActiveSavePoint(savePoint);
-            usedSavePoint = true;
+            ActivateSavePoint(playerSavePoint);
         }
     }
+
+    private void ActivateSavePoint(PlayerSavePoint playerSavePoint)
+    {
+        Debug.Log("1 use savepoint unlocked");
+        playerSavePoint.setActiveSavePoint(savePoint);
+        _usedSavePoint = true;
+    }
+    #endregion
 }
