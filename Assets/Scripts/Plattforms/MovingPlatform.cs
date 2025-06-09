@@ -11,7 +11,8 @@ using Zenject;
 
 public class MovingPlatform : MonoBehaviour
 {
-    public float moveSpeed;
+    [SerializeField]
+    private float moveSpeed;
 
     internal Vector3 target;
 

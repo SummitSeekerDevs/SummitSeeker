@@ -3,22 +3,36 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Zenject;
 
 [assembly: InternalsVisibleTo("Tests")]
 
 public class CallablePlatform : MonoBehaviour
 {
-    public Transform targetPosition;
-    public float moveSpeed = 2f;
-    public bool moveToPosition = false;
-    internal float distanceToTarget = 0.1f;
+    [SerializeField]
+    internal Transform targetPosition;
+    private bool moveToPosition = false;
 
-    Rigidbody rb;
+    [SerializeField]
+    private float moveSpeed = 2f;
 
-    private void Start()
+    private Rigidbody _rb;
+    private SignalBus _signalBus;
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
     {
-        rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
+        _signalBus = signalBus;
+
+        _rb = GetComponent<Rigidbody>();
+        _rb.isKinematic = true; // sollte in Rigidbody bereits richtig eingestellt sein
+
+        _signalBus.Subscribe<CallablePlatformStartMovementSignal>(OnPlatformStartMovement);
+    }
+
+    public void OnDisable()
+    {
+        _signalBus.Unsubscribe<CallablePlatformStartMovementSignal>(OnPlatformStartMovement);
     }
 
     private void FixedUpdate()
@@ -26,33 +40,35 @@ public class CallablePlatform : MonoBehaviour
         if (moveToPosition)
         {
             MovePlatform();
-            TargetPointDistanceCheckTurnOffPlatformMovement();
+            TargetPointDistanceCheck();
         }
     }
 
+    private void OnPlatformStartMovement()
+    {
+        moveToPosition = true;
+    }
+
+    #region Movement
     private void MovePlatform()
     {
-        Vector3 nextPos = getNextPositionTowardsTarget();
-        rb.MovePosition(nextPos);
-    }
-
-    internal Vector3 getNextPositionTowardsTarget()
-    {
-        Vector3 currentPosition = rb.position;
-        Vector3 nextPosition = Vector3.MoveTowards(
-            currentPosition,
+        Vector3 nextPos = PlatformMover.GetNextPositionTowardsTarget(
+            _rb.position,
             targetPosition.position,
-            moveSpeed * Time.fixedDeltaTime
+            moveSpeed,
+            Time.fixedDeltaTime
         );
-
-        return nextPosition;
+        _rb.MovePosition(nextPos);
     }
 
-    private void TargetPointDistanceCheckTurnOffPlatformMovement()
+    private void TargetPointDistanceCheck()
     {
-        if (Vector3.Distance(rb.position, targetPosition.position) < distanceToTarget)
+        if (PlatformMover.HasReachedTarget(_rb.position, targetPosition.position))
         {
             moveToPosition = false;
         }
     }
+    #endregion
 }
+
+public class CallablePlatformStartMovementSignal { }
