@@ -25,5 +25,8 @@ public class GameInstaller : MonoInstaller<GameInstaller>
 
         Container.Bind<IGameStateHandler>().To<MainMenuStateHandler>().AsSingle();
         Container.Bind<IGameStateHandler>().To<InGameStateHandler>().AsSingle();
+
+        // SignalBus
+        SignalBusInstaller.Install(Container);
     }
 }
