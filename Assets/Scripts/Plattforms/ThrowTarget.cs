@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using Zenject;
@@ -8,8 +6,8 @@ using Zenject;
 
 public class ThrowTarget : MonoBehaviour
 {
-    public string colliderTag;
-    public CallablePlatform connectedPlatform;
+    [SerializeField]
+    private string colliderTag;
 
     private SignalBus _signalBus;
 
@@ -24,7 +22,6 @@ public class ThrowTarget : MonoBehaviour
         if (other.transform.CompareTag(colliderTag))
         {
             _signalBus.Fire<CallablePlatformStartMovementSignal>();
-            //connectedPlatform.moveToPosition = true;
             this.gameObject.SetActive(false);
         }
     }
