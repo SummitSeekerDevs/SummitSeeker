@@ -12,13 +12,13 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField]
     private Transform _orientation;
 
-    private MouseInputProvider _mouseInputProvider;
+    private PlayerInputProvider _mouseInputProvider;
 
     private float xRotation;
     private float yRotation;
 
     [Inject]
-    public void Construct(MouseInputProvider mouseInputProvider)
+    public void Construct(PlayerInputProvider mouseInputProvider)
     {
         _mouseInputProvider = mouseInputProvider;
     }
