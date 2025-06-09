@@ -9,5 +9,6 @@ public class InGameSceneInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<GameObject>().FromInstance(_playerGameObject).AsSingle().NonLazy();
+        Container.Bind<SavePointState>().AsSingle();
     }
 }

@@ -2,16 +2,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class PlayerSavePoint : MonoBehaviour
+public class PlayerResetSavePointController : MonoBehaviour
 {
-    public Transform activeSavePoint { get; private set; }
-
+    private SavePointState _savePointState;
     private PlayerInput_Actions _playerInputActions;
 
     [Inject]
-    public void Construct(PlayerInput_Actions playerInputAction)
+    public void Construct(SavePointState savePointState, PlayerInput_Actions inputActions)
     {
-        _playerInputActions = playerInputAction;
+        _savePointState = savePointState;
+        _playerInputActions = inputActions;
     }
 
     private void OnEnable()
@@ -24,17 +24,12 @@ public class PlayerSavePoint : MonoBehaviour
         _playerInputActions.Player.ResetToSavePoint.performed -= OnResetToSavePoint;
     }
 
-    public void setActiveSavePoint(Transform savePoint)
-    {
-        activeSavePoint = savePoint;
-    }
-
     private void OnResetToSavePoint(InputAction.CallbackContext context)
     {
-        if (activeSavePoint != null)
+        Transform savePoint = _savePointState.ConsumeSavePoint();
+        if (savePoint != null)
         {
-            GetComponent<Rigidbody>().position = activeSavePoint.position;
-            activeSavePoint = null;
+            GetComponent<Rigidbody>().position = savePoint.position;
         }
     }
 }

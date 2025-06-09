@@ -15,12 +15,14 @@ public class SavePointTrigger : MonoBehaviour
     private string colliderTag;
 
     private GameObject _playerGameObject;
+    private SavePointState _savePointState;
     internal bool _usedSavePoint = false;
 
     [Inject]
-    public void Construct(GameObject playerGameObject)
+    public void Construct(GameObject playerGameObject, SavePointState savePointState)
     {
         _playerGameObject = playerGameObject;
+        _savePointState = savePointState;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,16 +36,13 @@ public class SavePointTrigger : MonoBehaviour
         if (_usedSavePoint || !other.transform.CompareTag(colliderTag))
             return;
 
-        if (_playerGameObject.TryGetComponent<PlayerSavePoint>(out PlayerSavePoint playerSavePoint))
-        {
-            ActivateSavePoint(playerSavePoint);
-        }
+        ActivateSavePoint();
     }
 
-    private void ActivateSavePoint(PlayerSavePoint playerSavePoint)
+    private void ActivateSavePoint()
     {
         Debug.Log("1 use savepoint unlocked");
-        playerSavePoint.setActiveSavePoint(savePoint);
+        _savePointState.SetActiveSavePoint(savePoint);
         _usedSavePoint = true;
     }
     #endregion
