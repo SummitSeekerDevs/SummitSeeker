@@ -10,6 +10,9 @@ public class InGameSceneInstaller : MonoInstaller
     {
         Container.Bind<GameObject>().FromInstance(_playerGameObject).AsSingle().NonLazy();
         Container.Bind<SavePointState>().AsSingle();
-        Container.BindInterfacesAndSelfTo<MouseInputProvider>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<PlayerInputProvider>().AsSingle().NonLazy();
+
+        // Signal
+        Container.DeclareSignal<ThrowProjectileSignal>();
     }
 }

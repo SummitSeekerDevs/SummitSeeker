@@ -1,48 +1,48 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class ThrowingKnife : MonoBehaviour
 {
-    private PlayerInput_Actions _playerInputActions;
-
     [Header("References")]
-    public Transform cam,
-        attackPoint;
-    public GameObject objectToThrow;
+    [SerializeField]
+    private Transform cam;
+
+    [SerializeField]
+    private Transform attackPoint;
+
+    [SerializeField]
+    private GameObject objectToThrow;
 
     [Header("Settings")]
-    public int totalThrows;
-    public float throwCooldown;
+    [SerializeField]
+    private int totalThrows = 50;
+
+    [SerializeField]
+    private float throwCooldown = 0.1f;
 
     [Header("Throwing")]
-    public float throwForce,
-        throwUpwardForce;
+    [SerializeField]
+    private float throwForce = 4;
 
-    bool readyToThrow;
+    [SerializeField]
+    private float throwUpwardForce = 0f;
+
+    private bool readyToThrow = true;
+    private SignalBus _signalBus;
 
     [Inject]
-    public void Construct(PlayerInput_Actions playerInputAction)
+    public void Construct(SignalBus signalBus)
     {
-        _playerInputActions = playerInputAction;
-    }
-
-    private void OnEnable()
-    {
-        _playerInputActions.Player.Click.performed += OnThrow;
+        _signalBus = signalBus;
+        _signalBus.Subscribe<ThrowProjectileSignal>(OnThrow);
     }
 
     private void OnDisable()
     {
-        _playerInputActions.Player.Click.performed -= OnThrow;
+        _signalBus.Unsubscribe<ThrowProjectileSignal>(OnThrow);
     }
 
-    private void Start()
-    {
-        readyToThrow = true;
-    }
-
-    private void OnThrow(InputAction.CallbackContext context)
+    private void OnThrow()
     {
         if (readyToThrow && totalThrows > 0)
         {
@@ -86,8 +86,7 @@ public class ThrowingKnife : MonoBehaviour
         Invoke(nameof(ResetThrow), throwCooldown);
     }
 
-    private void ResetThrow()
-    {
-        readyToThrow = true;
-    }
+    private void ResetThrow() => readyToThrow = true;
 }
+
+public class ThrowProjectileSignal { }
