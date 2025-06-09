@@ -35,6 +35,7 @@ public class MovingPlatform : MonoBehaviour
         TargetPointDistanceCheckSetNextTarget();
     }
 
+    #region Collision
     private void OnCollisionEnter(Collision other)
     {
         if (other.transform.tag == "Player")
@@ -50,7 +51,9 @@ public class MovingPlatform : MonoBehaviour
             other.transform.parent = null;
         }
     }
+    #endregion
 
+    #region Movement
     private void MovePlatform()
     {
         Vector3 nextPos = PlatformMover.GetNextPositionTowardsTarget(
@@ -69,4 +72,5 @@ public class MovingPlatform : MonoBehaviour
             target = _platformPath.GetNextTarget();
         }
     }
+    #endregion
 }
