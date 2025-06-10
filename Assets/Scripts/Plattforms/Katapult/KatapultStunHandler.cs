@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class KatapultStunHandler
 {
-    private RigidbodyConstraints playerRbDefaultconstraints;
+    private RigidbodyConstraints _playerRbDefaultconstraints;
 
     public void ToggleFreezePlayerPosition(bool freeze, Rigidbody playerRb)
     {
         if (freeze)
+        {
+            _playerRbDefaultconstraints = playerRb.constraints;
             playerRb.constraints = RigidbodyConstraints.FreezeAll;
+        }
         else
-            playerRb.constraints = playerRbDefaultconstraints;
+            playerRb.constraints = _playerRbDefaultconstraints;
     }
 }

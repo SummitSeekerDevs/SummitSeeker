@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Zenject;
 
 public class KatapultManager : IInitializable, IDisposable
@@ -7,16 +6,19 @@ public class KatapultManager : IInitializable, IDisposable
     private readonly SignalBus _signalBus;
     private readonly KatapultShooter _katapultShooter;
     private readonly KatapultStunHandler _katapultStunHandler;
+    private readonly DelayInvoker _delayInvoker;
 
     public KatapultManager(
         SignalBus signalBus,
         KatapultShooter katapultShooter,
-        KatapultStunHandler katapultStunHandler
+        KatapultStunHandler katapultStunHandler,
+        DelayInvoker delayInvoker
     )
     {
         _signalBus = signalBus;
         _katapultShooter = katapultShooter;
         _katapultStunHandler = katapultStunHandler;
+        _delayInvoker = delayInvoker;
     }
 
     public void Initialize()
@@ -33,6 +35,14 @@ public class KatapultManager : IInitializable, IDisposable
     {
         _katapultStunHandler.ToggleFreezePlayerPosition(true, signal._rigidbody);
 
-        // Monobehaviour klasse erstellen die dem gamemanager angehängt wird und durch dessen funktionsaufruf man invoke benutzen kann
+        // Monobehaviour hilfklasse zur Unterstützung
+        _delayInvoker.InvokeDelayed(
+            signal._shootDelay,
+            () =>
+            {
+                _katapultStunHandler.ToggleFreezePlayerPosition(false, signal._rigidbody);
+                _katapultShooter.Shoot(signal._rigidbody, signal._shootUpForce);
+            }
+        );
     }
 }
