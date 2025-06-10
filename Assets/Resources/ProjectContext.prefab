@@ -75,3 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneLoaderPrefab: {fileID: 1133565150235254154, guid: d1acedb0be616b24b813862d38b93a84, type: 3}
+  _delayInvoker: {fileID: 4693041815385992848, guid: a92380c9ab876d043b4f228b8adb396c, type: 3}
