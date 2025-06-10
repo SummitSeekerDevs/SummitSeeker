@@ -6,6 +6,9 @@ public class GameInstaller : MonoInstaller<GameInstaller>
     [SerializeField]
     private SceneLoader _sceneLoaderPrefab;
 
+    [SerializeField]
+    private DelayInvoker _delayInvoker;
+
     public override void InstallBindings()
     {
         Container
@@ -13,6 +16,8 @@ public class GameInstaller : MonoInstaller<GameInstaller>
             .FromComponentInNewPrefab(_sceneLoaderPrefab)
             .AsSingle()
             .NonLazy();
+
+        Container.Bind<DelayInvoker>().FromComponentInNewPrefab(_delayInvoker).AsSingle().NonLazy();
 
         var _playerInputActions = new PlayerInput_Actions();
         Container
