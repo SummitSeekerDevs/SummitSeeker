@@ -1377,8 +1377,10 @@ GameObject:
   - component: {fileID: 603089412}
   - component: {fileID: 603089415}
   - component: {fileID: 603089416}
-  - component: {fileID: 603089417}
   - component: {fileID: 603089418}
+  - component: {fileID: 603089420}
+  - component: {fileID: 603089419}
+  - component: {fileID: 603089421}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1466,34 +1468,6 @@ MonoBehaviour:
   throwCooldown: 0.1
   throwForce: 4
   throwUpwardForce: 0
---- !u!114 &603089417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 603089411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f368f12af216237469901b4c9c53a62c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1559928768}
-  walkSpeed: 7
-  sprintSpeed: 10
-  groundDrag: 5
-  jumpForce: 16
-  jumpCooldown: 0.25
-  airMultiplier: 0.2
-  crouchSpeed: 3.5
-  crouchYScale: 0.5
-  playerHeight: 2
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 256
-  maxSlopeAngle: 40
-  orientation: {fileID: 1608494300}
-  state: 0
 --- !u!114 &603089418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1506,6 +1480,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf32ebf60584a654290ada137434dd9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &603089419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603089411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba333c8b029ef8b45a2fac739934c146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &603089420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603089411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 603089419}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &603089421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603089411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 465189b066709f447b49fd56a23f24ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPoint: {fileID: 1559928768}
+  _orientation: {fileID: 1608494300}
+  _playerMovementConfig: {fileID: 11400000, guid: 70b731c4d79c23f469a8a507fbbee1b8, type: 2}
 --- !u!1001 &620299918
 PrefabInstance:
   m_ObjectHideFlags: 0

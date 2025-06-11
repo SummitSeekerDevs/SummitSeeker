@@ -12,15 +12,15 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField]
     private Transform _orientation;
 
-    private PlayerInputProvider _mouseInputProvider;
+    private PlayerInputProvider _playerInputProvider;
 
     private float xRotation;
     private float yRotation;
 
     [Inject]
-    public void Construct(PlayerInputProvider mouseInputProvider)
+    public void Construct(PlayerInputProvider playerInputProvider)
     {
-        _mouseInputProvider = mouseInputProvider;
+        _playerInputProvider = playerInputProvider;
     }
 
     private void Start()
@@ -41,7 +41,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void MouseRotationLogic()
     {
-        Vector2 delta = _mouseInputProvider._mouseDelta;
+        Vector2 delta = _playerInputProvider._mouseDelta;
 
         // get mouse input
         float mouseX = delta.x * Time.deltaTime * _sensX;

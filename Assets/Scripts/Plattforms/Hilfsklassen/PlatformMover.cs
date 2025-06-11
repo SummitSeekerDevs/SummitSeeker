@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class PlatformMover
 {
-    private static readonly float threshold = 0.1f;
+    private static readonly float THRESHOLD = 0.1f;
 
     public static Vector3 GetNextPositionTowardsTarget(
         Vector3 current,
@@ -16,6 +16,6 @@ public static class PlatformMover
 
     public static bool HasReachedTarget(Vector3 current, Vector3 target)
     {
-        return Vector3.Distance(current, target) < threshold;
+        return Vector3.Distance(current, target) < THRESHOLD;
     }
 }
