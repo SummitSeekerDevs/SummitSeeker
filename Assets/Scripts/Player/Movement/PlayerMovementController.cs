@@ -153,7 +153,6 @@ public class PlayerMovementController : MonoBehaviour
                 _moveSpeed = _playerMovementConfig.crouchSpeed;
                 break;
             case PlayerStateMachine.MovementState.Air:
-                _moveSpeed = _playerMovementConfig.walkSpeed;
                 break;
         }
     }
