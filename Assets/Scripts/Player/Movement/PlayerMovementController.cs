@@ -63,6 +63,7 @@ public class PlayerMovementController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
 
+        // Set default scale
         _startYScale = transform.localScale.y;
     }
 
