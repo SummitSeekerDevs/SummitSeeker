@@ -4,7 +4,7 @@
 
 # Beschreibung
 
-<!-- Falls noch etwas gesgt werden sollte, z.B. "Als Entwickler habe ich bewusst auf Punkt XY verzichtet, da dass und das ..." -->
+<!-- Falls noch etwas gesagt werden sollte, z.B. "Als Entwickler habe ich bewusst auf Punkt XY verzichtet, da dass und das ..." -->
 
 # Definition of Done
 
