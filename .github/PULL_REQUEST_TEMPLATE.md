@@ -8,6 +8,7 @@
 
 # Definition of Done
 
+- [ ] Überflüssige Imports wurden entfernt
 <!-- Der Entwickler ist verantwortlich für die Einhaltung -->
 
 ## Allgemeines
