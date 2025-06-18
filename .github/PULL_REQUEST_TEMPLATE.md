@@ -1,9 +1,10 @@
 # Pull Request zu Issue: 
+
 <!-- Hier Referenz zu related Issue -->
 
 # Beschreibung
 
-<!-- Falls noch etwas gesgt werden sollte, z.B. "Als Entwickler habe ich bewusst auf Punkt XY verzichtet, da dass und das ..."
+<!-- Falls noch etwas gesgt werden sollte, z.B. "Als Entwickler habe ich bewusst auf Punkt XY verzichtet, da dass und das ..." -->
 
 # Definition of Done
 
