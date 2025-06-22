@@ -16,6 +16,7 @@ Das Projekt verwendet Extenject (ehemals Zenject) als DI-Framework (Dependency I
 Da eine Erläuterung der Funktionsweise und Nutzung von Extenject an dieser Stelle zu weit führen würde, kann dies auf der Frameworkeigenen Github-Page von [Extenject](https://github.com/Mathijs-Bakker/Extenject?tab=readme-ov-file#what-is-dependency-injection) nachgelesen werden.
 
 Durch das schreiben von lose gekoppeltem Code mithilfe von DI, gelingt es leichter, konkrete Bereiche der Codebasis für automatisierte Tests zu isolieren, ohne das gesamte Projekt dabei starten zu müssen. Um eine Klasse unabhängig von ihren Abhängigkeiten testen zu können, lassen sich diese durch Mocks ersetzen, sodass die Klasse isoliert getestet werden kann.
+Um das Schreiben sämtlicher Mocking-Klassen zu vermeiden, ermöglicht Extenject die Automatisierung dieses Prozesses mithilfe einer Mocking-Library, welche diese Arbeit übernimmt. Zur Auswahl dabei stehen Moq und NSubstitute, welche am häufigsten in der Praxis eingesetzt werden. In diesem Projekt wurde sich für die Mocking-Library [__Moq__](https://github.com/devlooped/moq) entschieden.
 
 # Development
 ## Planing
