@@ -11,6 +11,12 @@
 - Gimp / Paint.net
 - GitHub Desktop
 
+## Frameworks
+Das Projekt verwendet Extenject (ehemals Zenject) als DI-Framework (Dependency Injection), sodass der Code einfach, skalierbar und flexibel geschrieben als auch wiederverwendet, refaktoriesiert und getestet werden kann. Extenject ist ein Fork von Zenject, mit dem Ziel auch weiterhin unterstützt zu werden.
+Da eine Erläuterung der Funktionsweise und Nutzung von Extenject an dieser Stelle zu weit führen würde, kann dies auf der Frameworkeigenen Github-Page von [Extenject](https://github.com/Mathijs-Bakker/Extenject?tab=readme-ov-file#what-is-dependency-injection) nachgelesen werden.
+
+Durch das schreiben von lose gekoppeltem Code mithilfe von DI, gelingt es leichter, konkrete Bereiche der Codebasis für automatisierte Tests zu isolieren, ohne das gesamte Projekt dabei starten zu müssen. Um eine Klasse unabhängig von ihren Abhängigkeiten testen zu können, lassen sich diese durch Mocks ersetzen, sodass die Klasse isoliert getestet werden kann.
+
 # Development
 ## Planing
 ### Main Menu
