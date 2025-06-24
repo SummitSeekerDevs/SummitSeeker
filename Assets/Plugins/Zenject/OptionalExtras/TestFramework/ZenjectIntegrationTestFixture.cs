@@ -154,6 +154,9 @@ namespace Zenject
 
             _hasStartedInstall = false;
             _hasEndedInstall = false;
+
+            // TestMode am Ende wieder deaktivieren
+            TestMode.Active = false;
         }
     }
 }
