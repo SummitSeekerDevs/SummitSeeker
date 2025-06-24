@@ -7,7 +7,7 @@ using Zenject;
 public class ZThrowTargetTest : ZenjectIntegrationTestFixture
 {
     [UnityTest]
-    public IEnumerator RunTest1()
+    public IEnumerator ThrowTargetCollisionFiresSignalTest()
     {
         // Throw Target Obj
         GameObject throwTargetObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
