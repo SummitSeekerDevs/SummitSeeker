@@ -39,6 +39,8 @@ Der durch ein Usecase vom Developer neu hinzugefügte Code muss eine Code Covera
 
 Um schnell mitzubekommen bei welcher Assertion ein Test fehlschlägt, wird der Methoden-Overload verwendet, bei dem eine Message in Form eines Strings mitgegeben werden kann. Diese Nachricht wird **aussagekräftig** gewählt.
 
+Wenn es sich um einen Zenject Test handelt, welcher das Zenject-Testframework verwendet, beginnt der Datei- und Testklassenname mit __Z__, gefolgt vom eigentlichen Namen der Klasse.
+
 ## Automatisierte Tests
 Zum Testen des in C# geschriebenen Codes verwenden wir das [Unity Test Framework](https://docs.unity3d.com/Packages/com.unity.test-framework@1.1/manual/index.html).
 Beschreibung in [Dokumentation](https://summitseekerdevs.github.io/Dokumentation/developer/unity/automatisierte_tests/)
