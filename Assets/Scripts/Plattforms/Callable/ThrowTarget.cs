@@ -7,7 +7,7 @@ using Zenject;
 public class ThrowTarget : MonoBehaviour
 {
     [SerializeField]
-    private string colliderTag;
+    internal string colliderTag;
 
     private SignalBus _signalBus;
 
