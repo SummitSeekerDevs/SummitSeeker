@@ -1,13 +1,16 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Zenject;
+
+[assembly: InternalsVisibleTo("PlaymodeTests")]
 
 public class KatapultTrigger : MonoBehaviour
 {
     [SerializeField]
-    private float shootDelay = 4f;
+    internal float shootDelay = 4f;
 
     [SerializeField]
-    private float shootUpForce = 50f;
+    internal float shootUpForce = 50f;
     private SignalBus _signalBus;
 
     [Inject]
