@@ -8,7 +8,7 @@ public class CallablePlatform : MonoBehaviour
 {
     [SerializeField]
     internal Transform targetPosition;
-    private bool moveToPosition = false;
+    internal bool moveToPosition = false;
 
     [SerializeField]
     private float moveSpeed = 2f;
