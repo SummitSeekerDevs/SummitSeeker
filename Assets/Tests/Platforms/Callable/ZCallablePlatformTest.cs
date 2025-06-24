@@ -10,28 +10,27 @@ public class ZCallablePlatformTest : ZenjectIntegrationTestFixture
     [UnityTest]
     public IEnumerator CallablePlatformStartMovementTest()
     {
-        UnityEngine.Debug.Log("vor install");
         PreInstall();
 
-        UnityEngine.Debug.Log("hallo");
+        Container
+            .Bind<CallablePlatform>()
+            .FromComponentInNewPrefabResource("Prefabs/Platforms/CallablePlatform")
+            .AsSingle();
 
-        // Container
-        //     .Bind<CallablePlatform>()
-        //     .FromComponentInNewPrefabResource("Prefabs/Platforms/CallablePlatform")
-        //     .AsSingle();
+        var callablePlatformScript = Container.Resolve<CallablePlatform>();
 
-        //Container.DeclareSignal<CallablePlatformStartMovementSignal>();
+        var context = callablePlatformScript.GetComponentInParent<GameObjectContext>();
 
         PostInstall();
 
-        //var signalBus = Container.Resolve<SignalBus>();
-        //signalBus.Fire<CallablePlatformStartMovementSignal>();
-        yield break;
-        //UnityEngine.Debug.Log(signalBus);
+        Assert.AreEqual(false, callablePlatformScript.moveToPosition, "Movement default is off");
 
-        //var callablePlatformScript = Container.Resolve<CallablePlatform>();88
-        var testvar = false;
+        var signalBus = context.Container.Resolve<SignalBus>();
+        signalBus.Fire<CallablePlatformStartMovementSignal>();
+
+        yield return null;
+
         // Assertions
-        Assert.AreEqual(true, testvar, "Signal triggered movement");
+        Assert.AreEqual(true, callablePlatformScript.moveToPosition, "Signal triggered movement");
     }
 }
