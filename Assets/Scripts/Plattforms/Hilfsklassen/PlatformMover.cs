@@ -1,8 +1,11 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
+
+[assembly: InternalsVisibleTo("EditmodeTests")]
 
 public static class PlatformMover
 {
-    private static readonly float THRESHOLD = 0.1f;
+    internal static readonly float THRESHOLD = 0.1f;
 
     public static Vector3 GetNextPositionTowardsTarget(
         Vector3 current,
