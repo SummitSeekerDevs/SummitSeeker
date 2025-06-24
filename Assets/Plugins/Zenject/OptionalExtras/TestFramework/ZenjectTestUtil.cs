@@ -20,7 +20,10 @@ namespace Zenject.Internal
             {
                 foreach (var obj in SceneManager.GetSceneAt(i).GetRootGameObjects())
                 {
-                    GameObject.DestroyImmediate(obj);
+                    if (obj.name != UnitTestRunnerGameObjectName)
+                    {
+                        GameObject.DestroyImmediate(obj);
+                    }
                 }
             }
 
