@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -11,25 +13,32 @@ public class GameInstaller : MonoInstaller<GameInstaller>
 
     public override void InstallBindings()
     {
-        Container
-            .Bind<SceneLoader>()
-            .FromComponentInNewPrefab(_sceneLoaderPrefab)
-            .AsSingle()
-            .NonLazy();
+        if (!TestMode.Active)
+        {
+            Container
+                .Bind<SceneLoader>()
+                .FromComponentInNewPrefab(_sceneLoaderPrefab)
+                .AsSingle()
+                .NonLazy();
 
-        Container.Bind<DelayInvoker>().FromComponentInNewPrefab(_delayInvoker).AsSingle().NonLazy();
+            Container
+                .Bind<DelayInvoker>()
+                .FromComponentInNewPrefab(_delayInvoker)
+                .AsSingle()
+                .NonLazy();
 
-        var _playerInputActions = new PlayerInput_Actions();
-        Container
-            .Bind<PlayerInput_Actions>()
-            .FromInstance(_playerInputActions)
-            .AsSingle()
-            .NonLazy();
+            var _playerInputActions = new PlayerInput_Actions();
+            Container
+                .Bind<PlayerInput_Actions>()
+                .FromInstance(_playerInputActions)
+                .AsSingle()
+                .NonLazy();
 
-        Container.BindInterfacesAndSelfTo<GameManager>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GameManager>().AsSingle().NonLazy();
 
-        Container.Bind<IGameStateHandler>().To<MainMenuStateHandler>().AsSingle();
-        Container.Bind<IGameStateHandler>().To<InGameStateHandler>().AsSingle();
+            Container.Bind<IGameStateHandler>().To<MainMenuStateHandler>().AsSingle();
+            Container.Bind<IGameStateHandler>().To<InGameStateHandler>().AsSingle();
+        }
 
         // SignalBus
         SignalBusInstaller.Install(Container);

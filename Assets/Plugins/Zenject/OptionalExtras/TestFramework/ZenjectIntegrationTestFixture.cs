@@ -7,6 +7,7 @@ using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using UnityEngine;
+using UnityEditor.TestTools.TestRunner.Api;
 
 namespace Zenject
 {
@@ -40,6 +41,9 @@ namespace Zenject
         [SetUp]
         public void Setup()
         {
+            // TestMode aktivieren um Bindings aus Project Kontext zu verhindern
+            TestMode.Active = true;
+
             Assert.That(Application.isPlaying,
                 "ZenjectIntegrationTestFixture is meant to be used for play mode tests only.  Please ensure your test file '{0}' is outside of the editor folder and try again.", GetType());
 
