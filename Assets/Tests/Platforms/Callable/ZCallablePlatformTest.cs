@@ -7,25 +7,33 @@ using Zenject;
 
 public class ZCallablePlatformTest : ZenjectIntegrationTestFixture
 {
-    [UnityTest]
-    public IEnumerator CallablePlatformStartMovementTest()
-    {
-        PreInstall();
+    CallablePlatform callablePlatformScript;
+    GameObjectContext GoContext;
 
+    void CommonInstall()
+    {
         Container
             .Bind<CallablePlatform>()
             .FromComponentInNewPrefabResource("Prefabs/Platforms/CallablePlatform")
             .AsSingle();
 
-        var callablePlatformScript = Container.Resolve<CallablePlatform>();
+        callablePlatformScript = Container.Resolve<CallablePlatform>();
 
-        var context = callablePlatformScript.GetComponentInParent<GameObjectContext>();
+        GoContext = callablePlatformScript.GetComponentInParent<GameObjectContext>();
+    }
+
+    [UnityTest]
+    public IEnumerator CallablePlatformStartMovementTest()
+    {
+        PreInstall();
+
+        CommonInstall();
 
         PostInstall();
 
         Assert.AreEqual(false, callablePlatformScript.moveToPosition, "Movement default is off");
 
-        var signalBus = context.Container.Resolve<SignalBus>();
+        var signalBus = GoContext.Container.Resolve<SignalBus>();
         signalBus.Fire<CallablePlatformStartMovementSignal>();
 
         yield return null;
