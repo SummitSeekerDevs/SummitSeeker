@@ -1,8 +1,11 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
+
+[assembly: InternalsVisibleTo("EditmodeTests")]
 
 public class KatapultStunHandler
 {
-    private RigidbodyConstraints _playerRbDefaultconstraints;
+    internal RigidbodyConstraints _playerRbDefaultconstraints;
 
     public void ToggleFreezePlayerPosition(bool freeze, Rigidbody playerRb)
     {
