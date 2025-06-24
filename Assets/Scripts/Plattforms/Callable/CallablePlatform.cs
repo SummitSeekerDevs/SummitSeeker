@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Zenject;
 
-[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("PlaymodeTests")]
 
 public class CallablePlatform : MonoBehaviour
 {

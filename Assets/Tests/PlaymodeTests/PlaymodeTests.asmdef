@@ -1,12 +1,12 @@
 {
-    "name": "Tests",
+    "name": "PlaymodeTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Scripts",
-        "Zenject-TestFramework",
-        "Zenject"
+        "Zenject",
+        "Zenject-TestFramework"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
