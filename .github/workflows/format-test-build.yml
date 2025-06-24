@@ -34,8 +34,8 @@ jobs:
         unityVersion: 
           - 6000.0.43f1 # some version must be included for testing
         testMode:
-          - playmode # Erstmal nur in playmode, da wir keine editmode Tests haben
-          #- editmode
+          - playmode
+          - editmode
     steps:
       - uses: actions/checkout@v4
         with:
