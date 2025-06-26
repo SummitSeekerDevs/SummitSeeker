@@ -52,13 +52,6 @@ public class GameManager : IInitializable, System.IDisposable
     }
 }
 
-public interface IGameStateHandler
-{
-    GameState State { get; }
-    void OnEnter();
-    void OnExit();
-}
-
 public enum GameState
 {
     MainMenu = 0,
