@@ -52,4 +52,7 @@ Die privaten Methoden einer Klasse sollten statt mit `private` mit `internals` d
 
 Wenn `Press()` zur Simulation einer Tasteneingabe verwendet wird, ist zu beachten, dass diese Taste solange simuliert gedrückt wird, bis Release() verwendet wird. Nur `Press()` könnte zu ungewünschten Ergebnissen führen.
 
+Wenn Tests (egal ob Editmode ode Playmode) manchmal fehlschlagen aber andere male funktionieren, kann es sehr wahrscheinlich an der Verwendung von `yield return null` liegen, da dabei nur einen einzigen Frame gewartet wird. Anstelle dessen sollte `yield return new WaitForFixedUpdate()` genutzt werden, um so sicher zu stellen, dass die gewünschte Aktion auch registriert und ausgeführt wird.
+__Hinweis:__ Tritt dies in einem Editmode Test auf, muss dieser zuerst in ein Playmode Test verwandelt werden und anschließend der oben beschriebene Schritt vollzogen werden.
+
 GameManager ist ein Singleton, damit einher geht, dass wenn ein neuer GameManager erstellt wird, es bereits aber eine static Instance davon gibt, sich der neue GameManager wieder selbst zerstört. Kann gerade bei Setup und TearDown bei Tests zu Fehler führen.

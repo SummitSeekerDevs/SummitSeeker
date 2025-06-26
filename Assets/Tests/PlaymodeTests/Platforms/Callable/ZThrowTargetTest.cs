@@ -40,7 +40,7 @@ public class ZThrowTargetTest : ZenjectIntegrationTestFixture
         throwableObjRB.position = throwTargetObj.gameObject.transform.position;
         throwableObjRB.useGravity = false;
 
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         Assert.AreEqual(true, signalWasFired, "Signal was fired");
     }

@@ -49,7 +49,7 @@ public class ZKatapultTriggerTest : ZenjectIntegrationTestFixture
 
         PlayerRb.position = Katapult.gameObject.transform.position;
 
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         Assert.IsTrue(signalWasFired);
         Assert.AreEqual(
