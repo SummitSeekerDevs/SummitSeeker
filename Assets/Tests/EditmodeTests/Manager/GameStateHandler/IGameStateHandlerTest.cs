@@ -12,8 +12,6 @@ public class IGameStateHandlerTest
     [SetUp]
     public void Setup()
     {
-        loadSceneWasCalled = false;
-
         sceneLoaderMock = new Mock<SceneLoader>();
         sceneLoaderMock
             .Setup(m => m.LoadSceneWhenReady(It.IsAny<string>(), It.IsAny<System.Action>()))
@@ -45,5 +43,11 @@ public class IGameStateHandlerTest
 
         Assert.AreEqual(30, Application.targetFrameRate, "TargetFramerate of main menu");
         Assert.AreEqual(0, QualitySettings.vSyncCount, "VSyncCount of main menu");
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        loadSceneWasCalled = false;
     }
 }
