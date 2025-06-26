@@ -1,6 +1,10 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("EditmodeTests")]
+
 public class PlayerStateMachine
 {
-    public MovementState _currentState { get; private set; }
+    public MovementState _currentState { get; internal set; }
 
     public enum MovementState
     {
@@ -23,12 +27,12 @@ public class PlayerStateMachine
             _currentState = MovementState.Crouching;
         }
         // Mode - Sprinting
-        else if (isGrounded && isSprinting)
+        else if (isGrounded && isSprinting && !isCrouching)
         {
             _currentState = MovementState.Sprinting;
         }
         // Mode - Walking
-        else if (isGrounded)
+        else if (isGrounded && !isSprinting && !isCrouching)
         {
             _currentState = MovementState.Walking;
         }
