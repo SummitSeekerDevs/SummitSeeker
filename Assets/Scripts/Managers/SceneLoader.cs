@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public void LoadSceneWhenReady(string sceneName, Action onSceneLoaded = null)
+    public virtual void LoadSceneWhenReady(string sceneName, Action onSceneLoaded = null)
     {
         StartCoroutine(LoadSceneAsync(sceneName, onSceneLoaded));
     }
