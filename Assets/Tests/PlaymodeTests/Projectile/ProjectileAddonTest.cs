@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-
-[assembly: InternalsVisibleTo("Tests")]
 
 public class ProjectileAddonTest
 {
