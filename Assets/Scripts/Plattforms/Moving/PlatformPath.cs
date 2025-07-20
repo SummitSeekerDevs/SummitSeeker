@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlatformPath
 {
     private Transform[] _points;
-    private int currentIndex = 0;
+    internal int currentIndex = 0;
 
     public PlatformPath(Transform[] points)
     {
