@@ -11,7 +11,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Delete Script
-        # run: sh ./delete.sh (your org or github name) (your repo name)
         run: sh ./delete.sh SummitSeekerDevs SummitSeeker
         working-directory: .github/actions
         env:
