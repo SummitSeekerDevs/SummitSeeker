@@ -4,7 +4,7 @@ public class ProjectileAddon : MonoBehaviour
 {
     private Rigidbody _rb;
 
-    private bool targetHit = false;
+    internal bool targetHit = false;
 
     private void Start()
     {
