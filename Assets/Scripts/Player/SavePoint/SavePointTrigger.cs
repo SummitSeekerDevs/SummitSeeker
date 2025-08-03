@@ -12,14 +12,12 @@ public class SavePointTrigger : MonoBehaviour
     [SerializeField]
     private string colliderTag;
 
-    private GameObject _playerGameObject;
     private SavePointState _savePointState;
     internal bool _usedSavePoint = false;
 
     [Inject]
-    public void Construct(GameObject playerGameObject, SavePointState savePointState)
+    public void Construct(SavePointState savePointState)
     {
-        _playerGameObject = playerGameObject;
         _savePointState = savePointState;
     }
 
