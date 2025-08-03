@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Zenject;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 public class GameManager : IInitializable, System.IDisposable
 {
     private PlayerInput_Actions _playerInputActions;
 
     private readonly List<IGameStateHandler> _handlers;
-    private IGameStateHandler _currentHandler;
-    private GameState _currentState;
+    internal IGameStateHandler _currentHandler;
 
     public event Action<GameState> OnGameStateChanged;
 
@@ -33,12 +35,11 @@ public class GameManager : IInitializable, System.IDisposable
 
     public void UpdateGameState(GameState newState)
     {
-        if (_currentState == newState)
+        if (_currentHandler?.State == newState)
             return;
 
         _currentHandler?.OnExit();
 
-        _currentState = newState;
         _currentHandler = _handlers.FirstOrDefault(h => h.State == newState);
 
         if (_currentHandler == null)
