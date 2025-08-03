@@ -10,7 +10,7 @@ public class SavePointTrigger : MonoBehaviour
     internal Transform savePoint;
 
     [SerializeField]
-    private string colliderTag;
+    internal string colliderTag;
 
     private SavePointState _savePointState;
     internal bool _usedSavePoint = false;

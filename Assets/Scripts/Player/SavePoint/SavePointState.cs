@@ -4,7 +4,7 @@ public class SavePointState
 {
     public Transform _activeSavePoint { get; private set; }
 
-    public void SetActiveSavePoint(Transform savePoint)
+    public virtual void SetActiveSavePoint(Transform savePoint)
     {
         _activeSavePoint = savePoint;
     }
