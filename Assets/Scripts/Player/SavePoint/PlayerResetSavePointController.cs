@@ -31,12 +31,4 @@ public class PlayerResetSavePointController : MonoBehaviour
     }
 }
 
-public class ResetToSavePointSignal
-{
-    public readonly bool _resetToSavepointKeyPressed;
-
-    public ResetToSavePointSignal(bool resetToSavepointKeyPressed)
-    {
-        _resetToSavepointKeyPressed = resetToSavepointKeyPressed;
-    }
-}
+public class ResetToSavePointSignal { }

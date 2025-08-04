@@ -46,7 +46,6 @@ public class PlayerInputProvider : IInitializable, IDisposable
 
         // Savepoint
         _playerInputActions.Player.ResetToSavePoint.started += OnResetToSavePoint;
-        _playerInputActions.Player.ResetToSavePoint.canceled += OnResetToSavePointCanceled;
     }
 
     public void Dispose()
@@ -76,7 +75,6 @@ public class PlayerInputProvider : IInitializable, IDisposable
 
         // Savepoint
         _playerInputActions.Player.ResetToSavePoint.started -= OnResetToSavePoint;
-        _playerInputActions.Player.ResetToSavePoint.canceled -= OnResetToSavePointCanceled;
     }
 
     private void OnLook(InputAction.CallbackContext context)
@@ -133,11 +131,6 @@ public class PlayerInputProvider : IInitializable, IDisposable
 
     private void OnResetToSavePoint(InputAction.CallbackContext context)
     {
-        _signalBus.Fire<ResetToSavePointSignal>(new ResetToSavePointSignal(true));
-    }
-
-    private void OnResetToSavePointCanceled(InputAction.CallbackContext context)
-    {
-        _signalBus.Fire<ResetToSavePointSignal>(new ResetToSavePointSignal(false));
+        _signalBus.Fire<ResetToSavePointSignal>();
     }
 }
