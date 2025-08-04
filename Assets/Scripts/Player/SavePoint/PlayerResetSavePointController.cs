@@ -7,11 +7,7 @@ public class PlayerResetSavePointController : MonoBehaviour
     private SignalBus _signalBus;
 
     [Inject]
-    public void Construct(
-        SavePointState savePointState,
-        PlayerInputProvider playerInputProvider,
-        SignalBus signalBus
-    )
+    public void Construct(SavePointState savePointState, SignalBus signalBus)
     {
         _savePointState = savePointState;
         _signalBus = signalBus;
