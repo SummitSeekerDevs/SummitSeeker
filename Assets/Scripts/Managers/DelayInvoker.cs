@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DelayInvoker : MonoBehaviour
 {
-    public void InvokeDelayed(float delay, System.Action action)
+    public virtual void InvokeDelayed(float delay, System.Action action)
     {
         StartCoroutine(InvokeCoroutine(delay, action));
     }

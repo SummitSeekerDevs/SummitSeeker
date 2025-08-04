@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Zenject;
 
 public class KatapultManager : IInitializable, IDisposable
@@ -23,15 +24,15 @@ public class KatapultManager : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _signalBus.Subscribe<KatapultTriggerSignal>(OnKatapultTriggered);
+        _signalBus.Subscribe<KatapultTriggerSignal>(OnKatapultSignalTriggered);
     }
 
     public void Dispose()
     {
-        _signalBus.Unsubscribe<KatapultTriggerSignal>(OnKatapultTriggered);
+        _signalBus.Unsubscribe<KatapultTriggerSignal>(OnKatapultSignalTriggered);
     }
 
-    private void OnKatapultTriggered(KatapultTriggerSignal signal)
+    private void OnKatapultSignalTriggered(KatapultTriggerSignal signal)
     {
         _katapultStunHandler.ToggleFreezePlayerPosition(true, signal._rigidbody);
 

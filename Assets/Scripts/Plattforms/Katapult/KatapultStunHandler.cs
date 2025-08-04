@@ -7,7 +7,7 @@ public class KatapultStunHandler
 {
     internal RigidbodyConstraints _playerRbDefaultconstraints;
 
-    public void ToggleFreezePlayerPosition(bool freeze, Rigidbody playerRb)
+    public virtual void ToggleFreezePlayerPosition(bool freeze, Rigidbody playerRb)
     {
         if (freeze)
         {
