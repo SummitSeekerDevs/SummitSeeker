@@ -36,7 +36,7 @@ public class ZCallablePlatformTest : ZenjectIntegrationTestFixture
         var signalBus = GoContext.Container.Resolve<SignalBus>();
         signalBus.Fire<CallablePlatformStartMovementSignal>();
 
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         // Assertions
         Assert.AreEqual(true, callablePlatformScript.moveToPosition, "Signal triggered movement");

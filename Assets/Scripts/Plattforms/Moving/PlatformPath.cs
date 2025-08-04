@@ -10,7 +10,7 @@ public class PlatformPath
         _points = points;
     }
 
-    public Vector3 GetNextTarget()
+    public virtual Vector3 GetNextTarget()
     {
         currentIndex++;
 
