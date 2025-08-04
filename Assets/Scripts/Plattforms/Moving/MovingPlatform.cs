@@ -34,17 +34,28 @@ public class MovingPlatform : MonoBehaviour
     #region Collision
     private void OnCollisionEnter(Collision other)
     {
-        if (other.transform.tag == "Player")
-        {
-            other.transform.parent = transform;
-        }
+        TogglePlayerParenting(true, other.transform);
     }
 
     private void OnCollisionExit(Collision other)
     {
-        if (other.transform.tag == "Player")
+        TogglePlayerParenting(false, other.transform);
+    }
+
+    internal void TogglePlayerParenting(bool entering, Transform collidingTransform)
+    {
+        if (collidingTransform.tag == "Player")
         {
-            other.transform.parent = null;
+            if (entering)
+            {
+                collidingTransform.parent = transform;
+                Debug.Log("Entering");
+            }
+            else
+            {
+                collidingTransform.parent = null;
+                Debug.Log("Leaving");
+            }
         }
     }
     #endregion
