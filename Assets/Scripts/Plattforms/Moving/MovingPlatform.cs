@@ -49,12 +49,10 @@ public class MovingPlatform : MonoBehaviour
             if (entering)
             {
                 collidingTransform.parent = transform;
-                Debug.Log("Entering");
             }
             else
             {
                 collidingTransform.parent = null;
-                Debug.Log("Leaving");
             }
         }
     }
