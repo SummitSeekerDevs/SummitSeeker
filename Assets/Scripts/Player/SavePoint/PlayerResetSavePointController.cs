@@ -1,35 +1,48 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class PlayerResetSavePointController : MonoBehaviour
 {
     private SavePointState _savePointState;
-    private PlayerInput_Actions _playerInputActions;
+    private PlayerInputProvider _playerInputProvider;
+    private SignalBus _signalBus;
 
     [Inject]
-    public void Construct(SavePointState savePointState, PlayerInput_Actions inputActions)
+    public void Construct(
+        SavePointState savePointState,
+        PlayerInputProvider playerInputProvider,
+        SignalBus signalBus
+    )
     {
         _savePointState = savePointState;
-        _playerInputActions = inputActions;
-    }
+        _playerInputProvider = playerInputProvider;
+        _signalBus = signalBus;
 
-    private void OnEnable()
-    {
-        _playerInputActions.Player.ResetToSavePoint.performed += OnResetToSavePoint;
+        // subscribe crouch signal
+        _signalBus.Subscribe<ResetToSavePointSignal>(OnResetToSavePoint);
     }
 
     private void OnDisable()
     {
-        _playerInputActions.Player.ResetToSavePoint.performed -= OnResetToSavePoint;
+        _signalBus.Unsubscribe<ResetToSavePointSignal>(OnResetToSavePoint);
     }
 
-    private void OnResetToSavePoint(InputAction.CallbackContext context)
+    private void OnResetToSavePoint()
     {
         Transform savePoint = _savePointState.ConsumeSavePoint();
         if (savePoint != null)
         {
             GetComponent<Rigidbody>().position = savePoint.position;
         }
+    }
+}
+
+public class ResetToSavePointSignal
+{
+    public readonly bool _resetToSavepointKeyPressed;
+
+    public ResetToSavePointSignal(bool resetToSavepointKeyPressed)
+    {
+        _resetToSavepointKeyPressed = resetToSavepointKeyPressed;
     }
 }

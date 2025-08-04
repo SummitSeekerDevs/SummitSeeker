@@ -15,5 +15,6 @@ public class InGameSceneInstaller : MonoInstaller
         // Signal
         Container.DeclareSignal<ThrowProjectileSignal>();
         Container.DeclareSignal<CrouchSignal>();
+        Container.DeclareSignal<ResetToSavePointSignal>();
     }
 }
