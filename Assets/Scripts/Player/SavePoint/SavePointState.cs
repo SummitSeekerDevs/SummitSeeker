@@ -9,7 +9,7 @@ public class SavePointState
         _activeSavePoint = savePoint;
     }
 
-    public Transform ConsumeSavePoint()
+    public virtual Transform ConsumeSavePoint()
     {
         Transform result = _activeSavePoint;
         _activeSavePoint = null;
