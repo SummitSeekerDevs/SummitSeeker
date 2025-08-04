@@ -4,7 +4,6 @@ using Zenject;
 public class PlayerResetSavePointController : MonoBehaviour
 {
     private SavePointState _savePointState;
-    private PlayerInputProvider _playerInputProvider;
     private SignalBus _signalBus;
 
     [Inject]
@@ -15,7 +14,6 @@ public class PlayerResetSavePointController : MonoBehaviour
     )
     {
         _savePointState = savePointState;
-        _playerInputProvider = playerInputProvider;
         _signalBus = signalBus;
 
         // subscribe crouch signal
