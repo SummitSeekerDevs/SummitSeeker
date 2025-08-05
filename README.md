@@ -42,6 +42,9 @@ Durch die Verwendung von Monobehaviour wird der Lebenszyklus einer Klasse/Objekt
 
 Andererseits gibt es aber auch die Möglichkeit den Lebenszyklus einer Klasse durch Extenject steuern zu lassen, beispielsweise durch die Verwendung der Intefaces IInitializable, IDisposable oder ITickable. Hierbei wird kein Gameobject benötigt und die Klasse kann völlig unabhängig von Unity-Komponenten existieren. Diese Verwendung ist praktisch, wenn die Klasse reine Spiellogik enthält, die nicht von Unity-Objekten abhängig ist, beispielsweise der GameManager.
 
+#### Signals
+Extenject bietet die Möglichkeit der Verwendung von sogenannten __Signals__, welche ein __Event-System innerhalb von Extenject__ (Observer-Pattern) sind. Dies dient zum __Entkoppeln__ von Sender und Empfänger ohne dass direkte Referenzen zwischen ihnen bestehen müssen. Zum Beispiel kann ein Gameobject ein monobehaviour-Skript als Komponente besitzen in dem bei dem Eintritt einer Kollision ein spezifisches Extenject-Signal verschickt wird, auf welches wiederum die verschiedensten Klassen/Komponenten hören und darauf reagieren können (z.B. auslösen, dass die Callable-Platform anfängt sich zu ihrer Zielposition zu bewegen). Ein großer Vorteil der hieraus entsteht, ist weniger enge Kopplung.
+
 ## Level Design
 ### Rules
 Potentiell ist es möglich, dass bereits an einem höheren Level gearbeitet bzw. fertig gestellt wird, bevor das niedrigere Level fertig und komplett in der Hauptspielscene, in der sich alle Level befinden, integriert wurde. Wird also durch einen Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Szene gebaut und getestet, um die möglichen Konflikte mit einem anderen Level zu verhindern.
