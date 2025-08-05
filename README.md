@@ -28,6 +28,20 @@ Um im GameManager nur die globalen Spielzustände und -abläufe zu erfassen und 
 Bei dem Projekt SummitSeeker verwenden wir den Codeformatter [csharpier](https://csharpier.com).
 Die Einhaltung dieser Formatierungsregeln wird auch mittels eines Workflows geprüft.
 
+### Extenject (Zenject)
+Es ist ein Dependency-Injection Framework welches in Unity nutzbar ist. Das Ziel der Verwendung von Extenject ist weniger manuelles Instanziieren und Zuweisen von Objekten, dafür eben mehr Modularität, Testbarkeit und sauberen Code. Extenject sorgt dafür, dass Klassen beim Erstellen automatisch ihre benötigten Abhängigkeiten bekommen (z.B. über den Konstruktor - nur bei __nicht__-monobehaviour Klassen - oder beispielsweise über __Method-Injection__ bei der eine Funktion der monobehaviour-Klasse mit der Annotation [Inject] versehen wird.
+In der Kernidee beschreibt man in sogenannten __Installern__, wie Objekte erstellt und verbunden werden sollen. Der sogenannte __Kontext__, in dem dieser __Installer__ aufgerufen wird, bestimmt dabei den Lebensbereicht der Abhängigkeiten und wann sie verfügbar sind:
+  - Projekt-Kontext: globale Abhängigkeiten für das ganze Projekt (also Objekte die jederzeit von theoretisch jedem anderen Objekt abrufbar sein müssen wie z.B. der GameManager)
+  - Szenen-Kontext: Abhängigkeiten, die nur in einer bestimmten Szene gelten (z.B. das eigentliche Spielerobjekt -> Soll ja nicht im Hauptmenu sein, beispielsweise aber in der InGame-Szene)
+  - Gameobject-Kontext: Abhängigkeiten für ein einzelnes Objekt oder Prefab (z.B. bei der Katapult-Platform, bei der alle notwendigen Klassen und Hilfsklassen nur genau einmal in dessen Kontext existieren und deren Funktionen verwendbar sein sollen)
+
+Trotz der Verwendung von Extenject, werden wir bei Abhängigkeiten die eine Unity-spezifische Komponente (z.B. Rigidbody oder Transform etc.) betreffen und an einem Gameobjekt hängen, weiterhin die für die Auflösung dieser Komponenten-Abhängigkeiten vorgesehenen Unity-Methoden wie GetComponent verwenden.
+
+#### Wann Unity-Lebenszyklus und wann Extenject-Lebenszyklus
+Durch die Verwendung von Monobehaviour wird der Lebenszyklus einer Klasse/Objekt durch Unity gesteuert (Awake, Start, OnDestroy, Update etc.). Dabei muss diese Klasse/Komponente an einem Gameobjekt hängen und hat direkten Zugriff auf Unity-spezifische Dinge wie transform, gameObject, StartCoroutine etc. Das ist praktisch, wenn die Logik __untrennbar mit einem GameObject verbunden__ ist (z.B. Bewegung des Spielers mit einem Rigidbody)
+
+Andererseits gibt es aber auch die Möglichkeit den Lebenszyklus einer Klasse durch Extenject steuern zu lassen, beispielsweise durch die Verwendung der Intefaces IInitializable, IDisposable oder ITickable. Hierbei wird kein Gameobject benötigt und die Klasse kann völlig unabhängig von Unity-Komponenten existieren. Diese Verwendung ist praktisch, wenn die Klasse reine Spiellogik enthält, die nicht von Unity-Objekten abhängig ist, beispielsweise der GameManager.
+
 ## Level Design
 ### Rules
 Potentiell ist es möglich, dass bereits an einem höheren Level gearbeitet bzw. fertig gestellt wird, bevor das niedrigere Level fertig und komplett in der Hauptspielscene, in der sich alle Level befinden, integriert wurde. Wird also durch einen Usecase die Erstellung eines neuen Levels gefordert, so wird dieses Level zunächst in einer seperaten Szene gebaut und getestet, um die möglichen Konflikte mit einem anderen Level zu verhindern.
