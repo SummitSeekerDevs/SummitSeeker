@@ -33,9 +33,9 @@ Es ist ein Dependency-Injection Framework welches in Unity nutzbar ist. Das Ziel
 In der Kernidee beschreibt man in sogenannten [__Installern__](https://github.com/modesttree/Zenject?tab=readme-ov-file#installers), wie Objekte, innerhalb eines [DI-Containers](https://github.com/modesttree/Zenject?tab=readme-ov-file#installers) erstellt und verbunden werden sollen. Der Container ist prinzipiell ein Objekt, welches ein Dictionary mit allen Registrierungen enthält. Registrierungen werden in Extenject __Bindings__ genannt, da sie die Bindung von einem abstrakten zu einem konkreten Typ erstellen.
 
 Der sogenannte __Kontext__, in dem dieser __Installer__ aufgerufen wird, bestimmt dabei den Lebensbereicht der Abhängigkeiten und wann sie verfügbar sind:
-  - Projekt-Kontext: globale Abhängigkeiten für das ganze Projekt (also Objekte die jederzeit von theoretisch jedem anderen Objekt abrufbar sein müssen wie z.B. der GameManager)
-  - Szenen-Kontext: Abhängigkeiten, die nur in einer bestimmten Szene gelten (z.B. das eigentliche Spielerobjekt -> Soll ja nicht im Hauptmenu sein, beispielsweise aber in der InGame-Szene)
-  - Gameobject-Kontext: Abhängigkeiten für ein einzelnes Objekt oder Prefab (z.B. bei der Katapult-Platform, bei der alle notwendigen Klassen und Hilfsklassen nur genau einmal in dessen Kontext existieren und deren Funktionen verwendbar sein sollen)
+  - __Projekt-Kontext__: globale Abhängigkeiten für das ganze Projekt (also Objekte die jederzeit von theoretisch jedem anderen Objekt abrufbar sein müssen wie z.B. der GameManager)
+  - __Szenen-Kontext__: Abhängigkeiten, die nur in einer bestimmten Szene gelten (z.B. das eigentliche Spielerobjekt -> Soll ja nicht im Hauptmenu sein, beispielsweise aber in der InGame-Szene)
+  - __Gameobject-Kontext__: Abhängigkeiten für ein einzelnes Objekt oder Prefab (z.B. bei der Katapult-Platform, bei der alle notwendigen Klassen und Hilfsklassen nur genau einmal in dessen Kontext existieren und deren Funktionen verwendbar sein sollen)
 
 Trotz der Verwendung von Extenject, werden wir bei Abhängigkeiten die eine Unity-spezifische Komponente (z.B. Rigidbody oder Transform etc.) betreffen und an einem Gameobjekt hängen, weiterhin die für die Auflösung dieser Komponenten-Abhängigkeiten vorgesehenen Unity-Methoden wie GetComponent verwenden.
 
