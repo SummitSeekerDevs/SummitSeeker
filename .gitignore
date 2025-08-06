@@ -13,6 +13,10 @@
 # Code Coverage
 [Cc]odeCoverage
 
+# Rainbow Folders 2 (nur local für visuals im Editor)
+[Aa]ssets/Plugins/Borodar
+[Aa]ssets/Plugins/Borodar.meta
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 [Mm]emoryCaptures/
