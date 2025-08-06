@@ -21,6 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     private PlayerSlopeHandler _playerSlopeHandler;
 
     private PlayerStateMachine _playerStateMachine;
+    private PlayerJumpHandler _playerJumpHandler;
 
     private SignalBus _signalBus;
 
@@ -47,6 +48,7 @@ public class PlayerMovementController : MonoBehaviour
         PlayerInputProvider playerInputProvider,
         PlayerSlopeHandler playerSlopeHandler,
         PlayerStateMachine playerStateMachine,
+        PlayerJumpHandler playerJumpHandler,
         SignalBus signalBus
     )
     {
@@ -54,6 +56,7 @@ public class PlayerMovementController : MonoBehaviour
         _playerInputProvider = playerInputProvider;
         _playerSlopeHandler = playerSlopeHandler;
         _playerStateMachine = playerStateMachine;
+        _playerJumpHandler = playerJumpHandler;
         _signalBus = signalBus;
 
         // subscribe crouch signal
@@ -77,7 +80,7 @@ public class PlayerMovementController : MonoBehaviour
         // set isGrounded for this frame
         _isGrounded = IsGrounded();
 
-        CheckJump();
+        _playerJumpHandler.CheckJump(_playerInputProvider._jumpingIsPressed, _isGrounded);
         SpeedControl();
         _playerStateMachine.UpdateMovementState(
             _isGrounded,
@@ -156,41 +159,6 @@ public class PlayerMovementController : MonoBehaviour
             case PlayerStateMachine.MovementState.Air:
                 break;
         }
-    }
-    #endregion
-
-    #region Jumping
-    private void CheckJump()
-    {
-        if (_playerInputProvider._jumpingIsPressed)
-        {
-            Jump();
-        }
-    }
-
-    private void Jump()
-    {
-        if (_readyToJump && _isGrounded)
-        {
-            _readyToJump = false;
-
-            _exitingSlope = true;
-
-            // reset y velocity
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
-
-            _rb.AddForce(transform.up * _playerMovementConfig.jumpForce, ForceMode.Impulse);
-
-            // jump cooldown
-            Invoke(nameof(ResetJump), _playerMovementConfig.jumpCooldown);
-        }
-    }
-
-    private void ResetJump()
-    {
-        _readyToJump = true;
-
-        _exitingSlope = false;
     }
     #endregion
 
