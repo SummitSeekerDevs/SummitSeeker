@@ -22,7 +22,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private PlayerStateMachine _playerStateMachine;
     private PlayerJumpHandler _playerJumpHandler;
-
+    private PlayerCrouchHandler _playerCrouchHandler;
     private SignalBus _signalBus;
 
     // Movement
@@ -49,6 +49,7 @@ public class PlayerMovementController : MonoBehaviour
         PlayerSlopeHandler playerSlopeHandler,
         PlayerStateMachine playerStateMachine,
         PlayerJumpHandler playerJumpHandler,
+        PlayerCrouchHandler playerCrouchHandler,
         SignalBus signalBus
     )
     {
@@ -57,10 +58,8 @@ public class PlayerMovementController : MonoBehaviour
         _playerSlopeHandler = playerSlopeHandler;
         _playerStateMachine = playerStateMachine;
         _playerJumpHandler = playerJumpHandler;
+        _playerCrouchHandler = playerCrouchHandler;
         _signalBus = signalBus;
-
-        // subscribe crouch signal
-        _signalBus.Subscribe<CrouchSignal>(OnCrouch);
 
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
@@ -70,9 +69,14 @@ public class PlayerMovementController : MonoBehaviour
         _startYScale = transform.localScale.y;
     }
 
+    private void OnEnable()
+    {
+        _playerCrouchHandler.OnGameObjectEnabled();
+    }
+
     private void OnDisable()
     {
-        _signalBus.Unsubscribe<CrouchSignal>(OnCrouch);
+        _playerCrouchHandler.OnGameObjectDisabled();
     }
 
     private void Update()
@@ -159,36 +163,6 @@ public class PlayerMovementController : MonoBehaviour
             case PlayerStateMachine.MovementState.Air:
                 break;
         }
-    }
-    #endregion
-
-    #region Crouching
-    private void OnCrouch(CrouchSignal crouchSignal)
-    {
-        if (crouchSignal._crouchKeyPressed)
-            Crouch();
-        else
-            ResetCrouch();
-    }
-
-    private void Crouch()
-    {
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            _playerMovementConfig.crouchYScale,
-            transform.localScale.z
-        );
-
-        _rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-    }
-
-    private void ResetCrouch()
-    {
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            _startYScale,
-            transform.localScale.z
-        );
     }
     #endregion
 
