@@ -54,14 +54,33 @@ public class ThrowingKnife : MonoBehaviour
     {
         readyToThrow = false;
 
+        Rigidbody projectileRb = CreateProjectile();
+        Vector3 forceToAdd = CalculateThrowForce();
+        ApplyForceToProjectile(projectileRb, forceToAdd);
+
+        ApplyRotationTorque(projectileRb);
+
+        totalThrows--;
+
+        // implement throwCooldown
+        Invoke(nameof(ResetThrow), throwCooldown);
+    }
+
+    private Rigidbody CreateProjectile()
+    {
         // instantiate object to throw
         GameObject projectile = Instantiate(objectToThrow, attackPoint.position, cam.rotation);
 
         // get rigidbody component
-        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
 
-        projectileRb.angularDamping = 0f;
+        rb.angularDamping = 0f;
 
+        return rb;
+    }
+
+    private Vector3 CalculateThrowForce()
+    {
         // calculate direction
         Vector3 forceDirection = cam.transform.forward;
 
@@ -72,18 +91,19 @@ public class ThrowingKnife : MonoBehaviour
             forceDirection = (hit.point - attackPoint.position).normalized;
         }
 
-        // add force
-        Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
-        projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
+        // return force
+        return forceDirection * throwForce + transform.up * throwUpwardForce;
+    }
 
-        // Drehung
+    private void ApplyForceToProjectile(Rigidbody rb, Vector3 force)
+    {
+        rb.AddForce(force, ForceMode.Impulse);
+    }
+
+    private void ApplyRotationTorque(Rigidbody rb)
+    {
         Vector3 torque = attackPoint.transform.right * 1000 * Time.deltaTime;
-        projectileRb.AddTorque(torque, ForceMode.Impulse);
-
-        totalThrows--;
-
-        // implement throwCooldown
-        Invoke(nameof(ResetThrow), throwCooldown);
+        rb.AddTorque(torque, ForceMode.Impulse);
     }
 
     private void ResetThrow() => readyToThrow = true;
