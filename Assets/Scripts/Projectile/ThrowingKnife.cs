@@ -1,21 +1,24 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Zenject;
+
+[assembly: InternalsVisibleTo("PlaymodeTests")]
 
 public class ThrowingKnife : MonoBehaviour
 {
     [Header("References")]
     [SerializeField]
-    private Transform cam;
+    internal Transform cam;
 
     [SerializeField]
-    private Transform attackPoint;
+    internal Transform attackPoint;
 
     [SerializeField]
-    private GameObject objectToThrow;
+    internal GameObject objectToThrow;
 
     [Header("Settings")]
     [SerializeField]
-    private int totalThrows = 50;
+    internal int totalThrows = 50;
 
     [SerializeField]
     private float throwCooldown = 0.1f;
@@ -27,7 +30,7 @@ public class ThrowingKnife : MonoBehaviour
     [SerializeField]
     private float throwUpwardForce = 0f;
 
-    private bool readyToThrow = true;
+    internal bool readyToThrow = true;
     private SignalBus _signalBus;
 
     [Inject]
@@ -50,7 +53,7 @@ public class ThrowingKnife : MonoBehaviour
         }
     }
 
-    private void Throw()
+    internal void Throw()
     {
         readyToThrow = false;
 
