@@ -23,17 +23,10 @@ public class PlayerMovementController : MonoBehaviour
     private PlayerStateMachine _playerStateMachine;
     private PlayerJumpHandler _playerJumpHandler;
     private PlayerCrouchHandler _playerCrouchHandler;
-    private SignalBus _signalBus;
 
     // Movement
     private Vector3 _moveDirection;
     private float _moveSpeed;
-
-    // Jumping
-    private bool _readyToJump = true;
-
-    // Crouching
-    private float _startYScale;
 
     // Ground check
     private bool _isGrounded;
@@ -49,8 +42,7 @@ public class PlayerMovementController : MonoBehaviour
         PlayerSlopeHandler playerSlopeHandler,
         PlayerStateMachine playerStateMachine,
         PlayerJumpHandler playerJumpHandler,
-        PlayerCrouchHandler playerCrouchHandler,
-        SignalBus signalBus
+        PlayerCrouchHandler playerCrouchHandler
     )
     {
         // Zenject injections
@@ -59,14 +51,10 @@ public class PlayerMovementController : MonoBehaviour
         _playerStateMachine = playerStateMachine;
         _playerJumpHandler = playerJumpHandler;
         _playerCrouchHandler = playerCrouchHandler;
-        _signalBus = signalBus;
 
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
-
-        // Set default scale
-        _startYScale = transform.localScale.y;
     }
 
     private void OnEnable()
