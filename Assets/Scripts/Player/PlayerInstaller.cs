@@ -12,6 +12,7 @@ public class PlayerInstaller : MonoInstaller
         Container.Bind<PlayerStateMachine>().AsSingle();
         Container.Bind<PlayerJumpHandler>().AsSingle();
         Container.Bind<PlayerCrouchHandler>().AsSingle();
+        Container.Bind<PlayerPhysicsHandler>().AsSingle();
 
         // Hier geht es nicht anders als die Komponente/Klasse für den Objectcontext zu binden, aufgrund der Codeaufteilung
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
