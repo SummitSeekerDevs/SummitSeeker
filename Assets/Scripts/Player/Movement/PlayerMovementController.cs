@@ -22,13 +22,16 @@ public class PlayerMovementController : MonoBehaviour
     private PlayerJumpHandler _playerJumpHandler;
     private PlayerCrouchHandler _playerCrouchHandler;
     private PlayerPhysicsHandler _playerPhysicsHandler;
+    public PlayerSlopeHandler _playerSlopeHandler { get; private set; }
 
     // Movement
     private Vector3 _moveDirection;
     private float _moveSpeed;
 
     // Ground check
-    private bool _isGrounded;
+    public bool _onGround { get; private set; }
+    public bool _onSlope { get; private set; }
+    public bool _exitingSlope { get; private set; }
 
     #endregion
 
@@ -38,7 +41,8 @@ public class PlayerMovementController : MonoBehaviour
         PlayerStateMachine playerStateMachine,
         PlayerJumpHandler playerJumpHandler,
         PlayerCrouchHandler playerCrouchHandler,
-        PlayerPhysicsHandler playerPhysicsHandler
+        PlayerPhysicsHandler playerPhysicsHandler,
+        PlayerSlopeHandler playerSlopeHandler
     )
     {
         // Zenject injections
@@ -47,6 +51,7 @@ public class PlayerMovementController : MonoBehaviour
         _playerJumpHandler = playerJumpHandler;
         _playerCrouchHandler = playerCrouchHandler;
         _playerPhysicsHandler = playerPhysicsHandler;
+        _playerSlopeHandler = playerSlopeHandler;
 
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
@@ -66,37 +71,47 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // set isGrounded for this frame
-        _isGrounded = _playerPhysicsHandler.IsGrounded();
+        _onGround = _playerPhysicsHandler.IsGrounded();
 
-        _playerJumpHandler.CheckJump(_playerInputProvider._jumpingIsPressed, _isGrounded);
+        _playerJumpHandler.CheckJump(_playerInputProvider._jumpingIsPressed, _onGround);
         _playerPhysicsHandler.SpeedControl(_moveSpeed);
 
         _playerStateMachine.UpdateMovementState(
-            _isGrounded,
+            _onGround,
             _playerInputProvider._crouchingIsPressed,
             _playerInputProvider._sprintingIsPressed
         );
 
         SetMovementSpeed();
 
-        _playerPhysicsHandler.HandleDrag(_isGrounded);
+        _playerPhysicsHandler.HandleDrag(_onGround);
     }
 
     private void FixedUpdate()
     {
+        _onSlope = _playerSlopeHandler.OnSlope(
+            transform,
+            _playerMovementConfig.playerHeight,
+            _playerMovementConfig.maxSlopeAngle
+        );
+
         // calculate movement direction
         _moveDirection =
             _orientation.forward * _playerInputProvider._moveInput.y
             + _orientation.right * _playerInputProvider._moveInput.x;
 
-        _playerPhysicsHandler.MovePlayer(_moveDirection, _moveSpeed, _isGrounded);
+        _playerPhysicsHandler.MovePlayer(_moveDirection, _moveSpeed, _onGround);
 
-        if (!_isGrounded)
+        if (!_onGround)
             _playerPhysicsHandler.ResetUnderMap(_spawnPoint.position);
     }
 
     #region Moving
 
+    public void AddMovingForce(Vector3 forceBeforeSpeed)
+    {
+        _rb.AddForce(forceBeforeSpeed * _moveSpeed, ForceMode.Force);
+    }
 
     private void SetMovementSpeed()
     {
