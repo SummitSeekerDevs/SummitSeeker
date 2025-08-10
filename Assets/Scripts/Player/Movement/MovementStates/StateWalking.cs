@@ -4,16 +4,14 @@ public class StateWalking : IMovementState
 {
     private MovementStateMachine _movementSM;
 
-    private ILink[] links;
+    private ILink[] links = new ILink[4];
 
     public StateWalking(MovementStateMachine movementSM)
     {
         _movementSM = movementSM;
-
-        Initialize();
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         // Bewusst ein Array da Einsparung an RAM und schnellerer durchlauf
         links[0] = _movementSM.linkJumping;
@@ -24,7 +22,10 @@ public class StateWalking : IMovementState
 
     public void Enter()
     {
-        // nothing to do here
+        Debug.Log("Walking");
+        _movementSM._playerMovementController.SetMovementSpeed(
+            _movementSM._playerMovementController._playerMovementConfig.walkSpeed
+        );
     }
 
     public void Exit()
@@ -40,17 +41,31 @@ public class StateWalking : IMovementState
             && !_movementSM._playerMovementController._exitingSlope
         )
         {
+            _movementSM._playerMovementController.AddMovingForce(
+                _movementSM._playerMovementController._playerSlopeHandler.GetSlopeMoveDirection(
+                    moveDirection
+                )
+                    * 20f
+                    * _movementSM._playerMovementController._moveSpeed
+            );
 
-            _movementSM._playerMovementController._playerSlopeHandler.GetSlopeMoveDirection(moveDirection) * 20f
-
-            
-
-            if (_rb.linearVelocity.y > 0)
-                _rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+            if (_movementSM._playerMovementController.GetLinearVelocity().y > 0)
+            {
+                _movementSM._playerMovementController.AddMovingForce(Vector3.down * 80f);
+            }
         }
         // on ground
-        else if (isGrounded)
-            _rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        else if (_movementSM._playerMovementController._onGround)
+        {
+            _movementSM._playerMovementController.AddMovingForce(
+                moveDirection.normalized * 10f * _movementSM._playerMovementController._moveSpeed
+            );
+        }
+
+        // turn gravity off while on slope
+        _movementSM._playerMovementController.ToggleGravity(
+            !_movementSM._playerMovementController._onSlope
+        );
     }
 
     public void Update()

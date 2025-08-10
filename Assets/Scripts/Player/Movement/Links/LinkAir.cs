@@ -1,6 +1,6 @@
 public class LinkAir : ILink
 {
-    private StateAir _linkToState;
+    private readonly StateAir _linkToState;
 
     public LinkAir(StateAir linkToState)
     {

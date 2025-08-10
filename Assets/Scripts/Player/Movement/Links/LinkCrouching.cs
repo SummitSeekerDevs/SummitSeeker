@@ -3,7 +3,7 @@ using Zenject;
 public class LinkCrouching : ILink
 {
     private PlayerInputProvider _inputProvider;
-    private StateCrouching _linkToState;
+    private readonly StateCrouching _linkToState;
 
     [Inject]
     public void Injection(PlayerInputProvider inputProvider)

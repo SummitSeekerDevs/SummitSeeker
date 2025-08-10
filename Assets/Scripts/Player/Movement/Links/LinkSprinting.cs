@@ -3,7 +3,7 @@ using Zenject;
 public class LinkSprinting : ILink
 {
     private PlayerInputProvider _inputProvider;
-    private StateSprinting _linkToState;
+    private readonly StateSprinting _linkToState;
 
     [Inject]
     public void Injection(PlayerInputProvider inputProvider)

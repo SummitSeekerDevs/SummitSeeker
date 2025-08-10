@@ -3,7 +3,7 @@ using Zenject;
 public class LinkJumping : ILink
 {
     private PlayerInputProvider _inputProvider;
-    private StateJumping _linkToState;
+    private readonly StateJumping _linkToState;
 
     [Inject]
     public void Injection(PlayerInputProvider inputProvider)
@@ -18,7 +18,9 @@ public class LinkJumping : ILink
 
     public bool ConditionMatching(PlayerMovementController playerMC)
     {
-        return (playerMC._onGround || playerMC._onSlope) && _inputProvider._jumpingIsPressed;
+        return (playerMC._onGround || playerMC._onSlope)
+            && _inputProvider._jumpingIsPressed
+            && playerMC._readyToJump;
     }
 
     public IMovementState GetLinkTo()

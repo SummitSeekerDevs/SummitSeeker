@@ -27,12 +27,12 @@ public class PlayerCrouchHandler
     public void OnGameObjectEnabled()
     {
         // subscribe crouch signal
-        _signalBus.Subscribe<CrouchSignal>(OnCrouch);
+        //_signalBus.Subscribe<CrouchSignal>(OnCrouch);
     }
 
     public void OnGameObjectDisabled()
     {
-        _signalBus.Unsubscribe<CrouchSignal>(OnCrouch);
+        //_signalBus.Unsubscribe<CrouchSignal>(OnCrouch);
     }
 
     private void OnCrouch(CrouchSignal crouchSignal)

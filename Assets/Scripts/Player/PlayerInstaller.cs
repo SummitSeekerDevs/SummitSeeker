@@ -6,6 +6,9 @@ public class PlayerInstaller : MonoInstaller
     [SerializeField]
     private PlayerMovementConfig playerMovementConfig;
 
+    [SerializeField]
+    private PlayerMovementController playerMovementController;
+
     public override void InstallBindings()
     {
         Container.Bind<PlayerSlopeHandler>().AsSingle();

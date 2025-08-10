@@ -12,7 +12,7 @@ public class PlayerMovementController : MonoBehaviour
     private Transform _orientation;
 
     [SerializeField]
-    private PlayerMovementConfig _playerMovementConfig;
+    public PlayerMovementConfig _playerMovementConfig { get; private set; }
 
     private Rigidbody _rb;
 
@@ -26,12 +26,15 @@ public class PlayerMovementController : MonoBehaviour
 
     // Movement
     private Vector3 _moveDirection;
-    private float _moveSpeed;
+    public float _moveSpeed { get; private set; }
 
     // Ground check
     public bool _onGround { get; private set; }
     public bool _onSlope { get; private set; }
     public bool _exitingSlope { get; private set; }
+    public bool _readyToJump { get; private set; } = true;
+
+    private MovementStateMachine _movementStateMachine;
 
     #endregion
 
@@ -42,7 +45,9 @@ public class PlayerMovementController : MonoBehaviour
         PlayerJumpHandler playerJumpHandler,
         PlayerCrouchHandler playerCrouchHandler,
         PlayerPhysicsHandler playerPhysicsHandler,
-        PlayerSlopeHandler playerSlopeHandler
+        PlayerSlopeHandler playerSlopeHandler,
+        PlayerMovementConfig playerMovementConfig,
+        DiContainer diContainer
     )
     {
         // Zenject injections
@@ -52,10 +57,15 @@ public class PlayerMovementController : MonoBehaviour
         _playerCrouchHandler = playerCrouchHandler;
         _playerPhysicsHandler = playerPhysicsHandler;
         _playerSlopeHandler = playerSlopeHandler;
+        _playerMovementConfig = playerMovementConfig;
 
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
+
+        _movementStateMachine = new MovementStateMachine();
+        diContainer.BindInstance(this);
+        diContainer.QueueForInject(_movementStateMachine);
     }
 
     private void OnEnable()
@@ -73,16 +83,20 @@ public class PlayerMovementController : MonoBehaviour
         // set isGrounded for this frame
         _onGround = _playerPhysicsHandler.IsGrounded();
 
-        _playerJumpHandler.CheckJump(_playerInputProvider._jumpingIsPressed, _onGround);
-        _playerPhysicsHandler.SpeedControl(_moveSpeed);
+        // _playerJumpHandler.CheckJump(_playerInputProvider._jumpingIsPressed, _onGround);
+        SpeedControl(_moveSpeed);
 
-        _playerStateMachine.UpdateMovementState(
-            _onGround,
-            _playerInputProvider._crouchingIsPressed,
-            _playerInputProvider._sprintingIsPressed
-        );
+        // _playerStateMachine.UpdateMovementState(
+        //     _onGround,
+        //     _playerInputProvider._crouchingIsPressed,
+        //     _playerInputProvider._sprintingIsPressed
+        // );
 
-        SetMovementSpeed();
+        // SetMovementSpeed();
+
+
+
+        _movementStateMachine.Update();
 
         _playerPhysicsHandler.HandleDrag(_onGround);
     }
@@ -100,17 +114,65 @@ public class PlayerMovementController : MonoBehaviour
             _orientation.forward * _playerInputProvider._moveInput.y
             + _orientation.right * _playerInputProvider._moveInput.x;
 
-        _playerPhysicsHandler.MovePlayer(_moveDirection, _moveSpeed, _onGround);
+        // _playerPhysicsHandler.MovePlayer(_moveDirection, _moveSpeed, _onGround);
+        _movementStateMachine.FixedUpdate(_moveDirection);
 
         if (!_onGround)
             _playerPhysicsHandler.ResetUnderMap(_spawnPoint.position);
     }
 
+    public void SpeedControl(float moveSpeed)
+    {
+        // limiting speed on slope
+        if (_onSlope && !_exitingSlope)
+        {
+            if (_rb.linearVelocity.magnitude > moveSpeed)
+                _rb.linearVelocity = _rb.linearVelocity.normalized * moveSpeed;
+        }
+        // limiting speed on ground or in air
+        else
+        {
+            Vector3 flatVel = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+
+            // limit velocity if needed
+            if (flatVel.magnitude > moveSpeed)
+            {
+                Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                _rb.linearVelocity = new Vector3(limitedVel.x, _rb.linearVelocity.y, limitedVel.z);
+            }
+        }
+    }
+
+    public void ToggleGravity(bool on)
+    {
+        _rb.useGravity = on;
+    }
+
     #region Moving
 
-    public void AddMovingForce(Vector3 forceBeforeSpeed)
+    public void SetMovementSpeed(float newSpeed)
     {
-        _rb.AddForce(forceBeforeSpeed * _moveSpeed, ForceMode.Force);
+        _moveSpeed = newSpeed;
+    }
+
+    public void SetReadyToJump(bool readyToJump)
+    {
+        _readyToJump = readyToJump;
+    }
+
+    public void SetExitingSlope(bool exitingSlope)
+    {
+        _exitingSlope = exitingSlope;
+    }
+
+    public void SetLinearVelocity(Vector3 newVelocity)
+    {
+        _rb.linearVelocity = newVelocity;
+    }
+
+    public void AddMovingForce(Vector3 force, ForceMode mode = ForceMode.Force)
+    {
+        _rb.AddForce(force, mode);
     }
 
     private void SetMovementSpeed()
@@ -129,6 +191,11 @@ public class PlayerMovementController : MonoBehaviour
             case PlayerStateMachine.MovementState.Air:
                 break;
         }
+    }
+
+    public Vector3 GetLinearVelocity()
+    {
+        return _rb.linearVelocity;
     }
     #endregion
 }
