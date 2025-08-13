@@ -1,6 +1,6 @@
 using Zenject;
 
-public class LinkCrouching : ILink
+public class LinkCrouching : ITransitionLink
 {
     private PlayerInputProvider _inputProvider;
     private readonly StateCrouching _linkToState;

@@ -1,4 +1,4 @@
-public class LinkAir : ILink
+public class LinkAir : ITransitionLink
 {
     private readonly StateAir _linkToState;
 

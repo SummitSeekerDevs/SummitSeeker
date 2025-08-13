@@ -4,8 +4,6 @@ public class StateSprinting : IMovementState
 {
     private MovementStateMachine _movementSM;
 
-    private ILink[] links = new ILink[3];
-
     public StateSprinting(MovementStateMachine movementSM)
     {
         _movementSM = movementSM;

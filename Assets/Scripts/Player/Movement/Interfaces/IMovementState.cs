@@ -7,9 +7,3 @@ public interface IMovementState
     void FixedUpdate(Vector3 moveDirection);
     void Exit();
 }
-
-public interface ILink
-{
-    bool ConditionMatching(PlayerMovementController playerMC);
-    IMovementState GetLinkTo();
-}

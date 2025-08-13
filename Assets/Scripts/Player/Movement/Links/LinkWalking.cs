@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class LinkWalking : ILink
+public class LinkWalking : ITransitionLink
 {
     private PlayerInputProvider _inputProvider;
     private readonly StateWalking _linkToState;

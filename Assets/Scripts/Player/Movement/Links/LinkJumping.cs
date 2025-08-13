@@ -1,6 +1,6 @@
 using Zenject;
 
-public class LinkJumping : ILink
+public class LinkJumping : ITransitionLink
 {
     private PlayerInputProvider _inputProvider;
     private readonly StateJumping _linkToState;

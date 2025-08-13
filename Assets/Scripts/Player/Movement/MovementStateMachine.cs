@@ -115,7 +115,7 @@ public class MovementStateMachine
     #endregion
 
     #region Transition
-    public void AddTransition(IMovementState fromState, ILink transitionLink)
+    public void AddTransition(IMovementState fromState, ITransitionLink transitionLink)
     {
         GetOrAddNode(fromState).AddTransitionLink(transitionLink);
     }
@@ -160,15 +160,15 @@ public class MovementStateMachine
     public class StateNode
     {
         public IMovementState State { get; }
-        public HashSet<ILink> TransitionLinks { get; }
+        public HashSet<ITransitionLink> TransitionLinks { get; }
 
         public StateNode(IMovementState state)
         {
             State = state;
-            TransitionLinks = new HashSet<ILink>();
+            TransitionLinks = new HashSet<ITransitionLink>();
         }
 
-        public void AddTransitionLink(ILink link)
+        public void AddTransitionLink(ITransitionLink link)
         {
             TransitionLinks.Add(link);
         }
