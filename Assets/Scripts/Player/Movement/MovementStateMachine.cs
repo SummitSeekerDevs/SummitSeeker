@@ -8,7 +8,6 @@ public class MovementStateMachine
     // References
     public PlayerMovementController _playerMovementController { get; private set; }
 
-    // public IMovementState CurrentState { get; private set; }
     public StateNode Current { get; private set; }
     private Dictionary<Type, StateNode> nodes = new();
 
@@ -40,6 +39,13 @@ public class MovementStateMachine
         Initialize();
     }
 
+    public void SetMovementState(IMovementState state)
+    {
+        Current = nodes[state.GetType()];
+        Current.State.Enter();
+    }
+
+    #region Init
     private void Initialize()
     {
         CreateStates();
@@ -89,13 +95,9 @@ public class MovementStateMachine
         stateAir.Initialize();
     }
 
-    public void TransitionTo(IMovementState nextState)
-    {
-        Current.State.Exit();
-        Current = nodes[nextState.GetType()];
-        nextState.Enter();
-    }
+    #endregion
 
+    #region Gameloop updates
     public void Update()
     {
         var nextState = GetNextState();
@@ -110,10 +112,25 @@ public class MovementStateMachine
         Current.State?.FixedUpdate(moveDirection);
     }
 
+    #endregion
+
+    #region Transition
+    public void AddTransition(IMovementState fromState, ILink transitionLink)
+    {
+        GetOrAddNode(fromState).AddTransitionLink(transitionLink);
+    }
+
+    public void TransitionTo(IMovementState nextState)
+    {
+        Current.State.Exit();
+        Current = nodes[nextState.GetType()];
+        nextState.Enter();
+    }
+
     private IMovementState GetNextState()
     {
         // Check transitions
-        foreach (var transitionLink in Current.transitionLinks)
+        foreach (var transitionLink in Current.TransitionLinks)
         {
             if (transitionLink.ConditionMatching(_playerMovementController)) // Wsl effizienter wenn einmal zugewiesen
             {
@@ -124,17 +141,9 @@ public class MovementStateMachine
         return null;
     }
 
-    public void SetMovementState(IMovementState state)
-    {
-        Current = nodes[state.GetType()];
-        Current.State.Enter();
-    }
+    #endregion
 
-    public void AddTransition(IMovementState fromState, ILink transitionLink)
-    {
-        GetOrAddNode(fromState).AddTransitionLink(transitionLink);
-    }
-
+    #region StateNode
     private StateNode GetOrAddNode(IMovementState state)
     {
         var node = nodes.GetValueOrDefault(state.GetType());
@@ -151,17 +160,19 @@ public class MovementStateMachine
     public class StateNode
     {
         public IMovementState State { get; }
-        public HashSet<ILink> transitionLinks { get; }
+        public HashSet<ILink> TransitionLinks { get; }
 
         public StateNode(IMovementState state)
         {
             State = state;
-            transitionLinks = new HashSet<ILink>();
+            TransitionLinks = new HashSet<ILink>();
         }
 
         public void AddTransitionLink(ILink link)
         {
-            transitionLinks.Add(link);
+            TransitionLinks.Add(link);
         }
     }
+
+    #endregion
 }
