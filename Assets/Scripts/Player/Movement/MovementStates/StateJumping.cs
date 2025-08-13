@@ -6,8 +6,6 @@ public class StateJumping : IMovementState
     private MovementStateMachine _movementSM;
     private DelayInvoker _delayInvoker;
 
-    private ILink[] links = new ILink[1];
-
     public StateJumping(MovementStateMachine movementSM)
     {
         _movementSM = movementSM;
@@ -21,8 +19,7 @@ public class StateJumping : IMovementState
 
     public void Initialize()
     {
-        // Bewusst ein Array da Einsparung an RAM und schnellerer durchlauf
-        links[0] = _movementSM.linkAir;
+        _movementSM.AddTransition(_movementSM.stateJumping, _movementSM.linkAir);
     }
 
     public void Enter()
@@ -62,33 +59,6 @@ public class StateJumping : IMovementState
 
     public void FixedUpdate(Vector3 moveDirection)
     {
-        // // on slope
-        // if (
-        //     _movementSM._playerMovementController._onSlope
-        //     && !_movementSM._playerMovementController._exitingSlope
-        // )
-        // {
-        //     _movementSM._playerMovementController.AddMovingForce(
-        //         _movementSM._playerMovementController._playerSlopeHandler.GetSlopeMoveDirection(
-        //             moveDirection
-        //         )
-        //             * 20f
-        //             * _movementSM._playerMovementController._moveSpeed
-        //     );
-        //
-        //     if (_movementSM._playerMovementController.GetLinearVelocity().y > 0)
-        //     {
-        //         _movementSM._playerMovementController.AddMovingForce(Vector3.down * 80f);
-        //     }
-        // }
-        // // on ground
-        // else if (_movementSM._playerMovementController._onGround)
-        // {
-        //     _movementSM._playerMovementController.AddMovingForce(
-        //         moveDirection.normalized * 10f * _movementSM._playerMovementController._moveSpeed
-        //     );
-        // }
-
         // turn gravity off while on slope
         _movementSM._playerMovementController.ToggleGravity(
             !_movementSM._playerMovementController._onSlope
@@ -97,14 +67,7 @@ public class StateJumping : IMovementState
 
     public void Update()
     {
-        // Check transitions
-        for (int i = 0; i < links.Length; i++)
-        {
-            if (links[i].ConditionMatching(_movementSM._playerMovementController))
-            {
-                _movementSM.TransitionTo(links[i].GetLinkTo());
-            }
-        }
+        // nothing
     }
 
     private void ResetJump()

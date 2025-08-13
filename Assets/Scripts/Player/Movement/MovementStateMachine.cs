@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -6,7 +8,9 @@ public class MovementStateMachine
     // References
     public PlayerMovementController _playerMovementController { get; private set; }
 
-    public IMovementState CurrentState { get; private set; }
+    // public IMovementState CurrentState { get; private set; }
+    public StateNode Current { get; private set; }
+    private Dictionary<Type, StateNode> nodes = new();
 
     // States
     public StateWalking stateWalking { get; private set; }
@@ -44,8 +48,7 @@ public class MovementStateMachine
 
         IMovementState startingState = stateWalking;
 
-        CurrentState = startingState;
-        startingState.Enter();
+        SetMovementState(startingState);
     }
 
     private void CreateStates()
@@ -88,18 +91,77 @@ public class MovementStateMachine
 
     public void TransitionTo(IMovementState nextState)
     {
-        CurrentState.Exit();
-        CurrentState = nextState;
+        Current.State.Exit();
+        Current = nodes[nextState.GetType()];
         nextState.Enter();
     }
 
     public void Update()
     {
-        CurrentState?.Update();
+        var nextState = GetNextState();
+        if (nextState != null)
+            TransitionTo(nextState);
+
+        Current.State?.Update();
     }
 
     public void FixedUpdate(Vector3 moveDirection)
     {
-        CurrentState?.FixedUpdate(moveDirection);
+        Current.State?.FixedUpdate(moveDirection);
+    }
+
+    private IMovementState GetNextState()
+    {
+        // Check transitions
+        foreach (var transitionLink in Current.transitionLinks)
+        {
+            if (transitionLink.ConditionMatching(_playerMovementController)) // Wsl effizienter wenn einmal zugewiesen
+            {
+                return transitionLink.GetLinkTo();
+            }
+        }
+
+        return null;
+    }
+
+    public void SetMovementState(IMovementState state)
+    {
+        Current = nodes[state.GetType()];
+        Current.State.Enter();
+    }
+
+    public void AddTransition(IMovementState fromState, ILink transitionLink)
+    {
+        GetOrAddNode(fromState).AddTransitionLink(transitionLink);
+    }
+
+    private StateNode GetOrAddNode(IMovementState state)
+    {
+        var node = nodes.GetValueOrDefault(state.GetType());
+
+        if (node == null)
+        {
+            node = new StateNode(state);
+            nodes.Add(state.GetType(), node);
+        }
+
+        return node;
+    }
+
+    public class StateNode
+    {
+        public IMovementState State { get; }
+        public HashSet<ILink> transitionLinks { get; }
+
+        public StateNode(IMovementState state)
+        {
+            State = state;
+            transitionLinks = new HashSet<ILink>();
+        }
+
+        public void AddTransitionLink(ILink link)
+        {
+            transitionLinks.Add(link);
+        }
     }
 }

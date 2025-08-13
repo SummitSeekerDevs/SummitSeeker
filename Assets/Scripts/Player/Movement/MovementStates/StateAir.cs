@@ -4,8 +4,6 @@ public class StateAir : IMovementState
 {
     private MovementStateMachine _movementSM;
 
-    private ILink[] links = new ILink[3];
-
     public StateAir(MovementStateMachine movementSM)
     {
         _movementSM = movementSM;
@@ -13,10 +11,9 @@ public class StateAir : IMovementState
 
     public void Initialize()
     {
-        // Bewusst ein Array da Einsparung an RAM und schnellerer durchlauf
-        links[0] = _movementSM.linkWalking;
-        links[1] = _movementSM.linkSprinting;
-        links[2] = _movementSM.linkJumping;
+        _movementSM.AddTransition(_movementSM.stateAir, _movementSM.linkWalking);
+        _movementSM.AddTransition(_movementSM.stateAir, _movementSM.linkSprinting);
+        _movementSM.AddTransition(_movementSM.stateAir, _movementSM.linkJumping);
     }
 
     public void Enter()
@@ -31,34 +28,6 @@ public class StateAir : IMovementState
 
     public void FixedUpdate(Vector3 moveDirection)
     {
-        // // on slope
-        // if (
-        //     _movementSM._playerMovementController._onSlope
-        //     && !_movementSM._playerMovementController._exitingSlope
-        // )
-        // {
-        //     _movementSM._playerMovementController.AddMovingForce(
-        //         _movementSM._playerMovementController._playerSlopeHandler.GetSlopeMoveDirection(
-        //             moveDirection
-        //         )
-        //             * 20f
-        //             * _movementSM._playerMovementController._moveSpeed
-        //     );
-        //
-        //     if (_movementSM._playerMovementController.GetLinearVelocity().y > 0)
-        //     {
-        //         _movementSM._playerMovementController.AddMovingForce(Vector3.down * 80f);
-        //     }
-        // }
-        // // on ground
-        // else if (_movementSM._playerMovementController._onGround)
-        // {
-        //     _movementSM._playerMovementController.AddMovingForce(
-        //         moveDirection.normalized * 10f * _movementSM._playerMovementController._moveSpeed
-        //     );
-        // }
-        // else
-
         if (!_movementSM._playerMovementController._onGround)
         {
             _movementSM._playerMovementController.AddMovingForce(
@@ -77,13 +46,6 @@ public class StateAir : IMovementState
 
     public void Update()
     {
-        // Check transitions
-        for (int i = 0; i < links.Length; i++)
-        {
-            if (links[i].ConditionMatching(_movementSM._playerMovementController))
-            {
-                _movementSM.TransitionTo(links[i].GetLinkTo());
-            }
-        }
+        // nothing
     }
 }

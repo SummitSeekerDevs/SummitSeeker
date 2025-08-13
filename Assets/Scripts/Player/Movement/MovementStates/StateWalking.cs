@@ -4,8 +4,6 @@ public class StateWalking : IMovementState
 {
     private MovementStateMachine _movementSM;
 
-    private ILink[] links = new ILink[4];
-
     public StateWalking(MovementStateMachine movementSM)
     {
         _movementSM = movementSM;
@@ -13,11 +11,10 @@ public class StateWalking : IMovementState
 
     public void Initialize()
     {
-        // Bewusst ein Array da Einsparung an RAM und schnellerer durchlauf
-        links[0] = _movementSM.linkJumping;
-        links[1] = _movementSM.linkSprinting;
-        links[2] = _movementSM.linkAir;
-        links[3] = _movementSM.linkCrouching;
+        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkJumping);
+        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkSprinting);
+        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkAir);
+        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkCrouching);
     }
 
     public void Enter()
@@ -70,13 +67,6 @@ public class StateWalking : IMovementState
 
     public void Update()
     {
-        // Check transitions
-        for (int i = 0; i < links.Length; i++)
-        {
-            if (links[i].ConditionMatching(_movementSM._playerMovementController))
-            {
-                _movementSM.TransitionTo(links[i].GetLinkTo());
-            }
-        }
+        // nothing
     }
 }

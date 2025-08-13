@@ -4,8 +4,6 @@ public class StateCrouching : IMovementState
 {
     private MovementStateMachine _movementSM;
 
-    private ILink[] links = new ILink[3];
-
     public StateCrouching(MovementStateMachine movementSM)
     {
         _movementSM = movementSM;
@@ -13,10 +11,9 @@ public class StateCrouching : IMovementState
 
     public void Initialize()
     {
-        // Bewusst ein Array da Einsparung an RAM und schnellerer durchlauf
-        links[0] = _movementSM.linkJumping;
-        links[1] = _movementSM.linkWalking;
-        links[2] = _movementSM.linkAir;
+        _movementSM.AddTransition(_movementSM.stateCrouching, _movementSM.linkJumping);
+        _movementSM.AddTransition(_movementSM.stateCrouching, _movementSM.linkWalking);
+        _movementSM.AddTransition(_movementSM.stateCrouching, _movementSM.linkAir);
     }
 
     public void Enter()
@@ -71,13 +68,6 @@ public class StateCrouching : IMovementState
 
     public void Update()
     {
-        // Check transitions
-        for (int i = 0; i < links.Length; i++)
-        {
-            if (links[i].ConditionMatching(_movementSM._playerMovementController))
-            {
-                _movementSM.TransitionTo(links[i].GetLinkTo());
-            }
-        }
+        // nothing
     }
 }
