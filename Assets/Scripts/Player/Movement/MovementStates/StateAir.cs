@@ -11,9 +11,9 @@ public class StateAir : IMovementState
 
     public void Initialize()
     {
-        _movementSM.AddTransition(_movementSM.stateAir, _movementSM.linkWalking);
-        _movementSM.AddTransition(_movementSM.stateAir, _movementSM.linkSprinting);
-        _movementSM.AddTransition(_movementSM.stateAir, _movementSM.linkJumping);
+        _movementSM.AddTransition(this, _movementSM.linkWalking);
+        _movementSM.AddTransition(this, _movementSM.linkSprinting);
+        _movementSM.AddTransition(this, _movementSM.linkJumping);
     }
 
     public void Enter()

@@ -19,7 +19,7 @@ public class StateJumping : IMovementState
 
     public void Initialize()
     {
-        _movementSM.AddTransition(_movementSM.stateJumping, _movementSM.linkAir);
+        _movementSM.AddTransition(this, _movementSM.linkAir);
     }
 
     public void Enter()

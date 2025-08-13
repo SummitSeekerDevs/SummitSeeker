@@ -11,10 +11,10 @@ public class StateWalking : IMovementState
 
     public void Initialize()
     {
-        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkJumping);
-        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkSprinting);
-        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkAir);
-        _movementSM.AddTransition(_movementSM.stateWalking, _movementSM.linkCrouching);
+        _movementSM.AddTransition(this, _movementSM.linkJumping);
+        _movementSM.AddTransition(this, _movementSM.linkSprinting);
+        _movementSM.AddTransition(this, _movementSM.linkAir);
+        _movementSM.AddTransition(this, _movementSM.linkCrouching);
     }
 
     public void Enter()

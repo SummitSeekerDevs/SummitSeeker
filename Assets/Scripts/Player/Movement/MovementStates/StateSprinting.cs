@@ -13,9 +13,9 @@ public class StateSprinting : IMovementState
 
     public void Initialize()
     {
-        _movementSM.AddTransition(_movementSM.stateSprinting, _movementSM.linkJumping);
-        _movementSM.AddTransition(_movementSM.stateSprinting, _movementSM.linkWalking);
-        _movementSM.AddTransition(_movementSM.stateSprinting, _movementSM.linkAir);
+        _movementSM.AddTransition(this, _movementSM.linkJumping);
+        _movementSM.AddTransition(this, _movementSM.linkWalking);
+        _movementSM.AddTransition(this, _movementSM.linkAir);
     }
 
     public void Enter()
