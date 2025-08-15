@@ -6,7 +6,7 @@ public class PlayerMovementController : MonoBehaviour
     #region Vars
     // References
     [SerializeField]
-    private Transform _spawnPoint;
+    public Transform _spawnPoint { get; private set; }
 
     [SerializeField]
     private Transform _orientation;
@@ -15,14 +15,9 @@ public class PlayerMovementController : MonoBehaviour
     public PlayerMovementConfig _playerMovementConfig { get; private set; }
 
     private Rigidbody _rb;
+    public Rigidbody PLAYER_RB => _rb;
 
     private PlayerInputProvider _playerInputProvider;
-
-    private PlayerStateMachine _playerStateMachine;
-    private PlayerJumpHandler _playerJumpHandler;
-    private PlayerCrouchHandler _playerCrouchHandler;
-    private PlayerPhysicsHandler _playerPhysicsHandler;
-    public PlayerSlopeHandler _playerSlopeHandler { get; private set; }
 
     // Movement
     private Vector3 _moveDirection;
@@ -35,6 +30,8 @@ public class PlayerMovementController : MonoBehaviour
     public bool _exitingSlope { get; private set; }
     public bool _readyToJump { get; private set; } = true;
 
+    private RaycastHit _slopeHit;
+
     private MovementStateMachine _movementStateMachine;
 
     #endregion
@@ -42,22 +39,12 @@ public class PlayerMovementController : MonoBehaviour
     [Inject]
     public void Construct(
         PlayerInputProvider playerInputProvider,
-        PlayerStateMachine playerStateMachine,
-        PlayerJumpHandler playerJumpHandler,
-        PlayerCrouchHandler playerCrouchHandler,
-        PlayerPhysicsHandler playerPhysicsHandler,
-        PlayerSlopeHandler playerSlopeHandler,
         PlayerMovementConfig playerMovementConfig,
         DiContainer diContainer
     )
     {
         // Zenject injections
         _playerInputProvider = playerInputProvider;
-        _playerStateMachine = playerStateMachine;
-        _playerJumpHandler = playerJumpHandler;
-        _playerCrouchHandler = playerCrouchHandler;
-        _playerPhysicsHandler = playerPhysicsHandler;
-        _playerSlopeHandler = playerSlopeHandler;
         _playerMovementConfig = playerMovementConfig;
 
         // Rigidbody
@@ -72,42 +59,21 @@ public class PlayerMovementController : MonoBehaviour
         diContainer.QueueForInject(_movementStateMachine);
     }
 
-    private void OnEnable()
-    {
-        _playerCrouchHandler.OnGameObjectEnabled();
-    }
-
-    private void OnDisable()
-    {
-        _playerCrouchHandler.OnGameObjectDisabled();
-    }
-
     private void Update()
     {
         // set isGrounded for this frame
-        _onGround = _playerPhysicsHandler.IsGrounded();
+        _onGround = IsGrounded();
 
-        // _playerJumpHandler.CheckJump(_playerInputProvider._jumpingIsPressed, _onGround);
         SpeedControl(_moveSpeed);
-
-        // _playerStateMachine.UpdateMovementState(
-        //     _onGround,
-        //     _playerInputProvider._crouchingIsPressed,
-        //     _playerInputProvider._sprintingIsPressed
-        // );
-
-        // SetMovementSpeed();
-
-
 
         _movementStateMachine.Update();
 
-        _playerPhysicsHandler.HandleDrag(_onGround);
+        HandleDrag(_onGround);
     }
 
     private void FixedUpdate()
     {
-        _onSlope = _playerSlopeHandler.OnSlope(
+        _onSlope = OnSlope(
             transform,
             _playerMovementConfig.playerHeight,
             _playerMovementConfig.maxSlopeAngle
@@ -118,14 +84,10 @@ public class PlayerMovementController : MonoBehaviour
             _orientation.forward * _playerInputProvider._moveInput.y
             + _orientation.right * _playerInputProvider._moveInput.x;
 
-        // _playerPhysicsHandler.MovePlayer(_moveDirection, _moveSpeed, _onGround);
         _movementStateMachine.FixedUpdate(_moveDirection);
-
-        if (!_onGround)
-            _playerPhysicsHandler.ResetUnderMap(_spawnPoint.position);
     }
 
-    public void SpeedControl(float moveSpeed)
+    private void SpeedControl(float moveSpeed)
     {
         // limiting speed on slope
         if (_onSlope && !_exitingSlope)
@@ -147,11 +109,6 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    public void ToggleGravity(bool on)
-    {
-        _rb.useGravity = on;
-    }
-
     #region Moving
 
     public void SetMovementSpeed(float newSpeed)
@@ -168,49 +125,45 @@ public class PlayerMovementController : MonoBehaviour
     {
         _exitingSlope = exitingSlope;
     }
+    #endregion
 
-    public void SetLinearVelocity(Vector3 newVelocity)
+    public bool OnSlope(Transform transform, float playerHeight, float maxSlopeAngle)
     {
-        _rb.linearVelocity = newVelocity;
-    }
-
-    public void AddMovingForce(Vector3 force, ForceMode mode = ForceMode.Force)
-    {
-        _rb.AddForce(force, mode);
-    }
-
-    private void SetMovementSpeed()
-    {
-        switch (_playerStateMachine._currentState)
+        if (
+            Physics.Raycast(
+                transform.position,
+                Vector3.down,
+                out _slopeHit,
+                playerHeight * 0.5f + 0.3f
+            )
+        )
         {
-            case PlayerStateMachine.MovementState.Walking:
-                _moveSpeed = _playerMovementConfig.walkSpeed;
-                break;
-            case PlayerStateMachine.MovementState.Sprinting:
-                _moveSpeed = _playerMovementConfig.sprintSpeed;
-                break;
-            case PlayerStateMachine.MovementState.Crouching:
-                _moveSpeed = _playerMovementConfig.crouchSpeed;
-                break;
-            case PlayerStateMachine.MovementState.Air:
-                break;
+            float angle = Vector3.Angle(Vector3.up, _slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
         }
+
+        return false;
     }
 
-    public void SetLocalYScale(float localYScale)
+    public Vector3 GetSlopeMoveDirection(Vector3 moveDirection)
     {
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            localYScale,
-            transform.localScale.z
+        return Vector3.ProjectOnPlane(moveDirection, _slopeHit.normal).normalized;
+    }
+
+    public void HandleDrag(bool isGrounded)
+    {
+        _rb.linearDamping = isGrounded ? _playerMovementConfig.groundDrag : 0;
+    }
+
+    public bool IsGrounded()
+    {
+        return Physics.Raycast(
+            _rb.transform.position,
+            Vector3.down,
+            _playerMovementConfig.playerHeight * 0.5f + 0.2f,
+            _playerMovementConfig.whatIsGround
         );
     }
-
-    public Vector3 GetLinearVelocity()
-    {
-        return _rb.linearVelocity;
-    }
-    #endregion
 }
 
 [CreateAssetMenu(menuName = "Configs/Player Movement Config")]
@@ -236,14 +189,4 @@ public class PlayerMovementConfig : ScriptableObject
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
-}
-
-public class CrouchSignal
-{
-    public readonly bool _crouchKeyPressed;
-
-    public CrouchSignal(bool crouchKeyPressed)
-    {
-        _crouchKeyPressed = crouchKeyPressed;
-    }
 }

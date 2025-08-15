@@ -30,16 +30,14 @@ public class StateJumping : IMovementState
         _movementSM._playerMovementController.SetExitingSlope(true);
 
         // reset y velocity
-        _movementSM._playerMovementController.SetLinearVelocity(
-            new Vector3(
-                _movementSM._playerMovementController.GetLinearVelocity().x,
-                0f,
-                _movementSM._playerMovementController.GetLinearVelocity().z
-            )
+        _movementSM._playerMovementController.PLAYER_RB.linearVelocity = new Vector3(
+            _movementSM._playerMovementController.PLAYER_RB.linearVelocity.x,
+            0f,
+            _movementSM._playerMovementController.PLAYER_RB.linearVelocity.z
         );
 
         // statt transform möglicherweise rb erforderlich
-        _movementSM._playerMovementController.AddMovingForce(
+        _movementSM._playerMovementController.PLAYER_RB.AddForce(
             _movementSM._playerMovementController.transform.up
                 * _movementSM._playerMovementController._playerMovementConfig.jumpForce,
             ForceMode.Impulse
@@ -60,9 +58,9 @@ public class StateJumping : IMovementState
     public void FixedUpdate(Vector3 moveDirection)
     {
         // turn gravity off while on slope
-        _movementSM._playerMovementController.ToggleGravity(
-            !_movementSM._playerMovementController._onSlope
-        );
+        _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
+            ._playerMovementController
+            ._onSlope;
     }
 
     public void Update()

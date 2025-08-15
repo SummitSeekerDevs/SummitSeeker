@@ -110,12 +110,10 @@ public class PlayerInputProvider : IInitializable, IDisposable
     private void OnCrouch(InputAction.CallbackContext context)
     {
         _crouchingIsPressed = true;
-        _signalBus.Fire<CrouchSignal>(new CrouchSignal(true));
     }
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
     {
-        _signalBus.Fire<CrouchSignal>(new CrouchSignal(false));
         _crouchingIsPressed = false;
     }
 

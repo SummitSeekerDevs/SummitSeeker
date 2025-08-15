@@ -11,12 +11,6 @@ public class PlayerInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.Bind<PlayerSlopeHandler>().AsSingle();
-        Container.Bind<PlayerStateMachine>().AsSingle();
-        Container.Bind<PlayerJumpHandler>().AsSingle();
-        Container.Bind<PlayerCrouchHandler>().AsSingle();
-        Container.Bind<PlayerPhysicsHandler>().AsSingle();
-
         // Hier geht es nicht anders als die Komponente/Klasse für den Objectcontext zu binden, aufgrund der Codeaufteilung
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
         Container.Bind<PlayerMovementConfig>().FromInstance(playerMovementConfig).AsSingle();
