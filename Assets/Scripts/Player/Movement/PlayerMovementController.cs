@@ -27,6 +27,7 @@ public class PlayerMovementController : MonoBehaviour
     // Movement
     private Vector3 _moveDirection;
     public float _moveSpeed { get; private set; }
+    public float _startYScale { get; private set; }
 
     // Ground check
     public bool _onGround { get; private set; }
@@ -62,6 +63,9 @@ public class PlayerMovementController : MonoBehaviour
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
+
+        // Set default scale
+        _startYScale = _rb.transform.localScale.y;
 
         _movementStateMachine = new MovementStateMachine();
         diContainer.BindInstance(this);
@@ -191,6 +195,15 @@ public class PlayerMovementController : MonoBehaviour
             case PlayerStateMachine.MovementState.Air:
                 break;
         }
+    }
+
+    public void SetLocalYScale(float localYScale)
+    {
+        transform.localScale = new Vector3(
+            transform.localScale.x,
+            localYScale,
+            transform.localScale.z
+        );
     }
 
     public Vector3 GetLinearVelocity()

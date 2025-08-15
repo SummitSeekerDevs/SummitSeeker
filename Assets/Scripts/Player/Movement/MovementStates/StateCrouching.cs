@@ -24,11 +24,19 @@ public class StateCrouching : IMovementState
         );
 
         // set crouch
+        _movementSM._playerMovementController.SetLocalYScale(
+            _movementSM._playerMovementController._playerMovementConfig.crouchYScale
+        );
+
+        _movementSM._playerMovementController.AddMovingForce(Vector3.down * 5f, ForceMode.Impulse);
     }
 
     public void Exit()
     {
         // reset crouch
+        _movementSM._playerMovementController.SetLocalYScale(
+            _movementSM._playerMovementController._startYScale
+        );
     }
 
     public void FixedUpdate(Vector3 moveDirection)
