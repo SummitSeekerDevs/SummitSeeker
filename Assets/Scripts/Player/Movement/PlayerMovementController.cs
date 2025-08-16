@@ -6,18 +6,18 @@ public class PlayerMovementController : MonoBehaviour
     #region Vars
     // References
     [SerializeField]
-    public Transform _spawnPoint { get; private set; }
+    private Transform _spawnPoint;
+    public Transform SPAWNPOINT => _spawnPoint;
 
     [SerializeField]
     private Transform _orientation;
-
-    [SerializeField]
     public PlayerMovementConfig _playerMovementConfig { get; private set; }
 
     private Rigidbody _rb;
     public Rigidbody PLAYER_RB => _rb;
 
     private PlayerInputProvider _playerInputProvider;
+    private MovementStateMachine _movementStateMachine;
 
     // Movement
     private Vector3 _moveDirection;
@@ -29,10 +29,7 @@ public class PlayerMovementController : MonoBehaviour
     public bool _onSlope { get; private set; }
     public bool _exitingSlope { get; private set; }
     public bool _readyToJump { get; private set; } = true;
-
     private RaycastHit _slopeHit;
-
-    private MovementStateMachine _movementStateMachine;
 
     #endregion
 
@@ -87,6 +84,24 @@ public class PlayerMovementController : MonoBehaviour
         _movementStateMachine.FixedUpdate(_moveDirection);
     }
 
+    #region Setter
+    public void SetMovementSpeed(float newSpeed)
+    {
+        _moveSpeed = newSpeed;
+    }
+
+    public void SetReadyToJump(bool readyToJump)
+    {
+        _readyToJump = readyToJump;
+    }
+
+    public void SetExitingSlope(bool exitingSlope)
+    {
+        _exitingSlope = exitingSlope;
+    }
+    #endregion
+
+    #region Moving
     private void SpeedControl(float moveSpeed)
     {
         // limiting speed on slope
@@ -109,24 +124,23 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    #region Moving
-
-    public void SetMovementSpeed(float newSpeed)
+    public void HandleDrag(bool isGrounded)
     {
-        _moveSpeed = newSpeed;
+        _rb.linearDamping = isGrounded ? _playerMovementConfig.groundDrag : 0;
     }
 
-    public void SetReadyToJump(bool readyToJump)
+    public bool IsGrounded()
     {
-        _readyToJump = readyToJump;
-    }
-
-    public void SetExitingSlope(bool exitingSlope)
-    {
-        _exitingSlope = exitingSlope;
+        return Physics.Raycast(
+            _rb.transform.position,
+            Vector3.down,
+            _playerMovementConfig.playerHeight * 0.5f + 0.2f,
+            _playerMovementConfig.whatIsGround
+        );
     }
     #endregion
 
+    #region Slope
     public bool OnSlope(Transform transform, float playerHeight, float maxSlopeAngle)
     {
         if (
@@ -149,44 +163,5 @@ public class PlayerMovementController : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(moveDirection, _slopeHit.normal).normalized;
     }
-
-    public void HandleDrag(bool isGrounded)
-    {
-        _rb.linearDamping = isGrounded ? _playerMovementConfig.groundDrag : 0;
-    }
-
-    public bool IsGrounded()
-    {
-        return Physics.Raycast(
-            _rb.transform.position,
-            Vector3.down,
-            _playerMovementConfig.playerHeight * 0.5f + 0.2f,
-            _playerMovementConfig.whatIsGround
-        );
-    }
-}
-
-[CreateAssetMenu(menuName = "Configs/Player Movement Config")]
-public class PlayerMovementConfig : ScriptableObject
-{
-    [Header("Movement")]
-    public float walkSpeed;
-    public float sprintSpeed;
-    public float groundDrag;
-
-    [Header("Jumping")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-
-    [Header("Crouching")]
-    public float crouchSpeed;
-    public float crouchYScale;
-
-    [Header("Ground Check")]
-    public LayerMask whatIsGround;
-    public float playerHeight;
-
-    [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    #endregion
 }

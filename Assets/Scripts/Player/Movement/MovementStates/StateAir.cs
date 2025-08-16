@@ -44,7 +44,7 @@ public class StateAir : IMovementState
             ._onSlope;
 
         // Reset to spawn if fallen in void
-        ResetUnderMap(_movementSM._playerMovementController._spawnPoint.position);
+        ResetUnderMap(_movementSM._playerMovementController.SPAWNPOINT.position);
     }
 
     public void Update()
