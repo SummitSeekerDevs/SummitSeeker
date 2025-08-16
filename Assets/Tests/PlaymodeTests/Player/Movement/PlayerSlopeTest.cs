@@ -3,11 +3,11 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class PlayerSlopeHandlerTest
+public class PlayerSlopeTest
 {
     private GameObject groundCube;
     private Transform transform;
-    private PlayerSlopeHandler playerSlopeHandler;
+    private MovementFunctions movementFunctions;
 
     [SetUp]
     public void Setup()
@@ -20,7 +20,7 @@ public class PlayerSlopeHandlerTest
         transform = new GameObject().transform;
         transform.position = new Vector3(-2, 1f, 0);
 
-        playerSlopeHandler = new PlayerSlopeHandler();
+        movementFunctions = new MovementFunctions();
     }
 
     [UnityTest]
@@ -28,7 +28,7 @@ public class PlayerSlopeHandlerTest
     {
         yield return null;
 
-        bool result = playerSlopeHandler.OnSlope(transform, 2, 20);
+        bool result = movementFunctions.OnSlope(transform, 2, 20);
         Assert.True(result, "Cube is interpreted as slope");
     }
 
@@ -37,7 +37,7 @@ public class PlayerSlopeHandlerTest
     {
         yield return null;
 
-        bool result = playerSlopeHandler.OnSlope(transform, 2, 1);
+        bool result = movementFunctions.OnSlope(transform, 2, 1);
         Assert.False(result, "Cube is not interpreted as slope because of angle");
     }
 
@@ -46,7 +46,7 @@ public class PlayerSlopeHandlerTest
     {
         yield return null;
 
-        bool result = playerSlopeHandler.OnSlope(transform, 0.5f, 20);
+        bool result = movementFunctions.OnSlope(transform, 0.5f, 20);
         Assert.False(result, "Not on Slope because not touching");
     }
 
