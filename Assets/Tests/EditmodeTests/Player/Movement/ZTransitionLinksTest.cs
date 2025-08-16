@@ -8,8 +8,7 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     private Mock<PlayerMovementController> movementControllerMock;
     private Mock<PlayerInputProvider> inputProviderMock;
 
-    [SetUp]
-    public void Setup()
+    public void CommonInstall()
     {
         var _playerInputActions = new PlayerInput_Actions();
         Container
@@ -29,6 +28,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void AirTransitionLinkTest()
     {
+        CommonInstall();
+
         StateAir airState = new StateAir(new MovementStateMachine());
         LinkAir airLink = new LinkAir(airState);
 
@@ -49,6 +50,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void CrouchingTransitionLinkTest()
     {
+        CommonInstall();
+
         StateCrouching crouchingState = new StateCrouching(new MovementStateMachine());
         LinkCrouching crouchingLink = new LinkCrouching(crouchingState);
         crouchingLink._inputProvider = inputProviderMock.Object;
@@ -71,6 +74,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void JumpingTransitionLinkTest()
     {
+        CommonInstall();
+
         StateJumping jumpingState = new StateJumping(new MovementStateMachine());
         LinkJumping jumpingLink = new LinkJumping(jumpingState);
         jumpingLink._inputProvider = inputProviderMock.Object;
@@ -94,6 +99,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void NotJumpingInAirTransitionLinkTest()
     {
+        CommonInstall();
+
         StateJumping jumpingState = new StateJumping(new MovementStateMachine());
         LinkJumping jumpingLink = new LinkJumping(jumpingState);
         jumpingLink._inputProvider = inputProviderMock.Object;
@@ -111,6 +118,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void NotJumpingWhenNotReadyTransitionLinkTest()
     {
+        CommonInstall();
+
         StateJumping jumpingState = new StateJumping(new MovementStateMachine());
         LinkJumping jumpingLink = new LinkJumping(jumpingState);
         jumpingLink._inputProvider = inputProviderMock.Object;
@@ -128,6 +137,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void SprintingTransitionLinkTest()
     {
+        CommonInstall();
+
         StateSprinting sprintingState = new StateSprinting(new MovementStateMachine());
         LinkSprinting sprintingLink = new LinkSprinting(sprintingState);
         sprintingLink._inputProvider = inputProviderMock.Object;
@@ -150,6 +161,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
     [Test]
     public void WalkingTransitionLinkTest()
     {
+        CommonInstall();
+
         StateWalking walkingState = new StateWalking(new MovementStateMachine());
         LinkWalking walkingLink = new LinkWalking(walkingState);
         walkingLink._inputProvider = inputProviderMock.Object;
