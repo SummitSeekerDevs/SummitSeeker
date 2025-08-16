@@ -2,7 +2,7 @@ using Zenject;
 
 public class LinkJumping : ITransitionLink
 {
-    private PlayerInputProvider _inputProvider;
+    internal PlayerInputProvider _inputProvider;
     private readonly StateJumping _linkToState;
 
     [Inject]

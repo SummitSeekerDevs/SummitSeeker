@@ -9,9 +9,9 @@ public class PlayerInputProvider : IInitializable, IDisposable
     private SignalBus _signalBus;
     public Vector2 _mouseDelta { get; private set; }
     public Vector2 _moveInput { get; private set; }
-    public bool _jumpingIsPressed { get; private set; }
-    public bool _crouchingIsPressed { get; private set; }
-    public bool _sprintingIsPressed { get; private set; }
+    public virtual bool _jumpingIsPressed { get; private set; }
+    public virtual bool _crouchingIsPressed { get; private set; }
+    public virtual bool _sprintingIsPressed { get; private set; }
 
     public PlayerInputProvider(PlayerInput_Actions playerInputActions, SignalBus signalBus)
     {

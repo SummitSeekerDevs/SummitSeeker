@@ -2,7 +2,7 @@ using Zenject;
 
 public class LinkCrouching : ITransitionLink
 {
-    private PlayerInputProvider _inputProvider;
+    internal PlayerInputProvider _inputProvider;
     private readonly StateCrouching _linkToState;
 
     [Inject]

@@ -27,10 +27,10 @@ public class PlayerMovementController : MonoBehaviour
     public float _startYScale { get; private set; }
 
     // Ground check
-    public bool _onGround { get; private set; }
-    public bool _onSlope { get; private set; }
+    public virtual bool _onGround { get; private set; }
+    public virtual bool _onSlope { get; private set; }
     public bool _exitingSlope { get; private set; }
-    public bool _readyToJump { get; private set; } = true;
+    public virtual bool _readyToJump { get; private set; } = true;
 
     #endregion
 

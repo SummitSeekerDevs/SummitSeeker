@@ -3,7 +3,7 @@ using Zenject;
 
 public class LinkWalking : ITransitionLink
 {
-    private PlayerInputProvider _inputProvider;
+    internal PlayerInputProvider _inputProvider;
     private readonly StateWalking _linkToState;
 
     [Inject]

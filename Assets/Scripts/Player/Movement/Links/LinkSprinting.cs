@@ -2,7 +2,7 @@ using Zenject;
 
 public class LinkSprinting : ITransitionLink
 {
-    private PlayerInputProvider _inputProvider;
+    internal PlayerInputProvider _inputProvider;
     private readonly StateSprinting _linkToState;
 
     [Inject]
