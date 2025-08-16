@@ -6,7 +6,7 @@ using Zenject;
 public class MovementStateMachine
 {
     // References
-    public PlayerMovementController _playerMovementController { get; private set; }
+    public virtual PlayerMovementController _playerMovementController { get; private set; }
 
     public StateNode Current { get; private set; }
     private Dictionary<Type, StateNode> nodes = new();

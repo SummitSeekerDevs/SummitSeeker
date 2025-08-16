@@ -14,7 +14,7 @@ public class PlayerMovementController : MonoBehaviour
     public PlayerMovementConfig _playerMovementConfig { get; private set; }
 
     private Rigidbody _rb;
-    public Rigidbody PLAYER_RB => _rb;
+    public virtual Rigidbody PLAYER_RB => _rb;
 
     private PlayerInputProvider _playerInputProvider;
     private MovementStateMachine _movementStateMachine;
