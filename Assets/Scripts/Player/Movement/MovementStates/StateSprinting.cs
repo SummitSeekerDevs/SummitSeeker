@@ -38,7 +38,9 @@ public class StateSprinting : IMovementState
         )
         {
             _movementSM._playerMovementController.PLAYER_RB.AddForce(
-                _movementSM._playerMovementController.GetSlopeMoveDirection(moveDirection)
+                _movementSM._playerMovementController.MOVEMENTFUNCTIONS.GetSlopeMoveDirection(
+                    moveDirection
+                )
                     * 20f
                     * _movementSM._playerMovementController._moveSpeed
             );
