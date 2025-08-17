@@ -34,8 +34,8 @@ jobs:
         unityVersion: 
           - 6000.0.43f1 # some version must be included for testing
         testMode:
-          - playmode # Erstmal nur in playmode, da wir keine editmode Tests haben
-          #- editmode
+          - playmode
+          - editmode
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,6 +53,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;'
+          customParameters: '-nographics'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
