@@ -7,30 +7,25 @@ public class PlayerMovementController : MonoBehaviour
     // References
     [SerializeField]
     private Transform _spawnPoint;
-    public Transform SPAWNPOINT => _spawnPoint;
 
     [SerializeField]
     private Transform _orientation;
-    public PlayerMovementConfig _playerMovementConfig { get; private set; }
+
+    private PlayerMovementConfig _playerMovementConfig;
 
     private Rigidbody _rb;
-    public virtual Rigidbody PLAYER_RB => _rb;
 
     private PlayerInputProvider _playerInputProvider;
     private MovementStateMachine _movementStateMachine;
     private MovementFunctions _movementFunctions;
+    private MovementContext _movementContext;
+
+    // GETTER
+    public Transform SPAWNPOINT => _spawnPoint;
+    public virtual Rigidbody PLAYER_RB => _rb;
     public MovementFunctions MOVEMENTFUNCTIONS => _movementFunctions;
-
-    // Movement
-    private Vector3 _moveDirection;
-    public float _moveSpeed { get; private set; }
-    public float _startYScale { get; private set; }
-
-    // Ground check
-    public virtual bool _onGround { get; private set; }
-    public virtual bool _onSlope { get; private set; }
-    public bool _exitingSlope { get; private set; }
-    public virtual bool _readyToJump { get; private set; } = true;
+    public PlayerMovementConfig PLAYERMOVEMENTCONFIG => _playerMovementConfig;
+    public MovementContext MOVEMENTCONTEXT => _movementContext;
 
     #endregion
 
@@ -52,6 +47,9 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Start()
     {
+        // MovementContext
+        _movementContext = new MovementContext();
+
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
