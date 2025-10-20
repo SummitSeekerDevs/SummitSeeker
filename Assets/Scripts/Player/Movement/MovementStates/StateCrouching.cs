@@ -19,14 +19,14 @@ public class StateCrouching : IMovementState
     public void Enter()
     {
         Debug.Log("Crouching");
-        _movementSM._playerMovementController.SetMovementSpeed(
-            _movementSM._playerMovementController._playerMovementConfig.crouchSpeed
+        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetMoveSpeed(
+            _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.crouchSpeed
         );
 
         // set crouch
         _movementSM._playerMovementController.PLAYER_RB.transform.localScale = new Vector3(
             _movementSM._playerMovementController.PLAYER_RB.transform.localScale.x,
-            _movementSM._playerMovementController._playerMovementConfig.crouchYScale,
+            _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.crouchYScale,
             _movementSM._playerMovementController.PLAYER_RB.transform.localScale.z
         );
 
@@ -41,7 +41,7 @@ public class StateCrouching : IMovementState
         // reset crouch
         _movementSM._playerMovementController.PLAYER_RB.transform.localScale = new Vector3(
             _movementSM._playerMovementController.PLAYER_RB.transform.localScale.x,
-            _movementSM._playerMovementController._startYScale,
+            _movementSM._playerMovementController.MOVEMENTCONTEXT.STARTYSCALE,
             _movementSM._playerMovementController.PLAYER_RB.transform.localScale.z
         );
     }
@@ -50,8 +50,8 @@ public class StateCrouching : IMovementState
     {
         // on slope
         if (
-            _movementSM._playerMovementController._onSlope
-            && !_movementSM._playerMovementController._exitingSlope
+            _movementSM._playerMovementController.MOVEMENTCONTEXT.ONSLOPE
+            && !_movementSM._playerMovementController.MOVEMENTCONTEXT.EXITINGSLOPE
         )
         {
             _movementSM._playerMovementController.PLAYER_RB.AddForce(
@@ -59,7 +59,7 @@ public class StateCrouching : IMovementState
                     moveDirection
                 )
                     * 20f
-                    * _movementSM._playerMovementController._moveSpeed
+                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
             );
 
             if (_movementSM._playerMovementController.PLAYER_RB.linearVelocity.y > 0)
@@ -68,17 +68,20 @@ public class StateCrouching : IMovementState
             }
         }
         // on ground
-        else if (_movementSM._playerMovementController._onGround)
+        else if (_movementSM._playerMovementController.MOVEMENTCONTEXT.ONGROUND)
         {
             _movementSM._playerMovementController.PLAYER_RB.AddForce(
-                moveDirection.normalized * 10f * _movementSM._playerMovementController._moveSpeed
+                moveDirection.normalized
+                    * 10f
+                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
             );
         }
 
         // turn gravity off while on slope
         _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
             ._playerMovementController
-            ._onSlope;
+            .MOVEMENTCONTEXT
+            .ONSLOPE;
     }
 
     public void Update()

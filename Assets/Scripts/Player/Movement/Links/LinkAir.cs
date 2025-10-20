@@ -9,7 +9,7 @@ public class LinkAir : ITransitionLink
 
     public bool ConditionMatching(PlayerMovementController playerMC)
     {
-        return !playerMC._onGround && !playerMC._onSlope;
+        return !playerMC.MOVEMENTCONTEXT.ONGROUND && !playerMC.MOVEMENTCONTEXT.ONSLOPE;
     }
 
     public IMovementState GetLinkTo()

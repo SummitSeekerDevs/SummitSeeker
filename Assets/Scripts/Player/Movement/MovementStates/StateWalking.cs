@@ -20,8 +20,8 @@ public class StateWalking : IMovementState
     public void Enter()
     {
         Debug.Log("Walking");
-        _movementSM._playerMovementController.SetMovementSpeed(
-            _movementSM._playerMovementController._playerMovementConfig.walkSpeed
+        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetMoveSpeed(
+            _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.walkSpeed
         );
     }
 
@@ -34,8 +34,8 @@ public class StateWalking : IMovementState
     {
         // on slope
         if (
-            _movementSM._playerMovementController._onSlope
-            && !_movementSM._playerMovementController._exitingSlope
+            _movementSM._playerMovementController.MOVEMENTCONTEXT.ONSLOPE
+            && !_movementSM._playerMovementController.MOVEMENTCONTEXT.EXITINGSLOPE
         )
         {
             _movementSM._playerMovementController.PLAYER_RB.AddForce(
@@ -43,7 +43,7 @@ public class StateWalking : IMovementState
                     moveDirection
                 )
                     * 20f
-                    * _movementSM._playerMovementController._moveSpeed
+                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
             );
 
             if (_movementSM._playerMovementController.PLAYER_RB.linearVelocity.y > 0)
@@ -52,17 +52,20 @@ public class StateWalking : IMovementState
             }
         }
         // on ground
-        else if (_movementSM._playerMovementController._onGround)
+        else if (_movementSM._playerMovementController.MOVEMENTCONTEXT.ONGROUND)
         {
             _movementSM._playerMovementController.PLAYER_RB.AddForce(
-                moveDirection.normalized * 10f * _movementSM._playerMovementController._moveSpeed
+                moveDirection.normalized
+                    * 10f
+                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
             );
         }
 
         // turn gravity off while on slope
         _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
             ._playerMovementController
-            ._onSlope;
+            .MOVEMENTCONTEXT
+            .ONSLOPE;
     }
 
     public void Update()

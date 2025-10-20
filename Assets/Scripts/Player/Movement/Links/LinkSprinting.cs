@@ -18,7 +18,8 @@ public class LinkSprinting : ITransitionLink
 
     public bool ConditionMatching(PlayerMovementController playerMC)
     {
-        return (playerMC._onGround || playerMC._onSlope) && _inputProvider._sprintingIsPressed;
+        return (playerMC.MOVEMENTCONTEXT.ONGROUND || playerMC.MOVEMENTCONTEXT.ONSLOPE)
+            && _inputProvider._sprintingIsPressed;
     }
 
     public IMovementState GetLinkTo()

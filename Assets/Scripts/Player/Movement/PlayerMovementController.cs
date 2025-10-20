@@ -18,7 +18,7 @@ public class PlayerMovementController : MonoBehaviour
     private PlayerInputProvider _playerInputProvider;
     private MovementStateMachine _movementStateMachine;
     private MovementFunctions _movementFunctions;
-    private MovementContext _movementContext;
+    private MovementContext _movementContext = new MovementContext();
 
     // GETTER
     public Transform SPAWNPOINT => _spawnPoint;
@@ -47,15 +47,12 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Start()
     {
-        // MovementContext
-        _movementContext = new MovementContext();
-
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
 
         // Set default scale
-        _startYScale = _rb.transform.localScale.y;
+        _movementContext.SetStartYScale(_rb.transform.localScale.y);
 
         // Movementfunctions
         _movementFunctions = new MovementFunctions();
@@ -64,49 +61,46 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // set isGrounded for this frame
-        _onGround = _movementFunctions.IsGrounded(
-            _rb,
-            _playerMovementConfig.playerHeight,
-            _playerMovementConfig.whatIsGround
+        _movementContext.SetOnGround(
+            _movementFunctions.IsGrounded(
+                _rb,
+                _playerMovementConfig.playerHeight,
+                _playerMovementConfig.whatIsGround
+            )
         );
 
-        _movementFunctions.SpeedControl(_rb, _moveSpeed, _onSlope, _exitingSlope);
+        _movementFunctions.SpeedControl(
+            _rb,
+            _movementContext.MOVESPEED,
+            _movementContext.ONSLOPE,
+            _movementContext.EXITINGSLOPE
+        );
 
         _movementStateMachine.Update();
 
-        _movementFunctions.HandleDrag(_rb, _onGround, _playerMovementConfig.groundDrag);
+        _movementFunctions.HandleDrag(
+            _rb,
+            _movementContext.ONGROUND,
+            _playerMovementConfig.groundDrag
+        );
     }
 
     private void FixedUpdate()
     {
-        _onSlope = _movementFunctions.OnSlope(
-            transform,
-            _playerMovementConfig.playerHeight,
-            _playerMovementConfig.maxSlopeAngle
+        _movementContext.SetOnSlope(
+            _movementFunctions.OnSlope(
+                transform,
+                _playerMovementConfig.playerHeight,
+                _playerMovementConfig.maxSlopeAngle
+            )
         );
 
         // calculate movement direction
-        _moveDirection =
+        _movementContext.SetMoveDirection(
             _orientation.forward * _playerInputProvider._moveInput.y
-            + _orientation.right * _playerInputProvider._moveInput.x;
+                + _orientation.right * _playerInputProvider._moveInput.x
+        );
 
-        _movementStateMachine.FixedUpdate(_moveDirection);
+        _movementStateMachine.FixedUpdate(_movementContext.MOVEDIRECTION);
     }
-
-    #region Setter
-    public void SetMovementSpeed(float newSpeed)
-    {
-        _moveSpeed = newSpeed;
-    }
-
-    public void SetReadyToJump(bool readyToJump)
-    {
-        _readyToJump = readyToJump;
-    }
-
-    public void SetExitingSlope(bool exitingSlope)
-    {
-        _exitingSlope = exitingSlope;
-    }
-    #endregion
 }

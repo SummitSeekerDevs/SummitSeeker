@@ -18,9 +18,9 @@ public class LinkJumping : ITransitionLink
 
     public bool ConditionMatching(PlayerMovementController playerMC)
     {
-        return (playerMC._onGround || playerMC._onSlope)
+        return (playerMC.MOVEMENTCONTEXT.ONGROUND || playerMC.MOVEMENTCONTEXT.ONSLOPE)
             && _inputProvider._jumpingIsPressed
-            && playerMC._readyToJump;
+            && playerMC.MOVEMENTCONTEXT.READYTOJUMP;
     }
 
     public IMovementState GetLinkTo()

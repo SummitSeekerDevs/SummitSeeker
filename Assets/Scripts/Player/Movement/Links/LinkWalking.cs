@@ -19,7 +19,7 @@ public class LinkWalking : ITransitionLink
 
     public bool ConditionMatching(PlayerMovementController playerMC)
     {
-        return (playerMC._onGround || playerMC._onSlope)
+        return (playerMC.MOVEMENTCONTEXT.ONGROUND || playerMC.MOVEMENTCONTEXT.ONSLOPE)
             && !_inputProvider._sprintingIsPressed
             && !_inputProvider._crouchingIsPressed
             && !_inputProvider._jumpingIsPressed;

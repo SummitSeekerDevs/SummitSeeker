@@ -25,9 +25,9 @@ public class StateJumping : IMovementState
     public void Enter()
     {
         Debug.Log("Jumping");
-        _movementSM._playerMovementController.SetReadyToJump(false);
+        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetReadyToJump(false);
 
-        _movementSM._playerMovementController.SetExitingSlope(true);
+        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetExitingSlope(true);
 
         // reset y velocity
         _movementSM._playerMovementController.PLAYER_RB.linearVelocity = new Vector3(
@@ -39,13 +39,13 @@ public class StateJumping : IMovementState
         // statt transform möglicherweise rb erforderlich
         _movementSM._playerMovementController.PLAYER_RB.AddForce(
             _movementSM._playerMovementController.transform.up
-                * _movementSM._playerMovementController._playerMovementConfig.jumpForce,
+                * _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.jumpForce,
             ForceMode.Impulse
         );
 
         // jump cooldown
         _delayInvoker.InvokeDelayed(
-            _movementSM._playerMovementController._playerMovementConfig.jumpCooldown,
+            _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.jumpCooldown,
             ResetJump
         );
     }
@@ -60,7 +60,8 @@ public class StateJumping : IMovementState
         // turn gravity off while on slope
         _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
             ._playerMovementController
-            ._onSlope;
+            .MOVEMENTCONTEXT
+            .ONSLOPE;
     }
 
     public void Update()
@@ -70,7 +71,7 @@ public class StateJumping : IMovementState
 
     private void ResetJump()
     {
-        _movementSM._playerMovementController.SetReadyToJump(true);
-        _movementSM._playerMovementController.SetExitingSlope(false);
+        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetReadyToJump(true);
+        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetExitingSlope(false);
     }
 }

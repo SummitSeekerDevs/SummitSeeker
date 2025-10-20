@@ -18,7 +18,8 @@ public class LinkCrouching : ITransitionLink
 
     public bool ConditionMatching(PlayerMovementController playerMC)
     {
-        return (playerMC._onGround || playerMC._onSlope) && _inputProvider._crouchingIsPressed;
+        return (playerMC.MOVEMENTCONTEXT.ONGROUND || playerMC.MOVEMENTCONTEXT.ONSLOPE)
+            && _inputProvider._crouchingIsPressed;
     }
 
     public IMovementState GetLinkTo()

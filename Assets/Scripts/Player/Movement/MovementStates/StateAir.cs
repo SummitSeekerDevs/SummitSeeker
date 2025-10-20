@@ -28,20 +28,21 @@ public class StateAir : IMovementState
 
     public void FixedUpdate(Vector3 moveDirection)
     {
-        if (!_movementSM._playerMovementController._onGround)
+        if (!_movementSM._playerMovementController.MOVEMENTCONTEXT.ONGROUND)
         {
             _movementSM._playerMovementController.PLAYER_RB.AddForce(
                 moveDirection.normalized
-                    * _movementSM._playerMovementController._moveSpeed
+                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
                     * 10f
-                    * _movementSM._playerMovementController._playerMovementConfig.airMultiplier
+                    * _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.airMultiplier
             );
         }
 
         // turn gravity off while on slope
         _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
             ._playerMovementController
-            ._onSlope;
+            .MOVEMENTCONTEXT
+            .ONSLOPE;
 
         // Reset to spawn if fallen in void
         ResetUnderMap(_movementSM._playerMovementController.SPAWNPOINT.position);
