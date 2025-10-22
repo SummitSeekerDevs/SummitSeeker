@@ -6,6 +6,7 @@ using UnityEngine.TestTools;
 
 public class IGameStateHandlerTest
 {
+    // Müsste sauberkeitshalber eigentlich mit verify geprüft werden
     private bool loadSceneWasCalled = false;
     private Mock<SceneLoader> sceneLoaderMock;
 

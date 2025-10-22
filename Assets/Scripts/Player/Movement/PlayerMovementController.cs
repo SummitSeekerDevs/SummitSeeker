@@ -6,7 +6,7 @@ public class PlayerMovementController : MonoBehaviour
     #region Vars
     // References
     [SerializeField]
-    private Transform _spawnPoint;
+    private Transform _initialSpawnPoint;
 
     [SerializeField]
     private Transform _orientation;
@@ -21,7 +21,6 @@ public class PlayerMovementController : MonoBehaviour
     private MovementContext _movementContext = new MovementContext();
 
     // GETTER
-    public Transform SPAWNPOINT => _spawnPoint;
     public virtual Rigidbody PLAYER_RB => _rb;
     public MovementFunctions MOVEMENTFUNCTIONS => _movementFunctions;
     public PlayerMovementConfig PLAYERMOVEMENTCONFIG => _playerMovementConfig;
@@ -53,6 +52,9 @@ public class PlayerMovementController : MonoBehaviour
 
         // Set default scale
         _movementContext.SetStartYScale(_rb.transform.localScale.y);
+
+        // Set spawnpoint to default
+        _movementContext.SetSpawnPoint(_initialSpawnPoint.position);
 
         // Movementfunctions
         _movementFunctions = new MovementFunctions();

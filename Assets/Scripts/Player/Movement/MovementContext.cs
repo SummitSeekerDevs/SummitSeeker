@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class MovementContext
 {
+    // Rigidbody
+    private Rigidbody _rigidbody;
+
     // Movement
     private Vector3 _moveDirection;
     private float _moveSpeed;
@@ -13,6 +16,9 @@ public class MovementContext
     private bool _exitingSlope;
     private bool _readyToJump = true;
 
+    // Spawning
+    private Transform _spawnPoint;
+
     // Getter
     public Vector3 MOVEDIRECTION => _moveDirection;
     public float MOVESPEED => _moveSpeed;
@@ -21,6 +27,13 @@ public class MovementContext
     public bool ONSLOPE => _onSlope;
     public bool EXITINGSLOPE => _exitingSlope;
     public bool READYTOJUMP => _readyToJump;
+    public Rigidbody AFFECTED_RIDGIDBODY => _rigidbody;
+    public Vector3 SPAWNPOINT => _spawnPoint.position;
+
+    public MovementContext(Rigidbody rigidbody)
+    {
+        _rigidbody = rigidbody;
+    }
 
     // Setter
     #region Setter
@@ -57,6 +70,11 @@ public class MovementContext
     public void SetReadyToJump(bool readyToJump)
     {
         _readyToJump = readyToJump;
+    }
+
+    public void SetSpawnPoint(Vector3 spawnPoint)
+    {
+        _spawnPoint.position = spawnPoint;
     }
 
     #endregion

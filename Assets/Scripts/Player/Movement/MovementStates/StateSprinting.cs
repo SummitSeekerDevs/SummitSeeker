@@ -1,27 +1,31 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StateSprinting : IMovementState
 {
-    private MovementStateMachine _movementSM;
+    private MovementContext _movementContext;
+    private PlayerMovementConfig _movementConfig;
 
-    public StateSprinting(MovementStateMachine movementSM)
+    public StateSprinting(MovementContext movementContext, PlayerMovementConfig movementConfig)
     {
-        _movementSM = movementSM;
+        _movementContext = movementContext;
+        _movementConfig = movementConfig;
     }
 
-    public void Initialize()
+    public List<MovementStateMachine.TransitionLinkTypes> GetTransitionsList()
     {
-        _movementSM.AddTransition(this, _movementSM.linkJumping);
-        _movementSM.AddTransition(this, _movementSM.linkWalking);
-        _movementSM.AddTransition(this, _movementSM.linkAir);
+        return new List<MovementStateMachine.TransitionLinkTypes>
+        {
+            MovementStateMachine.TransitionLinkTypes.LinkJumping,
+            MovementStateMachine.TransitionLinkTypes.LinkWalking,
+            MovementStateMachine.TransitionLinkTypes.LinkAir,
+        };
     }
 
     public void Enter()
     {
         Debug.Log("Sprinting");
-        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetMoveSpeed(
-            _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.sprintSpeed
-        );
+        _movementContext.SetMoveSpeed(_movementConfig.sprintSpeed);
     }
 
     public void Exit()
@@ -32,39 +36,31 @@ public class StateSprinting : IMovementState
     public void FixedUpdate(Vector3 moveDirection)
     {
         // on slope
-        if (
-            _movementSM._playerMovementController.MOVEMENTCONTEXT.ONSLOPE
-            && !_movementSM._playerMovementController.MOVEMENTCONTEXT.EXITINGSLOPE
-        )
+        if (_movementContext.ONSLOPE && !_movementContext.EXITINGSLOPE)
         {
-            _movementSM._playerMovementController.PLAYER_RB.AddForce(
+            _movementContext.AFFECTED_RIDGIDBODY.AddForce(
                 _movementSM._playerMovementController.MOVEMENTFUNCTIONS.GetSlopeMoveDirection(
                     moveDirection
                 )
                     * 20f
-                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
+                    * _movementContext.MOVESPEED
             );
 
-            if (_movementSM._playerMovementController.PLAYER_RB.linearVelocity.y > 0)
+            if (_movementContext.AFFECTED_RIDGIDBODY.linearVelocity.y > 0)
             {
-                _movementSM._playerMovementController.PLAYER_RB.AddForce(Vector3.down * 80f);
+                _movementContext.AFFECTED_RIDGIDBODY.AddForce(Vector3.down * 80f);
             }
         }
         // on ground
-        else if (_movementSM._playerMovementController.MOVEMENTCONTEXT.ONGROUND)
+        else if (_movementContext.ONGROUND)
         {
-            _movementSM._playerMovementController.PLAYER_RB.AddForce(
-                moveDirection.normalized
-                    * 10f
-                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
+            _movementContext.AFFECTED_RIDGIDBODY.AddForce(
+                moveDirection.normalized * 10f * _movementContext.MOVESPEED
             );
         }
 
         // turn gravity off while on slope
-        _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
-            ._playerMovementController
-            .MOVEMENTCONTEXT
-            .ONSLOPE;
+        _movementContext.AFFECTED_RIDGIDBODY.useGravity = !_movementContext.ONSLOPE;
     }
 
     public void Update()

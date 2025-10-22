@@ -1,14 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class StateJumping : IMovementState
 {
-    private MovementStateMachine _movementSM;
+    private MovementContext _movementContext;
+    private PlayerMovementConfig _movementConfig;
     private DelayInvoker _delayInvoker;
 
-    public StateJumping(MovementStateMachine movementSM)
+    public StateJumping(MovementContext movementContext, PlayerMovementConfig movementConfig)
     {
-        _movementSM = movementSM;
+        _movementContext = movementContext;
+        _movementConfig = movementConfig;
     }
 
     [Inject]
@@ -17,37 +20,36 @@ public class StateJumping : IMovementState
         _delayInvoker = delayInvoker;
     }
 
-    public void Initialize()
+    public List<MovementStateMachine.TransitionLinkTypes> GetTransitionsList()
     {
-        _movementSM.AddTransition(this, _movementSM.linkAir);
+        return new List<MovementStateMachine.TransitionLinkTypes>
+        {
+            MovementStateMachine.TransitionLinkTypes.LinkAir,
+        };
     }
 
     public void Enter()
     {
         Debug.Log("Jumping");
-        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetReadyToJump(false);
+        _movementContext.SetReadyToJump(false);
 
-        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetExitingSlope(true);
+        _movementContext.SetExitingSlope(true);
 
         // reset y velocity
-        _movementSM._playerMovementController.PLAYER_RB.linearVelocity = new Vector3(
-            _movementSM._playerMovementController.PLAYER_RB.linearVelocity.x,
+        _movementContext.AFFECTED_RIDGIDBODY.linearVelocity = new Vector3(
+            _movementContext.AFFECTED_RIDGIDBODY.linearVelocity.x,
             0f,
-            _movementSM._playerMovementController.PLAYER_RB.linearVelocity.z
+            _movementContext.AFFECTED_RIDGIDBODY.linearVelocity.z
         );
 
         // statt transform möglicherweise rb erforderlich
-        _movementSM._playerMovementController.PLAYER_RB.AddForce(
-            _movementSM._playerMovementController.transform.up
-                * _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.jumpForce,
+        _movementContext.AFFECTED_RIDGIDBODY.AddForce(
+            _movementSM._playerMovementController.transform.up * _movementConfig.jumpForce,
             ForceMode.Impulse
         );
 
         // jump cooldown
-        _delayInvoker.InvokeDelayed(
-            _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.jumpCooldown,
-            ResetJump
-        );
+        _delayInvoker.InvokeDelayed(_movementConfig.jumpCooldown, ResetJump);
     }
 
     public void Exit()
@@ -58,10 +60,7 @@ public class StateJumping : IMovementState
     public void FixedUpdate(Vector3 moveDirection)
     {
         // turn gravity off while on slope
-        _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
-            ._playerMovementController
-            .MOVEMENTCONTEXT
-            .ONSLOPE;
+        _movementContext.AFFECTED_RIDGIDBODY.useGravity = !_movementContext.ONSLOPE;
     }
 
     public void Update()
@@ -71,7 +70,7 @@ public class StateJumping : IMovementState
 
     private void ResetJump()
     {
-        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetReadyToJump(true);
-        _movementSM._playerMovementController.MOVEMENTCONTEXT.SetExitingSlope(false);
+        _movementContext.SetReadyToJump(true);
+        _movementContext.SetExitingSlope(false);
     }
 }

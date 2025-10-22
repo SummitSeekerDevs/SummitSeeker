@@ -50,7 +50,7 @@ public class MovementStateMachine
     {
         CreateStates();
         CreateLinks();
-        InitializeStates();
+        RegisterStateTransitions();
 
         IMovementState startingState = stateWalking;
 
@@ -86,13 +86,13 @@ public class MovementStateMachine
         _diContainer.Inject(linkCrouching);
     }
 
-    private void InitializeStates()
+    private void RegisterStateTransitions()
     {
-        stateWalking.Initialize();
-        stateSprinting.Initialize();
-        stateJumping.Initialize();
-        stateCrouching.Initialize();
-        stateAir.Initialize();
+        SetStateTransitions(stateWalking, stateWalking.GetTransitionsList());
+        SetStateTransitions(stateSprinting, stateSprinting.GetTransitionsList());
+        SetStateTransitions(stateJumping, stateJumping.GetTransitionsList());
+        SetStateTransitions(stateCrouching, stateCrouching.GetTransitionsList());
+        SetStateTransitions(stateAir, stateAir.GetTransitionsList());
     }
 
     #endregion
@@ -141,6 +141,41 @@ public class MovementStateMachine
         return null;
     }
 
+    private void SetStateTransitions(IMovementState state, List<TransitionLinkTypes> transitions)
+    {
+        foreach (var transition in transitions)
+        {
+            ITransitionLink transitionLink = null;
+
+            switch (transition)
+            {
+                case TransitionLinkTypes.LinkAir:
+                    transitionLink = linkAir;
+                    break;
+                case TransitionLinkTypes.LinkCrouching:
+                    transitionLink = linkCrouching;
+                    break;
+                case TransitionLinkTypes.LinkJumping:
+                    transitionLink = linkJumping;
+                    break;
+                case TransitionLinkTypes.LinkSprinting:
+                    transitionLink = linkSprinting;
+                    break;
+                case TransitionLinkTypes.LinkWalking:
+                    transitionLink = linkWalking;
+                    break;
+            }
+
+            if (transitionLink != null)
+            {
+                AddTransition(state, transitionLink);
+                continue;
+            }
+
+            throw new NullReferenceException($"No TransitionLink Found for {transition}");
+        }
+    }
+
     #endregion
 
     #region StateNode
@@ -175,4 +210,13 @@ public class MovementStateMachine
     }
 
     #endregion
+
+    public enum TransitionLinkTypes
+    {
+        LinkWalking,
+        LinkSprinting,
+        LinkJumping,
+        LinkCrouching,
+        LinkAir,
+    }
 }

@@ -7,6 +7,7 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
 {
     private Mock<PlayerMovementController> movementControllerMock;
     private Mock<PlayerInputProvider> inputProviderMock;
+    private MovementContext movementContext;
 
     public void CommonInstall()
     {
@@ -23,6 +24,9 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
 
         movementControllerMock = new Mock<PlayerMovementController>();
         inputProviderMock = new Mock<PlayerInputProvider>(playerInputAction, signalBus);
+
+        movementContext = new MovementContext();
+        movementControllerMock.Setup(m => m.MOVEMENTCONTEXT).Returns(movementContext);
     }
 
     [Test]
@@ -33,8 +37,8 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         StateAir airState = new StateAir(new MovementStateMachine());
         LinkAir airLink = new LinkAir(airState);
 
-        movementControllerMock.Setup(m => m._onGround).Returns(false);
-        movementControllerMock.Setup(m => m._onSlope).Returns(false);
+        movementContext.SetOnGround(false);
+        movementContext.SetOnSlope(false);
 
         bool result = airLink.ConditionMatching(movementControllerMock.Object);
 
@@ -56,8 +60,9 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         LinkCrouching crouchingLink = new LinkCrouching(crouchingState);
         crouchingLink._inputProvider = inputProviderMock.Object;
 
-        movementControllerMock.Setup(m => m._onGround).Returns(true);
-        movementControllerMock.Setup(m => m._onSlope).Returns(false);
+        movementContext.SetOnGround(true);
+        movementContext.SetOnSlope(false);
+
         inputProviderMock.Setup(m => m._crouchingIsPressed).Returns(true);
 
         bool result = crouchingLink.ConditionMatching(movementControllerMock.Object);
@@ -80,9 +85,10 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         LinkJumping jumpingLink = new LinkJumping(jumpingState);
         jumpingLink._inputProvider = inputProviderMock.Object;
 
-        movementControllerMock.Setup(m => m._onGround).Returns(true);
-        movementControllerMock.Setup(m => m._onSlope).Returns(true);
-        movementControllerMock.Setup(m => m._readyToJump).Returns(true);
+        movementContext.SetOnGround(true);
+        movementContext.SetOnSlope(true);
+        movementContext.SetReadyToJump(true);
+
         inputProviderMock.Setup(m => m._jumpingIsPressed).Returns(true);
 
         bool result = jumpingLink.ConditionMatching(movementControllerMock.Object);
@@ -105,9 +111,10 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         LinkJumping jumpingLink = new LinkJumping(jumpingState);
         jumpingLink._inputProvider = inputProviderMock.Object;
 
-        movementControllerMock.Setup(m => m._onGround).Returns(false);
-        movementControllerMock.Setup(m => m._onSlope).Returns(false);
-        movementControllerMock.Setup(m => m._readyToJump).Returns(true);
+        movementContext.SetOnGround(false);
+        movementContext.SetOnSlope(false);
+        movementContext.SetReadyToJump(true);
+
         inputProviderMock.Setup(m => m._jumpingIsPressed).Returns(true);
 
         bool result = jumpingLink.ConditionMatching(movementControllerMock.Object);
@@ -124,9 +131,10 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         LinkJumping jumpingLink = new LinkJumping(jumpingState);
         jumpingLink._inputProvider = inputProviderMock.Object;
 
-        movementControllerMock.Setup(m => m._onGround).Returns(true);
-        movementControllerMock.Setup(m => m._onSlope).Returns(true);
-        movementControllerMock.Setup(m => m._readyToJump).Returns(false);
+        movementContext.SetOnGround(true);
+        movementContext.SetOnSlope(true);
+        movementContext.SetReadyToJump(false);
+
         inputProviderMock.Setup(m => m._jumpingIsPressed).Returns(true);
 
         bool result = jumpingLink.ConditionMatching(movementControllerMock.Object);
@@ -143,8 +151,9 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         LinkSprinting sprintingLink = new LinkSprinting(sprintingState);
         sprintingLink._inputProvider = inputProviderMock.Object;
 
-        movementControllerMock.Setup(m => m._onGround).Returns(false);
-        movementControllerMock.Setup(m => m._onSlope).Returns(true);
+        movementContext.SetOnGround(false);
+        movementContext.SetOnSlope(true);
+
         inputProviderMock.Setup(m => m._sprintingIsPressed).Returns(true);
 
         bool result = sprintingLink.ConditionMatching(movementControllerMock.Object);
@@ -167,8 +176,9 @@ public class ZTransitionLinksTest : ZenjectUnitTestFixture
         LinkWalking walkingLink = new LinkWalking(walkingState);
         walkingLink._inputProvider = inputProviderMock.Object;
 
-        movementControllerMock.Setup(m => m._onGround).Returns(true);
-        movementControllerMock.Setup(m => m._onSlope).Returns(true);
+        movementContext.SetOnGround(true);
+        movementContext.SetOnSlope(true);
+
         inputProviderMock.Setup(m => m._sprintingIsPressed).Returns(false);
         inputProviderMock.Setup(m => m._jumpingIsPressed).Returns(false);
         inputProviderMock.Setup(m => m._crouchingIsPressed).Returns(false);

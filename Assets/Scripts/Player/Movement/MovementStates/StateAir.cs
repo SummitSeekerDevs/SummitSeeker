@@ -1,19 +1,25 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StateAir : IMovementState
 {
-    private MovementStateMachine _movementSM;
+    private MovementContext _movementContext;
+    private PlayerMovementConfig _movementConfig;
 
-    public StateAir(MovementStateMachine movementSM)
+    public StateAir(MovementContext movementContext, PlayerMovementConfig movementConfig)
     {
-        _movementSM = movementSM;
+        _movementContext = movementContext;
+        _movementConfig = movementConfig;
     }
 
-    public void Initialize()
+    public List<MovementStateMachine.TransitionLinkTypes> GetTransitionsList()
     {
-        _movementSM.AddTransition(this, _movementSM.linkWalking);
-        _movementSM.AddTransition(this, _movementSM.linkSprinting);
-        _movementSM.AddTransition(this, _movementSM.linkJumping);
+        return new List<MovementStateMachine.TransitionLinkTypes>
+        {
+            MovementStateMachine.TransitionLinkTypes.LinkWalking,
+            MovementStateMachine.TransitionLinkTypes.LinkSprinting,
+            MovementStateMachine.TransitionLinkTypes.LinkJumping,
+        };
     }
 
     public void Enter()
@@ -28,24 +34,21 @@ public class StateAir : IMovementState
 
     public void FixedUpdate(Vector3 moveDirection)
     {
-        if (!_movementSM._playerMovementController.MOVEMENTCONTEXT.ONGROUND)
+        if (!_movementContext.ONGROUND)
         {
-            _movementSM._playerMovementController.PLAYER_RB.AddForce(
+            _movementContext.AFFECTED_RIDGIDBODY.AddForce(
                 moveDirection.normalized
-                    * _movementSM._playerMovementController.MOVEMENTCONTEXT.MOVESPEED
+                    * _movementContext.MOVESPEED
                     * 10f
-                    * _movementSM._playerMovementController.PLAYERMOVEMENTCONFIG.airMultiplier
+                    * _movementConfig.airMultiplier
             );
         }
 
         // turn gravity off while on slope
-        _movementSM._playerMovementController.PLAYER_RB.useGravity = !_movementSM
-            ._playerMovementController
-            .MOVEMENTCONTEXT
-            .ONSLOPE;
+        _movementContext.AFFECTED_RIDGIDBODY.useGravity = !_movementContext.ONSLOPE;
 
         // Reset to spawn if fallen in void
-        ResetUnderMap(_movementSM._playerMovementController.SPAWNPOINT.position);
+        ResetUnderMap(_movementContext.SPAWNPOINT);
     }
 
     public void Update()
@@ -55,9 +58,9 @@ public class StateAir : IMovementState
 
     internal void ResetUnderMap(Vector3 spawnpoint)
     {
-        if (_movementSM._playerMovementController.PLAYER_RB.position.y <= -15f)
+        if (_movementContext.AFFECTED_RIDGIDBODY.position.y <= -15f)
         {
-            _movementSM._playerMovementController.PLAYER_RB.position = spawnpoint;
+            _movementContext.AFFECTED_RIDGIDBODY.position = spawnpoint;
         }
     }
 }
