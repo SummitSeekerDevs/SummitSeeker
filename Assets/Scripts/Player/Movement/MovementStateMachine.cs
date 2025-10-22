@@ -5,12 +5,10 @@ using Zenject;
 
 public class MovementStateMachine
 {
-    // References
-    public virtual PlayerMovementController _playerMovementController { get; private set; }
-
     public StateNode Current { get; private set; }
     private Dictionary<Type, StateNode> nodes = new();
 
+    #region State and Link Vars
     // States
     public StateWalking stateWalking { get; private set; }
     public StateSprinting stateSprinting { get; private set; }
@@ -25,18 +23,21 @@ public class MovementStateMachine
     public LinkCrouching linkCrouching { get; private set; }
     public LinkAir linkAir { get; private set; }
 
-    private DiContainer _diContainer;
+    #endregion
 
-    [Inject]
-    public void Construct(
-        PlayerMovementController playerMovementController,
+    private DiContainer _diContainer;
+    private DelayInvoker _delayInvoker;
+
+    public MovementStateMachine(
+        MovementContext movementContext,
+        PlayerMovementConfig movementConfig,
+        DelayInvoker delayInvoker,
         DiContainer diContainer
     )
     {
-        _playerMovementController = playerMovementController;
-        Debug.Log(_playerMovementController);
         _diContainer = diContainer;
-        Initialize();
+        _delayInvoker = delayInvoker;
+        Initialize(movementContext, movementConfig);
     }
 
     public void SetMovementState(IMovementState state)
@@ -46,38 +47,34 @@ public class MovementStateMachine
     }
 
     #region Init
-    private void Initialize()
+    private void Initialize(MovementContext movementContext, PlayerMovementConfig movementConfig)
     {
-        CreateStates();
-        CreateLinks();
+        CreateStates(movementContext, movementConfig);
+        CreateLinks(movementContext);
         RegisterStateTransitions();
 
         IMovementState startingState = stateWalking;
-
         SetMovementState(startingState);
     }
 
-    private void CreateStates()
+    private void CreateStates(MovementContext movementContext, PlayerMovementConfig movementConfig)
     {
         // Instantiation
-        stateWalking = new StateWalking(this);
-        stateSprinting = new StateSprinting(this);
-        stateJumping = new StateJumping(this);
-        stateCrouching = new StateCrouching(this);
-        stateAir = new StateAir(this);
-
-        // Injecting
-        _diContainer.Inject(stateJumping);
+        stateWalking = new StateWalking(movementContext, movementConfig);
+        stateSprinting = new StateSprinting(movementContext, movementConfig);
+        stateJumping = new StateJumping(movementContext, movementConfig, _delayInvoker);
+        stateCrouching = new StateCrouching(movementContext, movementConfig);
+        stateAir = new StateAir(movementContext, movementConfig);
     }
 
-    private void CreateLinks()
+    private void CreateLinks(MovementContext movementContext)
     {
         // Instantiation
-        linkWalking = new LinkWalking(stateWalking);
-        linkSprinting = new LinkSprinting(stateSprinting);
-        linkJumping = new LinkJumping(stateJumping);
-        linkCrouching = new LinkCrouching(stateCrouching);
-        linkAir = new LinkAir(stateAir);
+        linkWalking = new LinkWalking(stateWalking, movementContext);
+        linkSprinting = new LinkSprinting(stateSprinting, movementContext);
+        linkJumping = new LinkJumping(stateJumping, movementContext);
+        linkCrouching = new LinkCrouching(stateCrouching, movementContext);
+        linkAir = new LinkAir(stateAir, movementContext);
 
         // Injecting
         _diContainer.Inject(linkWalking);
@@ -132,7 +129,7 @@ public class MovementStateMachine
         // Check transitions
         foreach (var transitionLink in Current.TransitionLinks)
         {
-            if (transitionLink.ConditionMatching(_playerMovementController)) // Wsl effizienter wenn einmal zugewiesen
+            if (transitionLink.ConditionMatching())
             {
                 return transitionLink.GetLinkTo();
             }

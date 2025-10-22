@@ -1,15 +1,17 @@
 public class LinkAir : ITransitionLink
 {
     private readonly StateAir _linkToState;
+    private readonly MovementContext _movementContext;
 
-    public LinkAir(StateAir linkToState)
+    public LinkAir(StateAir linkToState, MovementContext movementContext)
     {
         _linkToState = linkToState;
+        _movementContext = movementContext;
     }
 
-    public bool ConditionMatching(PlayerMovementController playerMC)
+    public bool ConditionMatching()
     {
-        return !playerMC.MOVEMENTCONTEXT.ONGROUND && !playerMC.MOVEMENTCONTEXT.ONSLOPE;
+        return !_movementContext.ONGROUND && !_movementContext.ONSLOPE;
     }
 
     public IMovementState GetLinkTo()

@@ -1,5 +1,5 @@
 public interface ITransitionLink
 {
-    bool ConditionMatching(PlayerMovementController playerMC);
+    bool ConditionMatching();
     IMovementState GetLinkTo();
 }

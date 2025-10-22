@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class MovementFunctions
+public static class MovementFunctions
 {
-    public bool OnSlope(
+    public static bool OnSlope(
         Transform transform,
         float playerHeight,
         float maxSlopeAngle,
@@ -25,17 +25,17 @@ public class MovementFunctions
         return false;
     }
 
-    public Vector3 GetSlopeMoveDirection(Vector3 moveDirection, RaycastHit slopeHit)
+    public static Vector3 GetSlopeMoveDirection(Vector3 moveDirection, RaycastHit slopeHit)
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
     }
 
-    public void HandleDrag(Rigidbody rb, bool isGrounded, float groundDrag)
+    public static void HandleDrag(Rigidbody rb, bool isGrounded, float groundDrag)
     {
         rb.linearDamping = isGrounded ? groundDrag : 0;
     }
 
-    public void SpeedControl(Rigidbody rb, float moveSpeed, bool onSlope, bool exitingSlope)
+    public static void SpeedControl(Rigidbody rb, float moveSpeed, bool onSlope, bool exitingSlope)
     {
         // limiting speed on slope
         if (onSlope && !exitingSlope)
@@ -57,7 +57,7 @@ public class MovementFunctions
         }
     }
 
-    public bool IsGrounded(Rigidbody rb, float playerHeight, LayerMask whatIsGround)
+    public static bool IsGrounded(Rigidbody rb, float playerHeight, LayerMask whatIsGround)
     {
         return Physics.Raycast(
             rb.transform.position,

@@ -40,11 +40,8 @@ public class StateWalking : IMovementState
         if (_movementContext.ONSLOPE && !_movementContext.EXITINGSLOPE)
         {
             _movementContext.AFFECTED_RIDGIDBODY.AddForce(
-                _movementSM._playerMovementController.MOVEMENTFUNCTIONS.GetSlopeMoveDirection(
-                    moveDirection
-                )
-                    * 20f
-                    * _movementContext.MOVESPEED
+                MovementFunctions.GetSlopeMoveDirection(moveDirection, _movementContext.SLOPEHIT)
+                    * (20f * _movementContext.MOVESPEED)
             );
 
             if (_movementContext.AFFECTED_RIDGIDBODY.linearVelocity.y > 0)
@@ -56,7 +53,7 @@ public class StateWalking : IMovementState
         else if (_movementContext.ONGROUND)
         {
             _movementContext.AFFECTED_RIDGIDBODY.AddForce(
-                moveDirection.normalized * 10f * _movementContext.MOVESPEED
+                moveDirection.normalized * (10f * _movementContext.MOVESPEED)
             );
         }
 

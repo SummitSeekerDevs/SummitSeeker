@@ -4,6 +4,7 @@ public class LinkCrouching : ITransitionLink
 {
     internal PlayerInputProvider _inputProvider;
     private readonly StateCrouching _linkToState;
+    private readonly MovementContext _movementContext;
 
     [Inject]
     public void Injection(PlayerInputProvider inputProvider)
@@ -11,14 +12,15 @@ public class LinkCrouching : ITransitionLink
         _inputProvider = inputProvider;
     }
 
-    public LinkCrouching(StateCrouching linkToState)
+    public LinkCrouching(StateCrouching linkToState, MovementContext movementContext)
     {
         _linkToState = linkToState;
+        _movementContext = movementContext;
     }
 
-    public bool ConditionMatching(PlayerMovementController playerMC)
+    public bool ConditionMatching()
     {
-        return (playerMC.MOVEMENTCONTEXT.ONGROUND || playerMC.MOVEMENTCONTEXT.ONSLOPE)
+        return (_movementContext.ONGROUND || _movementContext.ONSLOPE)
             && _inputProvider._crouchingIsPressed;
     }
 

@@ -4,6 +4,7 @@ public class LinkJumping : ITransitionLink
 {
     internal PlayerInputProvider _inputProvider;
     private readonly StateJumping _linkToState;
+    private readonly MovementContext _movementContext;
 
     [Inject]
     public void Injection(PlayerInputProvider inputProvider)
@@ -11,16 +12,17 @@ public class LinkJumping : ITransitionLink
         _inputProvider = inputProvider;
     }
 
-    public LinkJumping(StateJumping linkToState)
+    public LinkJumping(StateJumping linkToState, MovementContext movementContext)
     {
         _linkToState = linkToState;
+        _movementContext = movementContext;
     }
 
-    public bool ConditionMatching(PlayerMovementController playerMC)
+    public bool ConditionMatching()
     {
-        return (playerMC.MOVEMENTCONTEXT.ONGROUND || playerMC.MOVEMENTCONTEXT.ONSLOPE)
+        return (_movementContext.ONGROUND || _movementContext.ONSLOPE)
             && _inputProvider._jumpingIsPressed
-            && playerMC.MOVEMENTCONTEXT.READYTOJUMP;
+            && _movementContext.READYTOJUMP;
     }
 
     public IMovementState GetLinkTo()

@@ -8,15 +8,14 @@ public class StateJumping : IMovementState
     private PlayerMovementConfig _movementConfig;
     private DelayInvoker _delayInvoker;
 
-    public StateJumping(MovementContext movementContext, PlayerMovementConfig movementConfig)
+    public StateJumping(
+        MovementContext movementContext,
+        PlayerMovementConfig movementConfig,
+        DelayInvoker delayInvoker
+    )
     {
         _movementContext = movementContext;
         _movementConfig = movementConfig;
-    }
-
-    [Inject]
-    public void Construct(DelayInvoker delayInvoker)
-    {
         _delayInvoker = delayInvoker;
     }
 
@@ -44,7 +43,7 @@ public class StateJumping : IMovementState
 
         // statt transform möglicherweise rb erforderlich
         _movementContext.AFFECTED_RIDGIDBODY.AddForce(
-            _movementSM._playerMovementController.transform.up * _movementConfig.jumpForce,
+            _movementContext.AFFECTED_RIDGIDBODY.transform.up * _movementConfig.jumpForce,
             ForceMode.Impulse
         );
 

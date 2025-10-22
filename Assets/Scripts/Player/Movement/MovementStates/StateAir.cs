@@ -38,9 +38,7 @@ public class StateAir : IMovementState
         {
             _movementContext.AFFECTED_RIDGIDBODY.AddForce(
                 moveDirection.normalized
-                    * _movementContext.MOVESPEED
-                    * 10f
-                    * _movementConfig.airMultiplier
+                    * (_movementContext.MOVESPEED * 10f * _movementConfig.airMultiplier)
             );
         }
 

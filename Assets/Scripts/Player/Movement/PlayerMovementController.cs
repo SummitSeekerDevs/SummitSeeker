@@ -4,6 +4,7 @@ using Zenject;
 public class PlayerMovementController : MonoBehaviour
 {
     #region Vars
+
     // References
     [SerializeField]
     private Transform _initialSpawnPoint;
@@ -11,20 +12,12 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private Transform _orientation;
 
-    private PlayerMovementConfig _playerMovementConfig;
-
     private Rigidbody _rb;
 
     private PlayerInputProvider _playerInputProvider;
     private MovementStateMachine _movementStateMachine;
-    private MovementFunctions _movementFunctions;
-    private MovementContext _movementContext = new MovementContext();
-
-    // GETTER
-    public virtual Rigidbody PLAYER_RB => _rb;
-    public MovementFunctions MOVEMENTFUNCTIONS => _movementFunctions;
-    public PlayerMovementConfig PLAYERMOVEMENTCONFIG => _playerMovementConfig;
-    public MovementContext MOVEMENTCONTEXT => _movementContext;
+    private MovementContext _movementContext;
+    private PlayerMovementConfig _playerMovementConfig;
 
     #endregion
 
@@ -32,6 +25,7 @@ public class PlayerMovementController : MonoBehaviour
     public void Construct(
         PlayerInputProvider playerInputProvider,
         PlayerMovementConfig playerMovementConfig,
+        DelayInvoker delayInvoker,
         DiContainer diContainer
     )
     {
@@ -39,39 +33,42 @@ public class PlayerMovementController : MonoBehaviour
         _playerInputProvider = playerInputProvider;
         _playerMovementConfig = playerMovementConfig;
 
-        _movementStateMachine = new MovementStateMachine();
-        diContainer.BindInstance(this);
-        diContainer.QueueForInject(_movementStateMachine);
-    }
-
-    private void Start()
-    {
         // Rigidbody
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
 
+        // Create MovementContext
+        _movementContext = new MovementContext(_rb);
+
+        _movementStateMachine = new MovementStateMachine(
+            _movementContext,
+            _playerMovementConfig,
+            delayInvoker,
+            diContainer
+        );
+    }
+
+    private void Start()
+    {
         // Set default scale
         _movementContext.SetStartYScale(_rb.transform.localScale.y);
 
         // Set spawnpoint to default
         _movementContext.SetSpawnPoint(_initialSpawnPoint.position);
-
-        // Movementfunctions
-        _movementFunctions = new MovementFunctions();
     }
 
     private void Update()
     {
         // set isGrounded for this frame
         _movementContext.SetOnGround(
-            _movementFunctions.IsGrounded(
+            MovementFunctions.IsGrounded(
                 _rb,
                 _playerMovementConfig.playerHeight,
                 _playerMovementConfig.whatIsGround
             )
         );
 
-        _movementFunctions.SpeedControl(
+        MovementFunctions.SpeedControl(
             _rb,
             _movementContext.MOVESPEED,
             _movementContext.ONSLOPE,
@@ -80,7 +77,7 @@ public class PlayerMovementController : MonoBehaviour
 
         _movementStateMachine.Update();
 
-        _movementFunctions.HandleDrag(
+        MovementFunctions.HandleDrag(
             _rb,
             _movementContext.ONGROUND,
             _playerMovementConfig.groundDrag
@@ -90,11 +87,13 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         _movementContext.SetOnSlope(
-            _movementFunctions.OnSlope(
+            MovementFunctions.OnSlope(
                 transform,
                 _playerMovementConfig.playerHeight,
-                _playerMovementConfig.maxSlopeAngle
-            )
+                _playerMovementConfig.maxSlopeAngle,
+                out RaycastHit slopeHit
+            ),
+            slopeHit
         );
 
         // calculate movement direction
